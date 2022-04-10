@@ -1,0 +1,46 @@
+version: "3"
+
+volumes:
+  dbbackups:
+  postgis-data:
+services:
+  main:
+    image: getme
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+    volumes:
+      - ./logs:/app/logs
+      - ./media:/app/media
+      - ${CONFIG_DIR}:/app/configs
+    depends_on:
+      - getme-db
+    environment:
+      WAIT_HOSTS: getme-db:5432
+  getme-db:
+    image: pg-14
+    expose:
+      - "5432"
+    command: "postgres -c shared_preload_libraries='pg_stat_statements'"
+    volumes:
+      - postgis-data:/var/lib/postgresql
+    environment:
+      - POSTGRES_PASSWORD=${PG_BD_PASSWORD}
+      - POSTGRES_USER=${PG_BD_USERNAME}
+      - POSTGRES_DB=${PG_BD_NAME}
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    healthcheck:
+      test: "exit 0"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+networks:
+  default:
+    driver: bridge
