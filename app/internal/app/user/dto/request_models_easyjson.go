@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out *UserUpdateRequest) {
+func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out *UserRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -36,7 +36,7 @@ func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out 
 			continue
 		}
 		switch key {
-		case "fullname":
+		case "fulllname":
 			out.Fullname = string(in.String())
 		case "about":
 			out.About = string(in.String())
@@ -56,12 +56,12 @@ func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out 
 		in.Consumed()
 	}
 }
-func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, in UserUpdateRequest) {
+func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, in UserRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"fullname\":"
+		const prefix string = ",\"fulllname\":"
 		out.RawString(prefix[1:])
 		out.String(string(in.Fullname))
 	}
@@ -79,25 +79,25 @@ func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, i
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v UserUpdateRequest) MarshalJSON() ([]byte, error) {
+func (v UserRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
 	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v UserUpdateRequest) MarshalEasyJSON(w *jwriter.Writer) {
+func (v UserRequest) MarshalEasyJSON(w *jwriter.Writer) {
 	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *UserUpdateRequest) UnmarshalJSON(data []byte) error {
+func (v *UserRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *UserUpdateRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
+func (v *UserRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(l, v)
 }
