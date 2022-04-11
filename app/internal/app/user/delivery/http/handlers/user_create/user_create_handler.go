@@ -29,7 +29,7 @@ func NewUserCreateHandler(log *logrus.Logger, rep repository.Repository) *UserCr
 }
 
 func (h *UserCreateHandler) POST(ctx *routing.Context) error {
-	req := &dto.UserUpdateRequest{}
+	req := &dto.UserRequest{}
 	err := h.GetRequestBody(ctx, req)
 	if err != nil {
 		h.Log(ctx).Warnf("can not parse request %s", err)

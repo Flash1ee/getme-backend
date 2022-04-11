@@ -47,7 +47,7 @@ func (h *UserProfileHandler) GET(ctx *routing.Context) error {
 }
 
 func (h *UserProfileHandler) POST(ctx *routing.Context) error {
-	req := &dto.UserUpdateRequest{}
+	req := &dto.UserRequest{}
 	err := h.GetRequestBody(ctx, req)
 	if err != nil {
 		h.Log(ctx).Warnf("can not parse request %s", err)
