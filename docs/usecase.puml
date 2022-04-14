@@ -43,7 +43,6 @@ usecase "Записаться к ментору" as ConnectToMentor
 
 
 
-User --> EditProfile
 User --> Profile
 User --> MentorsFeed
 
