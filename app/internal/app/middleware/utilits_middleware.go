@@ -1,15 +1,14 @@
 package middleware
 
 import (
+	"context"
 	"net/http"
 	"runtime/debug"
 	"time"
 
-	"github.com/google/uuid"
-	routing "github.com/qiangxue/fasthttp-routing"
+	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 
-	hf "getme-backend/internal/pkg/handler/handler_interfaces"
 	"getme-backend/internal/pkg/utilits"
 )
 
@@ -23,37 +22,57 @@ func NewUtilitiesMiddleware(log *logrus.Logger) UtilitiesMiddleware {
 	}
 }
 
-func (mw *UtilitiesMiddleware) CheckPanic() hf.Handler {
-	return hf.HandlerFunc(func(ctx *routing.Context) error {
-		defer func(log *logrus.Entry, ctx *routing.Context) {
+func (mw UtilitiesMiddleware) CheckPanic(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func(log *logrus.Entry, w http.ResponseWriter) {
 			if err := recover(); err != nil {
 				responseErr := http.StatusInternalServerError
-
 				log.Errorf("detacted critical error: %v, with stack: %s", err, debug.Stack())
-				ctx.SetStatusCode(responseErr)
+				w.WriteHeader(responseErr)
 			}
-		}(mw.log.Log(ctx), ctx)
-		return ctx.Next()
+		}(mw.log.Log(r), w)
+		h.ServeHTTP(w, r)
 	})
 }
 
-func (mw *UtilitiesMiddleware) UpgradeLogger() hf.Handler {
-	return hf.HandlerFunc(func(ctx *routing.Context) error {
+//func (mw *UtilitiesMiddleware) UpgradeLogger(hf hf.HandlerFunc) hf.HandlerFunc {
+//	return func(ctx echo.Context) error {
+//		start := time.Now()
+//		upgradeLogger := mw.log.BaseLog().WithFields(logrus.Fields{
+//			"urls":        ctx.Request().RequestURI,
+//			"method":      ctx.Request().Method,
+//			"remote_addr": ctx.Request().RemoteAddr,
+//			"work_time":   time.Since(start).Milliseconds(),
+//			"req_id":      uuid.NewUUID(),
+//		})
+//		ctx.Set("logger", upgradeLogger)
+//		upgradeLogger.Info("Log was upgraded")
+//
+//		err := hf
+//
+//		executeTime := time.Since(start).Milliseconds()
+//		upgradeLogger.Infof("work time [ms]: %v", executeTime)
+//		return err
+//	})
+//}
+func (mw *UtilitiesMiddleware) UpgradeLogger(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		upgradeLogger := mw.log.BaseLog().WithFields(logrus.Fields{
-			"urls":        ctx.URI().String(),
-			"method":      string(ctx.Method()),
-			"remote_addr": ctx.RemoteAddr(),
+			"urls":        r.URL,
+			"method":      r.Method,
+			"remote_addr": r.RemoteAddr,
 			"work_time":   time.Since(start).Milliseconds(),
-			"req_id":      uuid.NewUUID(),
+			"req_id":      uuid.NewV4(),
 		})
-		ctx.SetUserValue("logger", upgradeLogger)
+
+		r = r.WithContext(context.WithValue(r.Context(), "logger", upgradeLogger))
 		upgradeLogger.Info("Log was upgraded")
 
-		err := ctx.Next()
+		handler.ServeHTTP(w, r)
 
 		executeTime := time.Since(start).Milliseconds()
 		upgradeLogger.Infof("work time [ms]: %v", executeTime)
-		return err
+
 	})
 }

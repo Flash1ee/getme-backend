@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/qiangxue/fasthttp-routing"
+	"github.com/labstack/echo/v4"
 
 	hf "getme-backend/internal/pkg/handler/handler_interfaces"
 	"getme-backend/internal/pkg/utilits"
@@ -39,7 +39,6 @@ func NewBaseHandler(log *logrus.Logger) *BaseHandler {
 	}
 	return h
 }
-
 func (h *BaseHandler) AddMiddleware(middleware ...hf.HMiddlewareFunc) {
 	h.middlewares = append(h.middlewares, middleware...)
 }
@@ -52,12 +51,12 @@ func (h *BaseHandler) applyHFMiddleware(handlerMethod hf.HandlerFunc,
 	middlewares ...hf.HFMiddlewareFunc) hf.HandlerFunc {
 	resultHandlerMethod := handlerMethod
 	for index := len(middlewares) - 1; index >= 0; index-- {
-		resultHandlerMethod = middlewares[index](resultHandlerMethod)
+		resultHandlerMethod = hf.HandlerFunc(middlewares[index](echo.HandlerFunc(resultHandlerMethod)))
 	}
 	return resultHandlerMethod
 }
 
-func (h *BaseHandler) applyMiddleware(handler hf.Handler) routing.Handler {
+func (h *BaseHandler) applyMiddleware(handler hf.Handler) hf.HandlerFunc {
 	resultHandler := handler
 	for index := len(h.middlewares) - 1; index >= 0; index-- {
 		resultHandler = h.middlewares[index](resultHandler)
@@ -74,44 +73,44 @@ func (h *BaseHandler) getListMethods() []string {
 	return useMethods
 }
 
-func (h *BaseHandler) add(handler routing.Handler, route *routing.Route) {
+func (h *BaseHandler) add(path string, echoHandlerFunc echo.HandlerFunc, route *echo.Group) {
+	wrapped := echoHandlerFunc
+
 	for key := range h.handlerMethods {
 		switch key {
 		case GET:
-			route.Get(handler)
+			route.GET(path, wrapped)
 			break
 		case POST:
-			route.Post(handler)
+			route.POST(path, wrapped)
 			break
 		case PUT:
-			route.Put(handler)
+			route.PUT(path, wrapped)
 			break
 		case DELETE:
-			route.Delete(handler)
+			route.DELETE(path, wrapped)
 			break
 		case OPTIONS:
-			route.Options(handler)
+			route.OPTIONS(path, wrapped)
 			break
 		}
 	}
 }
 
-func (h *BaseHandler) Connect(route *routing.Route) {
-	h.add(h.applyMiddleware(h), route)
+func (h *BaseHandler) Connect(route *echo.Group, path string) {
+	h.add(path, echo.HandlerFunc(h.applyMiddleware(h)), route)
 }
 
-func (h *BaseHandler) ServeHTTP(ctx *routing.Context) error {
-	h.PrintRequest(ctx)
+func (h *BaseHandler) ServeHTTP(ctx echo.Context) error {
+	h.PrintRequest(ctx.Request())
 	ok := true
-	var hndlr hf.HandlerFunc
-
-	hndlr, ok = h.handlerMethods[string(ctx.Method())]
+	var handler hf.HandlerFunc
+	handler, ok = h.handlerMethods[ctx.Request().Method]
 	if ok {
-		hndlr(ctx)
-	} else {
-		h.Log(ctx).Errorf("Unexpected http method: %s", ctx.Method())
-		ctx.Response.Header.Set("Allow", strings.Join(h.getListMethods(), ", "))
-		ctx.SetStatusCode(http.StatusInternalServerError)
+		return handler(ctx)
 	}
-	return nil
+	h.Log(ctx.Request()).Errorf("Unexpected http method: %s", ctx.Request().Method)
+	ctx.Response().Header().Set("Allow", strings.Join(h.getListMethods(), ", "))
+	ctx.Response().WriteHeader(http.StatusInternalServerError)
+	return echo.ErrInternalServerError
 }

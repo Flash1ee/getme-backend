@@ -1,9 +1,9 @@
-package usecase
+package user_usecase
 
-import "getme-backend/internal/app/user/dto"
+import (
+	"getme-backend/internal/app/user/dto"
+)
 
 type Usecase interface {
-	Create(us *dto.UserRequest) ([]dto.UserResponse, error)
-	Get(nickname string) (*dto.UserResponse, error)
-	Update(us *dto.UserRequest) (*dto.UserResponse, error)
+	Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error)
 }

@@ -1,25 +1,29 @@
 CREATE
-EXTENSION IF NOT EXISTS citext;
+    EXTENSION IF NOT EXISTS citext;
 
 CREATE TABLE users
 (
     id            bigserial not null,
-    name          text      not null,
+    first_name    citext    not null,
+    last_name     citext    not null,
+    nickname      citext      not null,
     about         text      not null,
     avatar        text      not null,
     is_searchable bool      not null default false,
+    created_at    timestamptz        default now()::timestamptz not null,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE plans
 (
-    id        bigserial,
-    name      text    not null,
-    about     text,
-    is_active boolean not null default false,
-    progress  numeric          default 0,
-    mentor_id bigint,
-    mentee_id bigint,
+    id         bigserial,
+    name       text    not null,
+    about      text,
+    is_active  boolean not null default false,
+    progress   numeric          default 0,
+    mentor_id  bigint,
+    mentee_id  bigint,
+    created_at timestamptz      default now()::timestamptz not null,
     PRIMARY KEY (id),
     FOREIGN KEY (mentee_id) REFERENCES users (id)
 );
@@ -42,11 +46,12 @@ CREATE TABLE status
 CREATE TABLE task
 (
     id          bigserial,
-    name        citext not null,
-    description text   not null,
+    name        citext                                 not null,
+    description text                                   not null,
     deadline    timestamptz default now()::timestamptz not null,
-    status      text   not null,
+    status      text                                   not null,
     plan_id     bigint,
+    created_at  timestamptz default now()::timestamptz not null,
     PRIMARY KEY (id),
     FOREIGN KEY (plan_id) REFERENCES plans (id),
     FOREIGN KEY (status) REFERENCES status (name)
@@ -77,6 +82,7 @@ CREATE TABLE offers
     status     boolean   not null default false,
     mentor_id  bigint    not null,
     mentee_id  bigint    not null,
+    created_at timestamptz        default now()::timestamptz not null,
     PRIMARY KEY (id),
     FOREIGN KEY (skill_name) REFERENCES skills (name),
     FOREIGN KEY (mentor_id) REFERENCES users (id),

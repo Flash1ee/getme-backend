@@ -1,29 +1,30 @@
 package handler_interfaces
 
 import (
-	"github.com/qiangxue/fasthttp-routing"
-	"github.com/valyala/fasthttp"
+	"github.com/labstack/echo/v4"
 )
 
-type FastHTTPFunc func(ctx *fasthttp.RequestCtx)
-
-func (f FastHTTPFunc) ServeHTTP(ctx *routing.Context) error {
-	f(ctx.RequestCtx)
-	return nil
+type Handler interface {
+	ServeHTTP(ctx echo.Context) error
 }
 
-func (f FastHTTPFunc) ServeFastHTTP(ctx *fasthttp.RequestCtx) {
-	f(ctx)
-}
+//type HandlerFunc func(http.ResponseWriter, *http.Request)
 
-type HandlerFunc func(ctx *routing.Context) error
+type HandlerFunc func(ctx echo.Context) error
 
-func (f HandlerFunc) ServeHTTP(ctx *routing.Context) error {
+func (f HandlerFunc) ServeHTTP(ctx echo.Context) error {
 	return f(ctx)
 }
 
-type Handler interface {
-	ServeHTTP(ctx *routing.Context) error
-}
-type HMiddlewareFunc func(Handler) Handler
-type HFMiddlewareFunc func(HandlerFunc) HandlerFunc
+type HMiddlewareFunc func(handler Handler) Handler
+
+//type HFMiddlewareFunc func(HandlerFunc) HandlerFunc
+type HFMiddlewareFunc echo.MiddlewareFunc
+
+//func (f HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) error {
+//	return f(w, r)
+//}
+//
+
+//type HMiddlewareFunc func(Handler) Handler
+//type HFMiddlewareFunc func(HandlerFunc) HandlerFunc

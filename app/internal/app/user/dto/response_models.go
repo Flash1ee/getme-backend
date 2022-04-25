@@ -17,7 +17,6 @@ type UserResponse struct {
 func ToUserResponse(usr *entities.User) *UserResponse {
 	return &UserResponse{
 		Nickname: usr.Nickname,
-		Fullname: usr.Fullname,
 		About:    usr.About,
 		Email:    usr.Email,
 	}

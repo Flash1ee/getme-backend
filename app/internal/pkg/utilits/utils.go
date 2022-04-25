@@ -29,12 +29,18 @@ func NewLogger(config *internal.Config, isService bool, serviceName string) (log
 		currentTime.Year(), currentTime.Month(), currentTime.Day(),
 		currentTime.Hour(), currentTime.Minute(), currentTime.Second()) + "__" + servicePath + ".log"
 
+	//formatted := fmt.Sprintf("%d-%02d-%02dT%02d:%02d:%02d",
+	//	currentTime.Year(), currentTime.Month(), currentTime.Day(),
+	//	currentTime.Hour(), currentTime.Minute(), currentTime.Second()) + "__" + servicePath + ".log"
+
 	f, err := os.OpenFile(formatted, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		logrus.Fatalf("error opening file: %v", err)
 	}
 
 	logger.SetOutput(f)
+	//logger.SetOutput(os.Stdout)
+
 	logger.Writer()
 	logger.SetLevel(level)
 	logger.SetFormatter(&logrus.JSONFormatter{})

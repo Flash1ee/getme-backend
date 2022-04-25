@@ -1,20 +1,26 @@
 package dto
 
-import "getme-backend/internal/app/user/entities"
-
 //go:generate easyjson -all -disallow_unknown_fields request_models.go
 
 //easyjson:json
-type UserRequest struct {
-	Fullname string `json:"fulllname"`
-	About    string `json:"about,omitempty"`
-	Email    string `json:"email"`
+type UserAuthRequest struct {
+	ID        int64  `query:"id" json:"id"`
+	AuthDate  int64  `query:"auth_date" json:"auth_date"`
+	FirstName string `query:"first_name" json:"first_name"`
+	LastName  string `query:"last_name" json:"last_name"`
+	Username  string `query:"username" json:"username"`
+	Avatar    string `query:"photo_url" json:"photo_url"`
+	Hash      string `query:"hash" json:"hash"`
 }
 
-func (req *UserRequest) ToUserEntities() *entities.User {
-	return &entities.User{
-		Fullname: req.Fullname,
-		About:    req.About,
-		Email:    req.Email,
+func (req *UserAuthRequest) ToUserAuthUsecase() *UserAuthUsecase {
+	return &UserAuthUsecase{
+		ID:        req.ID,
+		AuthDate:  req.AuthDate,
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Username:  req.Username,
+		Avatar:    req.Avatar,
+		Hash:      req.Hash,
 	}
 }

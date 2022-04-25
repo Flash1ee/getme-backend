@@ -1,7 +1,8 @@
 package utilits
 
 import (
-	routing "github.com/qiangxue/fasthttp-routing"
+	"net/http"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,12 +18,12 @@ func (l *LogObject) BaseLog() *logrus.Logger {
 	return l.log
 }
 
-func (l *LogObject) Log(ctx *routing.Context) *logrus.Entry {
-	if ctx == nil {
+func (l *LogObject) Log(r *http.Request) *logrus.Entry {
+	if r == nil {
 		return l.log.WithField("type", "base_log")
 	}
-	ctxLogger := ctx.UserValue("logger")
-	logger := l.log.WithField("urls", ctx.URI())
+	ctxLogger := r.Context().Value("logger")
+	logger := l.log.WithField("urls", r.URL)
 	if ctxLogger != nil {
 		if log, ok := ctxLogger.(*logrus.Entry); ok {
 			logger = log

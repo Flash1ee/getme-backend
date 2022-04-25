@@ -1,65 +1,66 @@
 package server
 
 import (
-	"fmt"
+	"net/http"
 
-	routing "github.com/qiangxue/fasthttp-routing"
-	"github.com/valyala/fasthttp"
-
-	"getme-backend/internal"
-	"getme-backend/internal/app"
-	"getme-backend/internal/app/factories/handler_factory"
-	"getme-backend/internal/app/factories/repository_factory"
-	"getme-backend/internal/app/middleware"
+	"github.com/labstack/echo/v4"
 
 	log "github.com/sirupsen/logrus"
+
+	"getme-backend/internal"
+	"getme-backend/internal/app/factories/handler_factory"
+	"getme-backend/internal/app/factories/repository_factory"
+	"getme-backend/internal/app/factories/usecase_factory"
+	"getme-backend/internal/app/middleware"
+	"getme-backend/internal/pkg/adapter/echo_adapter"
+	"getme-backend/internal/pkg/server"
+	"getme-backend/internal/pkg/utilits"
 )
 
 type Server struct {
-	config      *internal.Config
-	logger      *log.Logger
-	connections app.ExpectedConnections
+	server.BaseServer
 }
 
-func New(config *internal.Config, connections app.ExpectedConnections, logger *log.Logger) *Server {
+func New(config *internal.Config, connections utilits.ExpectedConnections, logger *log.Logger) *Server {
 	return &Server{
-		config:      config,
-		logger:      logger,
-		connections: connections,
+		BaseServer: *server.NewBaseServer(config, connections, logger),
 	}
-}
-
-func (s *Server) checkConnection() error {
-	if err := s.connections.SqlConnection.Ping(); err != nil {
-		return fmt.Errorf("Can't check connection to sql with error %v ", err)
-	}
-
-	s.logger.Info("Success check connection to sql db")
-
-	return nil
 }
 
 func (s *Server) Start(config *internal.Config) error {
-	if err := s.checkConnection(); err != nil {
+	if err := s.Check(); err != nil {
 		return err
 	}
 
-	router := routing.New()
+	router := echo.New()
+	router.Renderer = echo_adapter.NewRenderer("/Users/dvvarin/TP/getme-backend/app/template/*", false)
+	utilityMiddleware := middleware.NewUtilitiesMiddleware(s.Logger)
+
 	//router.Get("/debug/pprof/<profile>", handler_interfaces.FastHTTPFunc(pprofhandler.PprofHandler).ServeHTTP)
 
 	routerApi := router.Group("/api")
 
-	repositoryFactory := repository_factory.NewRepositoryFactory(s.logger, s.connections)
-	factory := handler_factory.NewFactory(s.logger, repositoryFactory)
+	repositoryFactory := repository_factory.NewRepositoryFactory(s.Logger, s.Connections)
+	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, repositoryFactory, config.TgAuth)
+	factory := handler_factory.NewFactory(s.Logger, usecaseFactory)
+
 	hs := factory.GetHandleUrls()
 
-	utilityMiddleware := middleware.NewUtilitiesMiddleware(s.logger)
-	routerApi.Use(utilityMiddleware.UpgradeLogger().ServeHTTP, utilityMiddleware.CheckPanic().ServeHTTP)
+	routerApi.Use(
+		echo.WrapMiddleware(utilityMiddleware.CheckPanic),
+		echo.WrapMiddleware(utilityMiddleware.UpgradeLogger))
 
 	for apiUrl, h := range *hs {
-		h.Connect(routerApi.Connect(apiUrl))
+		h.Connect(routerApi, apiUrl)
 	}
 
-	s.logger.Info("start no http server")
-	return fasthttp.ListenAndServe(config.BindAddr, router.HandleRequest)
+	s.Logger.Info("start http server")
+
+	router.GET(
+		"/login", func(c echo.Context) error {
+			c.Render(http.StatusOK, "login.tmpl", map[string]interface{}{})
+			return nil
+		})
+
+	return router.Start(config.BindAddr)
 }

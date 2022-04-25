@@ -1,10 +1,10 @@
 package app
 
 import (
-	routing "github.com/qiangxue/fasthttp-routing"
+	"github.com/labstack/echo/v4"
 )
 
 type Handler interface {
-	ServeHTTP(ctx *routing.Context) error
-	Connect(router *routing.Route)
+	ServeHTTP(ctx echo.Context) error
+	Connect(route *echo.Group, path string)
 }

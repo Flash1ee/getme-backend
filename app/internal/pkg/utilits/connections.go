@@ -1,4 +1,4 @@
-package app
+package utilits
 
 import (
 	"github.com/jmoiron/sqlx"

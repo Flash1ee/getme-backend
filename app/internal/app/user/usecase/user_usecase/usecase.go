@@ -1,22 +1,31 @@
-package usecase
+package user_usecase
 
 import (
+	"getme-backend/internal/app/task/repository"
 	"getme-backend/internal/app/user/dto"
-	"getme-backend/internal/app/user/repository"
 )
 
 type UserUsecase struct {
 	userRepository repository.Repository
+	authChecker    authChecker
 }
 
-func (u *UserUsecase) Create(us *dto.UserRequest) ([]dto.UserResponse, error) {
-	return []dto.UserResponse{}, nil
+func NewUserUsecase(repo repository.Repository, authCheck authChecker) *UserUsecase {
+	return &UserUsecase{
+		userRepository: repo,
+		authChecker:    authCheck,
+	}
 }
-
-func (u *UserUsecase) Get(nickname string) (*dto.UserResponse, error) {
-	return nil, nil
-}
-
-func (u *UserUsecase) Update(us *dto.UserRequest) (*dto.UserResponse, error) {
-	return nil, nil
+func (u *UserUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error) {
+	if user == nil {
+		return nil, ArgError
+	}
+	ok := u.authChecker.Check(user)
+	if !ok {
+		return nil, BadAuth
+	}
+	return &dto.UserResponse{
+		Nickname: user.Username,
+		Fullname: user.FirstName + " " + user.LastName,
+	}, nil
 }

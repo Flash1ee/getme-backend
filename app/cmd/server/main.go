@@ -8,7 +8,6 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"getme-backend/internal"
-	"getme-backend/internal/app"
 	"getme-backend/internal/app/server"
 	"getme-backend/internal/pkg/utilits"
 )
@@ -51,7 +50,7 @@ func main() {
 	}(closeResource, logger)
 
 	serv := server.New(&config,
-		app.ExpectedConnections{
+		utilits.ExpectedConnections{
 			SqlConnection: db,
 		},
 		logger,
