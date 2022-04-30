@@ -1,0 +1,74 @@
+@startuml
+
+title Варианты использования приложения "GetMe"
+
+left to right direction
+
+actor :Пользователь: as User
+
+actor :Ментор: as Mentor
+
+actor :Менти: as Menti
+
+User <|-up- Mentor
+
+User <|-down- Menti
+
+rectangle Общее {
+    usecase "Просмотр своего профиля" as Profile
+
+    usecase "Редактирование профиля" as EditProfile
+
+    usecase "Лента менторов" as MentorsFeed
+
+    usecase "Поиск ментора" as Search
+
+    usecase "Просмотр профиля ментора" as MentorProfile
+}
+rectangle "План Развития" {
+    usecase "Лента планов" as FeedPlan
+
+    usecase "Создание плана развития" as CreatePlan
+
+    usecase "Изменение плана развития" as EditPlan
+
+    usecase "Отметка о выполнении задания" as TaskDone
+
+    usecase "Просмотр плана развития" as WatchPlan
+
+}
+usecase "Чат" as Message
+
+usecase "Записаться к ментору" as ConnectToMentor
+
+
+
+User --> Profile
+User --> MentorsFeed
+
+
+Profile ..> EditProfile : include
+
+
+
+
+MentorsFeed ..> Search : include
+MentorsFeed ..> MentorProfile : include
+
+FeedPlan .> WatchPlan : include
+WatchPlan .> TaskDone : include
+
+
+
+Menti -> FeedPlan
+Menti -> ConnectToMentor
+Menti --> Message
+
+
+Mentor -> FeedPlan
+Mentor -> CreatePlan
+CreatePlan ..> EditPlan : include
+Mentor -> Message
+
+
+@enduml
