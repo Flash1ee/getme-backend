@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="937px" preserveAspectRatio="none" style="width:904px;height:937px;background:#FFFFFF;" version="1.1" viewBox="0 0 904 937" width="904px" zoomAndPan="magnify"><defs><filter height="300%" id="f170xxqv64sd1b" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacing" textLength="414" x="238.5" y="17.4023">Варианты использования приложения "GetMe"</text><!--MD5=[9c0f4031f3a6972e4b8a53dbbf4fc700]
+cluster Общее--><rect fill="#FFFFFF" filter="url(#f170xxqv64sd1b)" height="256" style="stroke:#000000;stroke-width:1.5;" width="611.5" x="280.5" y="669.1992"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="50" x="561.25" y="684.7344">Общее</text><!--MD5=[4369610d69d1ff3d6714c9e6f990d0b0]
+cluster План Развития--><rect fill="#FFFFFF" filter="url(#f170xxqv64sd1b)" height="375" style="stroke:#000000;stroke-width:1.5;" width="625" x="263" y="28.1992"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="107" x="522" y="43.7344">План Развития</text><ellipse cx="407.2005" cy="828.2393" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="110.7005" ry="24.5401" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187" x="313.7005" y="831.5303">Просмотр своего профиля</text><ellipse cx="759.3952" cy="885.2783" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="108.3952" ry="24.079" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="182" x="668.3952" y="888.5693">Редактирование профиля</text><ellipse cx="406.7871" cy="722.2566" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="78.2871" ry="18.0574" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="114" x="349.7871" y="725.5477">Лента менторов</text><ellipse cx="759.3837" cy="722.176" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="75.3837" ry="17.4767" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="107" x="705.8837" y="725.467">Поиск ментора</text><ellipse cx="759.7328" cy="800.4458" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="116.7328" ry="25.7466" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="200" x="659.7328" y="803.7368">Просмотр профиля ментора</text><ellipse cx="406.9677" cy="287.2928" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="70.9677" ry="16.5935" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="357.686" y="290.9196">Лента планов</text><ellipse cx="406.8952" cy="363.2783" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="108.3952" ry="24.079" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="182" x="315.8952" y="366.5693">Создание плана развития</text><ellipse cx="759.5509" cy="352.1094" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="112.5509" ry="24.9102" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="191" x="664.0509" y="355.4004">Изменение плана развития</text><ellipse cx="406.9926" cy="91.1977" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="127.9926" ry="27.9985" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="224" x="294.9926" y="94.4888">Отметка о выполнении задания</text><ellipse cx="406.8555" cy="195.3703" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="108.8555" ry="24.1711" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="183" x="315.3555" y="198.6613">Просмотр плана развития</text><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><ellipse cx="168.5" cy="644.1992" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M168.5,652.1992 L168.5,679.1992 M155.5,660.1992 L181.5,660.1992 M168.5,679.1992 L155.5,694.1992 M168.5,679.1992 L181.5,694.1992 " fill="none" filter="url(#f170xxqv64sd1b)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95" x="121" y="713.2344">Пользователь</text><!--MD5=[d64a7ed54fc0c83564da457b3b8a9e6a]
+entity Mentor--><ellipse cx="33" cy="374.1992" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M33,382.1992 L33,409.1992 M20,390.1992 L46,390.1992 M33,409.1992 L20,424.1992 M33,409.1992 L46,424.1992 " fill="none" filter="url(#f170xxqv64sd1b)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="6" y="443.2344">Ментор</text><!--MD5=[9de4b17da1b48e52b7934cc3b6e74ae1]
+entity Menti--><ellipse cx="407" cy="503.1992" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M407,511.1992 L407,538.1992 M394,519.1992 L420,519.1992 M407,538.1992 L394,553.1992 M407,538.1992 L420,553.1992 " fill="none" filter="url(#f170xxqv64sd1b)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45" x="384.5" y="572.2344">Менти</text><ellipse cx="759.4558" cy="464.3582" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="28.4558" ry="14.659" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="24" x="747.4558" y="467.6492">Чат</text><ellipse cx="406.7777" cy="631.0548" fill="#FEFECE" filter="url(#f170xxqv64sd1b)" rx="94.7777" ry="21.3555" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152" x="330.7777" y="634.3458">Записаться к ментору</text><!--MD5=[35f0c6a34a5f13433571f7c433bb052a]
+link Mentor to User--><path d="M54.13,445.9092 C76.53,491.2092 112.91,564.7992 138.4,616.3592 " fill="none" id="Mentor-to-User" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="144.83,613.5692,147.42,634.5992,132.28,619.7692,144.83,613.5692" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d400b14177b8c09ca22ad4f15ec3889c]
+reverse link User to Menti--><path d="M219.3,620.4192 C230.36,610.1592 242.54,600.1692 255,592.1992 C297.24,565.2092 353.99,547.6592 384.48,539.5092 " fill="none" id="User-backto-Menti" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="224.16,625.4492,204.96,634.4192,214.38,615.4392,224.16,625.4492" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[3b3a110f6aeec0a0bf442c01daca6c1c]
+link User to Profile--><path d="M206.75,716.0392 C220.96,730.1892 237.88,745.4392 255,757.1992 C282.87,776.3492 316.73,792.7992 345.31,805.0292 " fill="none" id="User-to-Profile" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="350.22,807.1092,343.5044,799.905,345.6191,805.1517,340.3724,807.2664,350.22,807.1092" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ba7571ce210c24f8557e85da1ea8968d]
+link User to MentorsFeed--><path d="M216.22,684.4892 C252.17,691.6292 302.24,701.5792 341.92,709.4692 " fill="none" id="User-to-MentorsFeed" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="347.2,710.5092,339.1624,704.8174,342.2976,709.5259,337.5891,712.6611,347.2,710.5092" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[a8faaf5b62166ef60bb93dfafe814cfa]
+link Profile to EditProfile--><path d="M496.9,842.6592 C548.77,851.0892 614.09,861.7192 666.49,870.2392 " fill="none" id="Profile-to-EditProfile" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="671.51,871.0492,663.2647,865.6627,666.5742,870.2504,661.9865,873.5599,671.51,871.0492" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="851.7676">include</text><!--MD5=[cb222c7700f666deae2b825eb3fececc]
+link MentorsFeed to Search--><path d="M485.79,722.1992 C543.15,722.1992 620.94,722.1992 678.75,722.1992 " fill="none" id="MentorsFeed-to-Search" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="683.93,722.1992,674.93,718.1992,678.93,722.1992,674.93,726.1992,683.93,722.1992" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="718.7676">include</text><!--MD5=[8e3c6d12c303113c2762121c6ea3909f]
+link MentorsFeed to MentorProfile--><path d="M463.93,734.6492 C519.96,747.1192 607,766.4892 671.96,780.9392 " fill="none" id="MentorsFeed-to-MentorProfile" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="676.99,782.0592,669.0757,776.1972,672.1097,780.9715,667.3354,784.0056,676.99,782.0592" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="755.7676">include</text><!--MD5=[c9ff20ea78a580f2629b820acadbcfad]
+link FeedPlan to WatchPlan--><path d="M407,270.3292 C407,257.4592 407,239.4392 407,224.2692 " fill="none" id="FeedPlan-to-WatchPlan" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="407,219.2392,403,228.2392,407,224.2392,411,228.2392,407,219.2392" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="372.5" y="250.0176">include</text><!--MD5=[c81ddfc1e971ae45332abe999a418a1c]
+link WatchPlan to TaskDone--><path d="M407,171.0792 C407,157.1692 407,139.4792 407,124.2892 " fill="none" id="WatchPlan-to-TaskDone" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="407,119.2392,403,128.2392,407,124.2392,411,128.2392,407,119.2392" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="372.5" y="150.2676">include</text><!--MD5=[fe5755af4f0e3ccaa6427a45436ddc7e]
+link Menti to FeedPlan--><path d="M384.4,523.8792 C329.8,497.3792 197.88,423.0192 235.5,338.6992 C251.38,303.1092 292.84,290.0192 331.01,285.9392 " fill="none" id="Menti-to-FeedPlan" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="336.13,285.4392,326.7837,282.3333,331.1537,285.9254,327.5616,290.2954,336.13,285.4392" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d1dfeb5d6fd8b9b8ac7347d25e11938c]
+link Menti to ConnectToMentor--><path d="M407,574.8492 C407,584.7092 407,594.5792 407,604.4392 " fill="none" id="Menti-to-ConnectToMentor" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="407,609.5992,411,600.5992,407,604.5992,403,600.5992,407,609.5992" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[8a86990ca5cbce2c5e53478084b4c7c8]
+link Menti to Message--><path d="M429.66,529.8692 C489.59,517.9092 657.78,484.3192 727.55,470.3792 " fill="none" id="Menti-to-Message" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="732.8,469.3292,723.1952,467.1504,727.8949,470.2988,724.7465,474.9986,732.8,469.3292" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[15bc64711af4547f2a1f195159ccef77]
+link Mentor to FeedPlan--><path d="M60.17,388.6992 C69.38,383.3192 79.95,377.5992 90,373.1992 C175.17,335.9592 280.44,311.2092 345.39,298.1792 " fill="none" id="Mentor-to-FeedPlan" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="350.39,297.1892,340.7779,295.0427,345.4882,298.1753,342.3556,302.8856,350.39,297.1892" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ee155309c7b7ef818349a65d5d5449ee]
+link Mentor to CreatePlan--><path d="M60.16,402.2492 C110.16,396.5992 221.72,384.0092 304.69,374.6392 " fill="none" id="Mentor-to-CreatePlan" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="310.11,374.0292,300.7205,371.0564,305.1411,374.5861,301.6115,379.0067,310.11,374.0292" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5beec46bae815921029fb0b7158180a5]
+link CreatePlan to EditPlan--><path d="M514.59,359.8492 C555.14,358.5792 601.51,357.1292 642.85,355.8292 " fill="none" id="CreatePlan-to-EditPlan" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="647.87,355.6692,638.7488,351.9539,642.8725,355.8263,639.0001,359.95,647.87,355.6692" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="353.7676">include</text><!--MD5=[d258925fe28589ac992e763467404a6a]
+link Mentor to Message--><path d="M60.21,407.3292 C171.33,416.3792 603.34,451.5592 725.91,461.5492 " fill="none" id="Mentor-to-Message" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="731.17,461.9692,722.5321,457.2377,726.1872,461.5552,721.8697,465.2102,731.17,461.9692" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[a40d54297c640960f379793899e4a026]
+@startuml
+
+title Варианты использования приложения "GetMe"
+
+left to right direction
+
+actor :Пользователь: as User
+
+actor :Ментор: as Mentor
+
+actor :Менти: as Menti
+
+User <|-up- Mentor
+
+User <|-down- Menti
+
+rectangle Общее {
+    usecase "Просмотр своего профиля" as Profile
+
+    usecase "Редактирование профиля" as EditProfile
+
+    usecase "Лента менторов" as MentorsFeed
+
+    usecase "Поиск ментора" as Search
+
+    usecase "Просмотр профиля ментора" as MentorProfile
+}
+rectangle "План Развития" {
+    usecase "Лента планов" as FeedPlan
+
+    usecase "Создание плана развития" as CreatePlan
+
+    usecase "Изменение плана развития" as EditPlan
+
+    usecase "Отметка о выполнении задания" as TaskDone
+
+    usecase "Просмотр плана развития" as WatchPlan
+
+}
+usecase "Чат" as Message
+
+usecase "Записаться к ментору" as ConnectToMentor
+
+
+
+User - -> Profile
+User - -> MentorsFeed
+
+
+Profile ..> EditProfile : include
+
+
+
+
+MentorsFeed ..> Search : include
+MentorsFeed ..> MentorProfile : include
+
+FeedPlan .> WatchPlan : include
+WatchPlan .> TaskDone : include
+
+
+
+Menti -> FeedPlan
+Menti -> ConnectToMentor
+Menti - -> Message
+
+
+Mentor -> FeedPlan
+Mentor -> CreatePlan
+CreatePlan ..> EditPlan : include
+Mentor -> Message
+
+
+@enduml
+
+PlantUML version 1.2022.0(Tue Jan 11 19:16:42 MSK 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: ru
+Country: RU
+--></g></svg>
