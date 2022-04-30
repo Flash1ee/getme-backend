@@ -101,3 +101,9 @@ local-force-migrate:
 
 generate:
 	go generate -n $$(go list ./internal/...)
+
+
+run-coverage:
+	go test -covermode=atomic -coverprofile=cover ./...
+	cat cover | fgrep -v "easyjson" | fgrep -v "mock" | fgrep -v "testing.go" | fgrep -v "docs" | fgrep -v ".pb.go" | fgrep -v "config" > cover2
+	go tool cover -func=cover2

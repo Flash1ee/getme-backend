@@ -1,4 +1,4 @@
-package postgresql
+package repository_postgresql
 
 import (
 	"github.com/lib/pq"

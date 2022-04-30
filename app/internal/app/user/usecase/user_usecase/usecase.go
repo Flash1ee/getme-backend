@@ -1,16 +1,18 @@
 package user_usecase
 
 import (
-	"getme-backend/internal/app/task/repository"
+	"context"
+
 	"getme-backend/internal/app/user/dto"
+	"getme-backend/internal/app/user/repository"
 )
 
 type UserUsecase struct {
-	userRepository repository.Repository
+	userRepository user_repository.Repository
 	authChecker    authChecker
 }
 
-func NewUserUsecase(repo repository.Repository, authCheck authChecker) *UserUsecase {
+func NewUserUsecase(repo user_repository.Repository, authCheck authChecker) *UserUsecase {
 	return &UserUsecase{
 		userRepository: repo,
 		authChecker:    authCheck,
@@ -24,8 +26,13 @@ func (u *UserUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error)
 	if !ok {
 		return nil, BadAuth
 	}
+	userFromDB, err := u.userRepository.Create(context.Background(), user.ToUserEntity())
+	if err != nil {
+		return nil, err
+	}
+
 	return &dto.UserResponse{
-		Nickname: user.Username,
-		Fullname: user.FirstName + " " + user.LastName,
+		Nickname: userFromDB.Nickname,
+		Fullname: userFromDB.FirstName + " " + userFromDB.LastName,
 	}, nil
 }

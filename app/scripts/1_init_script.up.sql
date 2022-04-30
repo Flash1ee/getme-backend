@@ -3,14 +3,17 @@ CREATE
 
 CREATE TABLE users
 (
-    id            bigserial not null,
-    first_name    citext    not null,
-    last_name     citext    not null,
-    nickname      citext      not null,
-    about         text      not null,
-    avatar        text      not null,
-    is_searchable bool      not null default false,
-    created_at    timestamptz        default now()::timestamptz not null,
+    id            bigserial                              not null,
+    tg_id         bigint                                 not null unique,
+    first_name    citext                                 not null,
+    last_name     citext                                 not null,
+    nickname      citext                                 not null,
+    about         text                                   not null,
+    avatar        text                                   not null,
+    is_searchable bool                                   not null default false,
+    created_at    timestamptz default now()::timestamptz not null,
+    updated_at    timestamptz default now()::timestamptz not null,
+
     PRIMARY KEY (id)
 );
 
