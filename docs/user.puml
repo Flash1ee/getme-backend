@@ -1,0 +1,147 @@
+@startuml
+namespace dto {
+    class UserAuthRequest << (S,Aquamarine) >> {
+        + ID int64
+        + AuthDate int64
+        + FirstName string
+        + LastName string
+        + Username string
+        + Avatar string
+        + Hash string
+
+        + ToUserAuthUsecase() *UserAuthUsecase
+
+    }
+    class UserAuthUsecase << (S,Aquamarine) >> {
+        + ID int64
+        + TelegramID int64
+        + AuthDate int64
+        + FirstName string
+        + LastName string
+        + Username string
+        + Avatar string
+        + Hash string
+
+        + ToUserEntity() *entities.User
+
+    }
+    class UserResponse << (S,Aquamarine) >> {
+        + Nickname string
+        + Fullname string
+        + About string
+        + Email string
+
+        + MarshalJSON() ([]byte, error)
+        + MarshalEasyJSON(w *jwriter.Writer) 
+        + UnmarshalJSON(data []byte) error
+        + UnmarshalEasyJSON(l *jlexer.Lexer) 
+
+    }
+    class UsersResponse << (S,Aquamarine) >> {
+        + MarshalJSON() ([]byte, error)
+        + MarshalEasyJSON(w *jwriter.Writer) 
+        + UnmarshalJSON(data []byte) error
+        + UnmarshalEasyJSON(l *jlexer.Lexer) 
+
+    }
+    class dto.UsersResponse << (T, #FF7700) >>  {
+    }
+}
+
+
+namespace entities {
+    class User << (S,Aquamarine) >> {
+        + ID int64
+        + TelegramID int64
+        + FirstName string
+        + LastName string
+        + Nickname string
+        + About string
+        + Avatar string
+        + Email string
+        + IsSearchable bool
+        + CreatedAt time.Time
+        + UpdatedAt time.Time
+
+    }
+}
+
+
+namespace repository_postgresql {
+    class UserRepository << (S,Aquamarine) >> {
+        - store *sqlx.DB
+
+        + Create(ctx context.Context, user *entities.User) (*entities.User, error)
+        + GetUserByTelegramID(ctx context.Context, tgID int64) (*entities.User, error)
+
+    }
+}
+
+"user_repository.Repository" <|-- "repository_postgresql.UserRepository"
+
+namespace telegram_checker {
+    class CheckerData << (S,Aquamarine) >> {
+        + ID int64
+        + AuthDate int64
+        + FirstName string
+        + LastName string
+        + Username string
+        + Avatar string
+
+        + UserAuthToChecker(user *dto.UserAuthUsecase) *CheckerData
+
+    }
+    class TelegramChecker << (S,Aquamarine) >> {
+        - log *logrus.Logger
+        - token string
+        - tokenHash hash.Hash
+
+        + Check(user *dto.UserAuthUsecase) bool
+
+    }
+}
+
+"user_usecase.authChecker" <|-- "telegram_checker.TelegramChecker"
+
+namespace user_auth_handler {
+    class UserAuthHandler << (S,Aquamarine) >> {
+        - userUsecase user_usecase.Usecase
+
+        + GET(ctx echo.Context) error
+
+    }
+}
+"handler.BaseHandler" *-- "user_auth_handler.UserAuthHandler"
+
+
+namespace user_repository {
+    interface Repository  {
+        + Create(ctx context.Context, user *entities.User) (*entities.User, error)
+        + GetUserByTelegramID(ctx context.Context, tgID int64) (*entities.User, error)
+
+    }
+}
+
+
+namespace user_usecase {
+    interface Usecase  {
+        + Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error)
+
+    }
+    class UserUsecase << (S,Aquamarine) >> {
+        - userRepository user_repository.Repository
+        - authChecker authChecker
+
+        + Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error)
+
+    }
+    interface authChecker  {
+        + Check(data *dto.UserAuthUsecase) bool
+
+    }
+}
+
+"user_usecase.Usecase" <|-- "user_usecase.UserUsecase"
+
+"dto.[]UserResponse" #.. "dto.UsersResponse"
+@enduml
