@@ -16,7 +16,7 @@ run-postgres-redis:
 	systemctl start postgresql
 
 
-build:
+build: build-swagger
 	mkdir -p ./getme-secrt
 	go build -o server.out -v ./cmd/server
 
@@ -102,8 +102,20 @@ local-force-migrate:
 generate:
 	go generate -n $$(go list ./internal/...)
 
+gen-proto-sessions:
+	#protoc --proto_path=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf session.proto --go-grpc_out=plugins=grpc:${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf
+	protoc -I=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go_out=:${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go_opt=paths=source_relative \
+    --go-grpc_out=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go-grpc_opt=require_unimplemented_servers=false ${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf/session.proto
+	#protoc -I=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go_out=paths=source_relative:${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf \
+#	${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf/session.proto  --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative
 
 run-coverage:
 	go test -covermode=atomic -coverprofile=cover ./...
 	cat cover | fgrep -v "easyjson" | fgrep -v "mock" | fgrep -v "testing.go" | fgrep -v "docs" | fgrep -v ".pb.go" | fgrep -v "config" > cover2
 	go tool cover -func=cover2
+
+build-swagger:
+	go run ./tools/swagger/prepare.go
+	cp -r ./api/swagger.json ./swagger-ui/.
+	statik -src=./swagger-ui
+
