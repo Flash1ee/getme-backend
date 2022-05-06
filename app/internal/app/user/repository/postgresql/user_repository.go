@@ -2,6 +2,7 @@ package repository_postgresql
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -49,7 +50,9 @@ var queryGetUserByTelegramID = `
 func (r *UserRepository) GetUserByTelegramID(ctx context.Context, tgID int64) (*entities.User, error) {
 	user := &entities.User{}
 	if err := r.store.GetContext(ctx, user, queryGetUserByTelegramID, tgID); err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("user with tg_id %v not found", tgID))
+		if err != sql.ErrNoRows {
+			return nil, errors.Wrap(err, fmt.Sprintf("user with tg_id %v not found", tgID))
+		}
 	}
 	return user, nil
 }
