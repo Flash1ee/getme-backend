@@ -3,7 +3,8 @@ package dto
 //go:generate easyjson -all -disallow_unknown_fields request_models.go
 
 //easyjson:json
-type UserAuthRequest struct {
+type UserAuthCheckRequest struct {
+	Token     string `query:"token" json:"token"`
 	ID        int64  `query:"id" json:"id"`
 	AuthDate  int64  `query:"auth_date" json:"auth_date"`
 	FirstName string `query:"first_name" json:"first_name"`
@@ -13,7 +14,7 @@ type UserAuthRequest struct {
 	Hash      string `query:"hash" json:"hash"`
 }
 
-func (req *UserAuthRequest) ToUserAuthUsecase() *UserAuthUsecase {
+func (req *UserAuthCheckRequest) ToUserAuthUsecase() *UserAuthUsecase {
 	return &UserAuthUsecase{
 		ID:        req.ID,
 		AuthDate:  req.AuthDate,
@@ -23,4 +24,9 @@ func (req *UserAuthRequest) ToUserAuthUsecase() *UserAuthUsecase {
 		Avatar:    req.Avatar,
 		Hash:      req.Hash,
 	}
+}
+
+//easyjson:json
+type UserAuthRequest struct {
+	Token string `query:"token" json:"token"`
 }

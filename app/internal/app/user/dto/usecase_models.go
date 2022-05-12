@@ -22,3 +22,13 @@ func (req *UserAuthUsecase) ToUserEntity() *entities.User {
 		Avatar:     req.Avatar,
 	}
 }
+
+func ToUserAuthUsecase(user *entities.User) *UserAuthUsecase {
+	return &UserAuthUsecase{
+		ID:        user.ID,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Username:  user.Nickname,
+		Avatar:    user.Avatar,
+	}
+}

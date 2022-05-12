@@ -4,8 +4,12 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	echoMW "github.com/labstack/echo/v4/middleware"
 
+	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
+
+	_ "getme-backend/statik"
 
 	"getme-backend/internal"
 	"getme-backend/internal/app/factories/handler_factory"
@@ -32,8 +36,16 @@ func (s *Server) Start(config *internal.Config) error {
 		return err
 	}
 
+	//pwd, err := os.Getwd()
+	//if err != nil {
+	//	s.Logger.Fatal(err)
+	//}
+	//pwdApp := pwd + "/app"
+	pwdApp := "/app"
+
 	router := echo.New()
-	router.Renderer = echo_adapter.NewRenderer("/Users/dvvarin/TP/getme-backend/app/template/*", false)
+	router.Use(echoMW.CSRFWithConfig(echoMW.CSRFConfig{}))
+	router.Renderer = echo_adapter.NewRenderer(pwdApp+"/template/*", false)
 	utilityMiddleware := middleware.NewUtilitiesMiddleware(s.Logger)
 
 	//router.Get("/debug/pprof/<profile>", handler_interfaces.FastHTTPFunc(pprofhandler.PprofHandler).ServeHTTP)
@@ -42,7 +54,7 @@ func (s *Server) Start(config *internal.Config) error {
 
 	repositoryFactory := repository_factory.NewRepositoryFactory(s.Logger, s.Connections)
 	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, repositoryFactory, config.TgAuth)
-	factory := handler_factory.NewFactory(s.Logger, usecaseFactory)
+	factory := handler_factory.NewFactory(s.Logger, s.Connections.SessionGrpcConnection, usecaseFactory)
 
 	hs := factory.GetHandleUrls()
 
@@ -53,6 +65,31 @@ func (s *Server) Start(config *internal.Config) error {
 	for apiUrl, h := range *hs {
 		h.Connect(routerApi, apiUrl)
 	}
+
+	//swaggerPath := pwdApp + "/swagger-ui"
+	//routerApi.Static("/swagger", swaggerPath)
+
+	swaggerFS, err := fs.New()
+	if err != nil {
+		panic(err)
+	}
+
+	staticServer := http.FileServer(swaggerFS)
+	//swaggerEditor := http.FileServer(http.Dir(pwdApp + "/swagger-editor/"))
+	routerApi.GET("/swagger/editor", func(c echo.Context) error {
+		return c.Redirect(http.StatusPermanentRedirect, "/api/editor/swagger-editor/")
+	})
+
+	routerApi.GET("/swagger/ui", func(c echo.Context) error {
+		return c.Redirect(http.StatusPermanentRedirect, "/api/editor/swagger-ui/")
+	})
+	routerApi.GET("/editor/swagger-editor/*", echo.WrapHandler(http.StripPrefix("/api/editor/", staticServer)))
+	routerApi.GET("/editor/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/editor/", staticServer)))
+
+	//routerApi.GET("/editor/*", echo.WrapHandler(http.StripPrefix("/api/editor/", http.FileServer(http.FS(swaggerEditor)))))
+
+	//routerApi.GET("/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/swagger-ui/", staticServer)))
+	//routerApi.GET("/editor/*", echo.WrapHandler(http.StripPrefix("/api/editor/", http.FileServer(http.FS(swaggerUI)))))
 
 	s.Logger.Info("start http server")
 

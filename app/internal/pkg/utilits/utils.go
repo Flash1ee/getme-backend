@@ -47,11 +47,11 @@ func NewLogger(config *internal.Config, isService bool, serviceName string) (log
 	return logger, f.Close
 }
 
-func NewPostgresConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error) {
-	db, err := sqlx.Open("postgres", databaseUrl)
+func NewPostgresConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error, err error) {
+	db, err = sqlx.Open("postgres", databaseUrl)
 	if err != nil {
-		logrus.Fatal(err)
+		return nil, nil, err
 	}
 
-	return db, db.Close
+	return db, db.Close, nil
 }

@@ -21,6 +21,12 @@ func ToUserResponse(usr *entities.User) *UserResponse {
 		Email:    usr.Email,
 	}
 }
+func ToUserResponseFromUsecase(usr *UserAuthUsecase) *UserResponse {
+	return &UserResponse{
+		Nickname: usr.Username,
+		Email:    usr.Avatar,
+	}
+}
 
 //easyjson:json
 type UsersResponse []UserResponse

@@ -3,13 +3,14 @@ version: "3"
 volumes:
   dbbackups:
   postgis-data:
+  session-redis:
 services:
   main:
-    image: getme
+    image: getme-main
     expose:
-      - "8080"
+      - "80"
     ports:
-      - "8080:8080"
+      - "80:80"
     networks:
       - default
     volumes:
@@ -18,6 +19,22 @@ services:
       - ${CONFIG_DIR}:/app/configs
     depends_on:
       - getme-db
+      - session-service
+    environment:
+      WAIT_HOSTS: getme-db:5432
+  session-service:
+    image: session-service
+    expose:
+      - "5001"
+    ports:
+      - "5001:5001"
+    networks:
+      - default
+    volumes:
+      - ./logs-sessions:/app/logs
+      - ${CONFIG_DIR}:/app/configs
+    depends_on:
+      - session-redis
     environment:
       WAIT_HOSTS: getme-db:5432
   getme-db:
@@ -41,6 +58,15 @@ services:
         limits:
           cpus: '2'
           memory: 4G
+  session-redis:
+    image: "redis:alpine"
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    volumes:
+      - session-redis:/data
+    restart: always
 networks:
   default:
     driver: bridge

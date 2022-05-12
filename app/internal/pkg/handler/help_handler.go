@@ -24,6 +24,7 @@ type Pagination struct {
 const (
 	EmptyQuery   = -2
 	DefaultLimit = 100
+	OK           = 1
 )
 
 type HelpHandlers struct {
@@ -133,10 +134,10 @@ func (h *HelpHandlers) GetStringFromParam(ctx echo.Context, name string) (string
 //		Status 400 handler_errors.InvalidQueries
 func (h *HelpHandlers) GetParamToStruct(ctx echo.Context, data interface{}) (interface{}, int) {
 	if err := (&echo.DefaultBinder{}).BindQueryParams(ctx, data); err != nil {
-		return nil, EmptyQuery
+		return nil, app.InvalidInt
 	}
 
-	return data, app.InvalidInt
+	return data, OK
 }
 
 // GetArrayStringFromQueries HTTPErrors

@@ -33,5 +33,11 @@ var (
 	InvalidFormFieldName = errors.New("invalid form field name for load file")
 )
 
+// Session Error
+var (
+	ErrorCreateSession = errors.New("can not create session")
+	DeleteCookieFail   = errors.New("can not delete cookie from session store")
+)
+
 var InternalError = errors.New("server error")
 var NoModify = errors.New("content not modify")

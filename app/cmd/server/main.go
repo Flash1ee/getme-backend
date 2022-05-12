@@ -40,7 +40,11 @@ func main() {
 		}
 	}(closeResource, logger)
 
-	db, closeResource := utilits.NewPostgresConnection(config.Repository.DataBaseUrl)
+	db, closeResource, err := utilits.NewPostgresConnection(config.Repository.DataBaseUrl)
+	if err != nil {
+		logger.Fatal(err)
+	}
+	logger.Info("success connect to postgres")
 
 	defer func(closer func() error, log *logrus.Logger) {
 		err := closer()
@@ -49,9 +53,16 @@ func main() {
 		}
 	}(closeResource, logger)
 
+	sessionConn, err := utilits.NewGrpcConnection(config.Microservices.SessionServerUrl)
+	if err != nil {
+		logger.Fatal(err)
+	}
+	logger.Info("success connect to session service")
+
 	serv := server.New(&config,
 		utilits.ExpectedConnections{
-			SqlConnection: db,
+			SqlConnection:         db,
+			SessionGrpcConnection: sessionConn,
 		},
 		logger,
 	)

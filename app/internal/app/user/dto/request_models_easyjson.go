@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out *UserAuthRequest) {
+func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out *UserAuthCheckRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -64,7 +64,7 @@ func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out 
 		in.Consumed()
 	}
 }
-func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, in UserAuthRequest) {
+func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, in UserAuthCheckRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -107,25 +107,25 @@ func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, i
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v UserAuthRequest) MarshalJSON() ([]byte, error) {
+func (v UserAuthCheckRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
 	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v UserAuthRequest) MarshalEasyJSON(w *jwriter.Writer) {
+func (v UserAuthCheckRequest) MarshalEasyJSON(w *jwriter.Writer) {
 	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *UserAuthRequest) UnmarshalJSON(data []byte) error {
+func (v *UserAuthCheckRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *UserAuthRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
+func (v *UserAuthCheckRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(l, v)
 }

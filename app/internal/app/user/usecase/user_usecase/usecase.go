@@ -5,9 +5,11 @@ import (
 
 	"getme-backend/internal/app/user/dto"
 	"getme-backend/internal/app/user/repository"
+	"getme-backend/internal/pkg/usecase"
 )
 
 type UserUsecase struct {
+	usecase.BaseUsecase
 	userRepository user_repository.Repository
 	authChecker    authChecker
 }
@@ -18,7 +20,7 @@ func NewUserUsecase(repo user_repository.Repository, authCheck authChecker) *Use
 		authChecker:    authCheck,
 	}
 }
-func (u *UserUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error) {
+func (u *UserUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserAuthUsecase, error) {
 	if user == nil {
 		return nil, ArgError
 	}
@@ -31,8 +33,5 @@ func (u *UserUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error)
 		return nil, err
 	}
 
-	return &dto.UserResponse{
-		Nickname: userFromDB.Nickname,
-		Fullname: userFromDB.FirstName + " " + userFromDB.LastName,
-	}, nil
+	return dto.ToUserAuthUsecase(userFromDB), nil
 }
