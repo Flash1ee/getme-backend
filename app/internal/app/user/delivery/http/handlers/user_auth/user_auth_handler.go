@@ -61,13 +61,13 @@ func (h *UserAuthHandler) GET(ctx echo.Context) error {
 			"AUTH HANDLER: invalid token, not correct validation; %v, req data - token: %v, identifierData = %v",
 			err, req, tokenSources.IdentifierData)
 
-		h.UsecaseError(ctx, err, codesByErrorsPOST)
+		h.UsecaseError(ctx, err, codesByErrorsGET)
 		return err
 	}
 	u, err := h.sessionClient.CheckWithDelete(ctx.Request().Context(), req.Token)
 	if err != nil {
 		h.Log(ctx.Request()).Warnf("AUTH HANDLER: error check token; %v, req data - token: %v", err, req)
-		h.UsecaseError(ctx, err, codesByErrorsPOST)
+		h.UsecaseError(ctx, err, codesByErrorsGET)
 		return err
 	}
 	userID, err := strconv.Atoi(u.UserID)

@@ -14,7 +14,7 @@ import (
 const (
 	AUTH_CHECK = iota
 	AUTH
-	TOKEN_AUTH
+	AUTH_TOKEN
 )
 
 type HandlerFactory struct {
@@ -34,14 +34,13 @@ func NewFactory(logger *logrus.Logger, sessionClientConn *grpc.ClientConn, ucFac
 
 func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 	ucUsecase := f.usecaseFactory.GetUserUsecase()
+	tokenUsecase := f.usecaseFactory.GetTokenUsecase()
 
 	sClient := client.NewSessionClient(f.sessionClientConn)
 	return map[int]app.Handler{
 		AUTH_CHECK: user_auth_check_handler.NewUserAuthCheckHandler(f.logger, ucUsecase, sClient),
 		AUTH:       user_auth_handler.NewUserAuthHandler(f.logger, ucUsecase, sClient),
-		TOKEN_AUTH: token_handler.NewTokenHandler(f.logger, nil, sClient),
-		//PROFILE: user_profile_handler.NewUserProfileHandler(f.logger, f.repositoryFactory.GetUserRepository()),
-		//USER_CREATE: user_create_handler.NewUserCreateHandler(f.logger, f.repositoryFactory.GetUserRepository()),
+		AUTH_TOKEN: token_handler.NewTokenHandler(f.logger, tokenUsecase, sClient),
 	}
 }
 
@@ -53,8 +52,10 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 	hs := f.initAllHandlers()
 	f.urlHandler = &map[string]app.Handler{
 		//=============user==============//
-		"/auth/check": hs[AUTH_CHECK],
 		"/auth":       hs[AUTH],
+		"/auth/token": hs[AUTH_TOKEN],
+		"/auth/check": hs[AUTH_CHECK],
+
 		//"/user/<nickname>/create":  hs[USER_CREATE],
 	}
 	return f.urlHandler
