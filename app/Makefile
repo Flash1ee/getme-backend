@@ -20,7 +20,7 @@ build: build-swagger
 	mkdir -p ./getme-secrt
 	go build -o server.out -v ./cmd/server
 
-build-docker: build-docker-server build-docker-pg build-docker-sessions
+build-docker: build-swagger build-docker-server build-docker-pg build-docker-sessions
 
 run-init:
 	#sudo chown -R 5050:5050 ./pgadmin
@@ -35,9 +35,9 @@ stop:  # остановить сервер
 	docker-compose stop
 
 build-docker-server: # запуск обычного http servera
-	docker build --no-cache --network host -f ./docker/builder.Dockerfile . --tag getme-main
+	docker build --network host -f ./docker/builder.Dockerfile . --tag getme-main
 build-docker-pg: # сборка образа базы
-	docker build --no-cache --network host -f ./docker/postgresql.Dockerfile . --tag pg-14
+	docker build  --network host -f ./docker/postgresql.Dockerfile . --tag pg-14
 
 open-last-log:
 	cat $(LOG_DIR)/`ls -t $(LOG_DIR) | head -1 `
@@ -117,8 +117,8 @@ run-coverage:
 build-swagger:
 	go run ./tools/swagger/prepare.go
 	cp -r ./api/swagger.json ./swagger/swagger-ui/.
-	cp -r ./api/swagger.json ./swagger/swagger-editor/node_modules/swagger-editor-dist/.
-	go get github.com/rakyll/statik
+	cp -r ./api/swagger.json ./swagger/swagger-editor/.
+	go list github.com/rakyll/statik || go get github.com/rakyll/statik
 	statik -src=./swagger
 
 build-editor-swagger:
@@ -130,4 +130,4 @@ build-sessions:
 	go build -o sessions.out -v ./cmd/sessions
 
 build-docker-sessions: # сборка образа сервиса авторизаций
-	docker build --no-cache --network host -f ./docker/services/session-service.Dockerfile . --tag session-service
+	docker build  --network host -f ./docker/services/session-service.Dockerfile . --tag session-service

@@ -39,5 +39,10 @@ var (
 	DeleteCookieFail   = errors.New("can not delete cookie from session store")
 )
 
+// jwt errors
+var (
+	TokenInvalid = errors.New("invalid token")
+)
+
 var InternalError = errors.New("server error")
 var NoModify = errors.New("content not modify")

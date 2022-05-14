@@ -49,7 +49,7 @@ func (h *UserAuthCheckHandler) GET(ctx echo.Context) error {
 
 	if err != nil {
 		h.Log(ctx.Request()).Warnf("error auth usecase; %v, req data: %v", err, req)
-		h.UsecaseError(ctx, err, codesByErrorsPOST)
+		h.UsecaseError(ctx, err, codesByErrorsGET)
 		return err
 	}
 

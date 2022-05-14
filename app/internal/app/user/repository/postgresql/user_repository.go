@@ -3,11 +3,10 @@ package repository_postgresql
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/pkg/errors"
 
+	"getme-backend/internal/app"
 	"getme-backend/internal/app/user/entities"
 )
 
@@ -33,10 +32,16 @@ VALUES ($1, $2, $3, $4, $5) ON CONFLICT (tg_id) DO UPDATE
 	RETURNING id;
 	`
 
+// Create Errors:
+// 		app.GeneralError with Error
+// 			CreateError
 func (r *UserRepository) Create(ctx context.Context, user *entities.User) (*entities.User, error) {
 	err := r.store.QueryRowxContext(ctx, queryCreateUser, user.TelegramID, user.FirstName, user.LastName, user.Nickname, user.Avatar).Scan(&user.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("can not create user with data: %v", user))
+		return nil, app.GeneralError{
+			Err:         CreateError,
+			ExternalErr: err,
+		}
 	}
 
 	return user, nil
@@ -47,11 +52,17 @@ var queryGetUserByTelegramID = `
 	from users WHERE tg_id = $1
 	`
 
+// GetUserByTelegramID Errors:
+// 		app.GeneralError with Error
+// 			GetError
 func (r *UserRepository) GetUserByTelegramID(ctx context.Context, tgID int64) (*entities.User, error) {
 	user := &entities.User{}
 	if err := r.store.GetContext(ctx, user, queryGetUserByTelegramID, tgID); err != nil {
 		if err != sql.ErrNoRows {
-			return nil, errors.Wrap(err, fmt.Sprintf("user with tg_id %v not found", tgID))
+			return nil, app.GeneralError{
+				Err:         GetError,
+				ExternalErr: err,
+			}
 		}
 	}
 	return user, nil

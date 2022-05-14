@@ -3,8 +3,11 @@ package user_usecase
 import (
 	"context"
 
+	"github.com/pkg/errors"
+
 	"getme-backend/internal/app/user/dto"
 	"getme-backend/internal/app/user/repository"
+	userUsecase "getme-backend/internal/app/user/usecase"
 	"getme-backend/internal/pkg/usecase"
 )
 
@@ -20,17 +23,23 @@ func NewUserUsecase(repo user_repository.Repository, authCheck authChecker) *Use
 		authChecker:    authCheck,
 	}
 }
+
+// Auth Errors:
+//		user_usecase.ArgError
+//		user_usecase.BadAuth
+// 		app.GeneralError with Error
+// 			repository_postgresql.CreateError
 func (u *UserUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserAuthUsecase, error) {
 	if user == nil {
-		return nil, ArgError
+		return nil, userUsecase.ArgError
 	}
 	ok := u.authChecker.Check(user)
 	if !ok {
-		return nil, BadAuth
+		return nil, userUsecase.BadAuth
 	}
 	userFromDB, err := u.userRepository.Create(context.Background(), user.ToUserEntity())
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "UserUsecase: Auth(): create user error")
 	}
 
 	return dto.ToUserAuthUsecase(userFromDB), nil

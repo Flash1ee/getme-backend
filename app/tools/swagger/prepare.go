@@ -13,6 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Запускать из папки app!
 var (
 	yamlPath string
 	jsonPath string

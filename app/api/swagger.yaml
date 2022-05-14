@@ -92,10 +92,18 @@ paths:
           description: "Пользователь создан, проверка аутентификации успешна"
           schema:
             $ref: '#/definitions/User'
-        "404":
-          description: "Pet not found"
-        "405":
-          description: "Validation exception"
+        "400":
+          description: "Проверка переданных данных неуспешна"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "503":
+          description: "Ошибка сервера - метод недоступен"
+          schema:
+            $ref: '#/definitions/ErrResponse'
 
 
 definitions:
