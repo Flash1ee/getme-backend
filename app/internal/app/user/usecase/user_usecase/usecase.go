@@ -39,3 +39,11 @@ func (u *UserUsecase) CreateFilledUser(data *dto.UserUsecase) (int64, error) {
 
 	return us, err
 }
+func (u *UserUsecase) FindByID(id int64) (*dto.UserUsecase, error) {
+	user, err := u.userRepository.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return dto.ToUserUsecase(user), nil
+}

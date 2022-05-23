@@ -1,6 +1,7 @@
 package repository_postgresql
 
 import (
+	"database/sql"
 	"testing"
 	"time"
 
@@ -11,13 +12,23 @@ func getRepositoryData(t *testing.T) *entities.User {
 	t.Helper()
 
 	return &entities.User{
-		ID:           1,
-		FirstName:    "Vasiliy",
-		LastName:     "Alexeev",
-		Nickname:     "vasax",
-		About:        "this is some information",
-		Avatar:       "/img/1.png",
-		Email:        "vasyugan@gmai.com",
+		ID: 1,
+		FirstName: sql.NullString{
+			String: "Vasiliy",
+		},
+		LastName: sql.NullString{
+			String: "Alexeev",
+		},
+		Nickname: "vasax",
+		About: sql.NullString{
+			String: "this is some information",
+		},
+		Avatar: sql.NullString{
+			String: "/img/1.png",
+		},
+		Email: sql.NullString{
+			String: "vasyugan@gmai.com",
+		},
 		IsSearchable: false,
 		CreatedAt:    time.Now().Add(-3600),
 		UpdatedAt:    time.Now(),

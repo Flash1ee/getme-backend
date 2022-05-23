@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"database/sql"
 	"time"
 
 	"getme-backend/internal/app/user/entities"
@@ -21,10 +22,31 @@ type UserUsecase struct {
 
 func (m *UserUsecase) ToUserEntity() *entities.User {
 	return &entities.User{
-		ID:        m.ID,
-		FirstName: m.FirstName,
-		LastName:  m.LastName,
-		Nickname:  m.About,
-		Avatar:    m.Avatar,
+		ID: m.ID,
+		FirstName: sql.NullString{
+			String: m.FirstName,
+		},
+		LastName: sql.NullString{
+			String: m.LastName,
+		},
+		Nickname: m.About,
+		Avatar: sql.NullString{
+			String: m.Avatar,
+		},
+	}
+}
+
+func ToUserUsecase(data *entities.User) *UserUsecase {
+	return &UserUsecase{
+		ID:           data.ID,
+		FirstName:    data.FirstName.String,
+		LastName:     data.LastName.String,
+		Nickname:     data.Nickname,
+		About:        data.About.String,
+		Avatar:       data.Avatar.String,
+		Email:        data.Email.String,
+		IsSearchable: data.IsSearchable,
+		CreatedAt:    data.CreatedAt,
+		UpdatedAt:    data.UpdatedAt,
 	}
 }

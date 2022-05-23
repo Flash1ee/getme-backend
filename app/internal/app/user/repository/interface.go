@@ -7,6 +7,13 @@ import (
 //go:generate mockgen -destination=mock/$GOFILE -package=mock -source=$GOFILE
 
 type Repository interface {
+	//	FindByID with Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	FindByID(id int64) (*entities.User, error)
+	//	FindByNickname with Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
 	FindByNickname(nickname string) (*entities.User, error)
 	// CreateBaseUser Errors:
 	// 		user_repository.EmailAlreadyExist

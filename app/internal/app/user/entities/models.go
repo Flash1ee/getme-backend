@@ -1,18 +1,19 @@
 package entities
 
 import (
+	"database/sql"
 	"time"
 )
 
 type User struct {
-	ID           int64     `db:"id"`
-	FirstName    string    `db:"first_name"`
-	LastName     string    `db:"last_name"`
-	Nickname     string    `db:"nickname"`
-	About        string    `db:"about"`
-	Avatar       string    `db:"avatar"`
-	Email        string    `db:"email"`
-	IsSearchable bool      `db:"is_searchable"`
-	CreatedAt    time.Time `db:"created_at"`
-	UpdatedAt    time.Time `db:"updated_at"`
+	ID           int64          `db:"id"`
+	FirstName    sql.NullString `db:"first_name"`
+	LastName     sql.NullString `db:"last_name"`
+	Nickname     string         `db:"nickname"`
+	About        sql.NullString `db:"about"`
+	Avatar       sql.NullString `db:"avatar"`
+	Email        sql.NullString `db:"email"`
+	IsSearchable bool           `db:"is_searchable"`
+	CreatedAt    time.Time      `db:"created_at"`
+	UpdatedAt    time.Time      `db:"updated_at"`
 }

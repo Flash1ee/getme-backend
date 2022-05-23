@@ -108,3 +108,20 @@ func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error)
 	return ID, nil
 
 }
+
+const queryFindByID = `
+SELECT * from users where id = ?;`
+
+//	FindByID with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
+	query := repo.store.Rebind(queryFindByID)
+	user := &entities.User{}
+
+	err := repo.store.Get(user, query, id)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	return user, nil
+}
