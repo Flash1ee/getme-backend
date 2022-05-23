@@ -39,8 +39,8 @@ package middleware
 //	reader.AddCookie(cok)
 //	require.NoError(t, err)
 //	res := models.Result{UserID: 1, UniqID: "asdasd"}
-//	sessionManager.EXPECT().Check(context.Background(), sessionId).Return(res, nil)
-//	middleware.Check(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//	sessionManager.EXPECT().AuthSimple(context.Background(), sessionId).Return(res, nil)
+//	middleware.AuthSimple(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 //		userIdRaw := r.Context().Value("user_id")
 //		sessIdRaw := r.Context().Value("session_id")
 //		require.NotNil(t, userIdRaw)
@@ -58,7 +58,7 @@ package middleware
 //	reader, err = http.NewRequest(http.MethodPost, "/register", &b)
 //	require.NoError(t, err)
 //	recorder = httptest.NewRecorder()
-//	middleware.Check(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//	middleware.AuthSimple(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 //		w.WriteHeader(http.StatusOK)
 //	})).ServeHTTP(recorder, reader)
 //	assert.Equal(t, recorder.Code, http.StatusUnauthorized)
@@ -67,8 +67,8 @@ package middleware
 //	reader.AddCookie(cok)
 //	require.NoError(t, err)
 //	recorder = httptest.NewRecorder()
-//	sessionManager.EXPECT().Check(context.Background(), sessionId).Return(res, repository.DefaultErrDB)
-//	middleware.Check(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//	sessionManager.EXPECT().AuthSimple(context.Background(), sessionId).Return(res, repository.DefaultErrDB)
+//	middleware.AuthSimple(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 //		w.WriteHeader(http.StatusOK)
 //	})).ServeHTTP(recorder, reader)
 //	assert.Equal(t, recorder.Code, http.StatusUnauthorized)
@@ -95,7 +95,7 @@ package middleware
 //	reader.AddCookie(cok)
 //	require.NoError(t, err)
 //	res := models.Result{UserID: 1, UniqID: "asdasd"}
-//	sessionManager.EXPECT().Check(context.Background(), sessionId).Return(res, nil)
+//	sessionManager.EXPECT().AuthSimple(context.Background(), sessionId).Return(res, nil)
 //	middleware.CheckNotAuthorized(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 //		w.WriteHeader(http.StatusOK)
 //	})).ServeHTTP(recorder, reader)
@@ -113,7 +113,7 @@ package middleware
 //	reader.AddCookie(cok)
 //	require.NoError(t, err)
 //	recorder = httptest.NewRecorder()
-//	sessionManager.EXPECT().Check(context.Background(), sessionId).Return(res, repository.DefaultErrDB)
+//	sessionManager.EXPECT().AuthSimple(context.Background(), sessionId).Return(res, repository.DefaultErrDB)
 //	middleware.CheckNotAuthorized(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 //		w.WriteHeader(http.StatusOK)
 //	})).ServeHTTP(recorder, reader)
@@ -141,7 +141,7 @@ package middleware
 //	reader.AddCookie(cok)
 //	require.NoError(t, err)
 //	res := models.Result{UserID: 1, UniqID: "asdasd"}
-//	sessionManager.EXPECT().Check(context.Background(), sessionId).Return(res, nil)
+//	sessionManager.EXPECT().AuthSimple(context.Background(), sessionId).Return(res, nil)
 //	middleware.AddUserId(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 //		userIdRaw := r.Context().Value("user_id")
 //		sessIdRaw := r.Context().Value("session_id")

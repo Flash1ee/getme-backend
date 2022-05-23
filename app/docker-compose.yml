@@ -4,6 +4,7 @@ volumes:
   dbbackups:
   postgis-data:
   session-redis:
+  mysql-data:
 services:
   main:
     image: getme-main
@@ -14,14 +15,17 @@ services:
     networks:
       - default
     volumes:
+      - ./api:/app/api
       - ./logs:/app/logs
       - ./media:/app/media
       - ${CONFIG_DIR}:/app/configs
     depends_on:
       - getme-db
       - session-service
+      - db-mysql
     environment:
-      WAIT_HOSTS: getme-db:5432
+      WAIT_HOSTS: getme-db:5432, db-mysql:3306
+
   session-service:
     image: session-service
     expose:
@@ -67,6 +71,19 @@ services:
     volumes:
       - session-redis:/data
     restart: always
+  db-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: ${MS_BD_PASSWORD}
+      MYSQL_USER: ${MS_BD_USERNAME}
+      MYSQL_DATABASE: ${MS_BD_NAME}
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
 networks:
   default:
     driver: bridge

@@ -22,7 +22,7 @@ func TestUserUsecase_Auth(t *testing.T) {
 		repository  func(ctrl *gomock.Controller) *mock_user_repository.MockRepository
 		authChecker func(ctrl *gomock.Controller) *mock.MockauthChecker
 		args        args
-		want        *dto.UserResponse
+		want        *dto.UserAuthUsecase
 		wantErr     bool
 	}{
 		{
@@ -52,9 +52,10 @@ func TestUserUsecase_Auth(t *testing.T) {
 					Username:   "lomodar",
 				},
 			},
-			want: &dto.UserResponse{
-				Nickname: "lomodar",
-				Fullname: "Nick Jackson",
+			want: &dto.UserAuthUsecase{
+				Username:  "lomodar",
+				FirstName: "Nick",
+				LastName:  "Jackson",
 			},
 			wantErr: false,
 		},
@@ -134,13 +135,13 @@ func TestUserUsecase_Auth(t *testing.T) {
 
 			u := NewUserUsecase(tt.repository(ctrl), tt.authChecker(ctrl))
 
-			got, err := u.Auth(tt.args.user)
+			got, err := u.AuthTelegram(tt.args.user)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Auth() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("AuthTelegram() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Auth() got = %v, want %v", got, tt.want)
+				t.Errorf("AuthTelegram() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

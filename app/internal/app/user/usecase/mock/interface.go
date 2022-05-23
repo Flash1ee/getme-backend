@@ -34,17 +34,47 @@ func (m *MockUsecase) EXPECT() *MockUsecaseMockRecorder {
 	return m.recorder
 }
 
-// Auth mocks base method.
-func (m *MockUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error) {
+// AuthSimple mocks base method.
+func (m *MockUsecase) AuthSimple(login, password string) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Auth", user)
-	ret0, _ := ret[0].(*dto.UserResponse)
+	ret := m.ctrl.Call(m, "AuthSimple", login, password)
+	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Auth indicates an expected call of Auth.
-func (mr *MockUsecaseMockRecorder) Auth(user interface{}) *gomock.Call {
+// AuthSimple indicates an expected call of AuthSimple.
+func (mr *MockUsecaseMockRecorder) AuthSimple(login, password interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auth", reflect.TypeOf((*MockUsecase)(nil).Auth), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthSimple", reflect.TypeOf((*MockUsecase)(nil).AuthSimple), login, password)
+}
+
+// AuthTelegram mocks base method.
+func (m *MockUsecase) AuthTelegram(user *dto.UserAuthUsecase) (*dto.UserAuthUsecase, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AuthTelegram", user)
+	ret0, _ := ret[0].(*dto.UserAuthUsecase)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AuthTelegram indicates an expected call of AuthTelegram.
+func (mr *MockUsecaseMockRecorder) AuthTelegram(user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthTelegram", reflect.TypeOf((*MockUsecase)(nil).AuthTelegram), user)
+}
+
+// CreateSimple mocks base method.
+func (m *MockUsecase) CreateSimple(user *dto.UserSimpleRegistrationUsecase) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateSimple", user)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateSimple indicates an expected call of CreateSimple.
+func (mr *MockUsecaseMockRecorder) CreateSimple(user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSimple", reflect.TypeOf((*MockUsecase)(nil).CreateSimple), user)
 }

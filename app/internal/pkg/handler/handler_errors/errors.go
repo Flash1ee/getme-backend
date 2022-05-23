@@ -15,6 +15,7 @@ var (
 	InvalidNickname          = errors.New("invalid creator nickname")
 	EmptyName                = errors.New("empty name in request")
 	IncorrectLoginOrPassword = errors.New("incorrect login or password")
+	UserAlreadyExists        = errors.New("user already exists")
 	IncorrectNewPassword     = errors.New("invalid new password")
 )
 

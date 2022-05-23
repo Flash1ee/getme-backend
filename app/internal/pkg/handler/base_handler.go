@@ -4,8 +4,10 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 
+	validator2 "getme-backend/internal/app/validator"
 	hf "getme-backend/internal/pkg/handler/handler_interfaces"
 	"getme-backend/internal/pkg/utilits"
 	"getme-backend/internal/pkg/utilits/delivery"
@@ -24,6 +26,7 @@ const (
 type BaseHandler struct {
 	handlerMethods map[string]hf.HandlerFunc
 	middlewares    []hf.HMiddlewareFunc
+	Validator      *validator.Validate
 	HelpHandlers
 }
 
@@ -36,6 +39,7 @@ func NewBaseHandler(log *logrus.Logger) *BaseHandler {
 				},
 			},
 		},
+		Validator: validator2.NewValidator(),
 	}
 	return h
 }

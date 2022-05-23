@@ -5,6 +5,7 @@ CHECK_DIR=go list ./... | grep -v /cmd/utilits
 SQL_DIR=./scripts
 MICROSERVICE_DIR=$(PWD)/internal/microservices
 
+
 stop-redis:
 	systemctl stop redis
 
@@ -20,7 +21,7 @@ build: build-swagger
 	mkdir -p ./getme-secrt
 	go build -o server.out -v ./cmd/server
 
-build-docker: build-swagger build-docker-server build-docker-pg build-docker-sessions
+build-docker: build-docker-server build-docker-pg build-docker-sessions
 
 run-init:
 	#sudo chown -R 5050:5050 ./pgadmin
@@ -61,8 +62,18 @@ test:
 	go test -v -race ./internal/...
 
 DATABASE_URL:=$(shell cat ./configs/migrate.config | jq '.database_server')
+DATABASE_URL_MS:=$(shell cat ./configs/migrate.config | jq '.database_server_mysql')
+
 DATABASE_URL_LOCAL:=$(shell cat ./configs/migrate.config | jq '.database_local')
 
+migrate-up-ms:
+	migrate -source file://${SQL_DIR} -database ${DATABASE_URL_MS} up
+
+migrate-down-ms:
+	migrate -source file://${SQL_DIR} -database ${DATABASE_URL_MS} down
+
+migrate-up-ms-force:
+	migrate -source file://${SQL_DIR} -database ${DATABASE_URL_MS} force $(version)
 migrate-up:
 	migrate -source file://${SQL_DIR} -database ${DATABASE_URL} up
 
@@ -116,10 +127,10 @@ run-coverage:
 
 build-swagger:
 	go run ./tools/swagger/prepare.go
-	cp -r ./api/swagger.json ./swagger/swagger-ui/.
-	cp -r ./api/swagger.json ./swagger/swagger-editor/.
-	go list github.com/rakyll/statik || go get github.com/rakyll/statik
-	statik -src=./swagger
+	cp -rf ./api/swagger.json ./swagger/swagger-ui/.
+	cp -rf ./api/swagger.json ./swagger/swagger-editor/.
+	go get github.com/rakyll/statik
+	statik -src=$(CURDIR)/swagger
 
 build-editor-swagger:
 	cp -r ./api/swagger.json ./swagger-editor/node_modules/swagger-editor-dist/.

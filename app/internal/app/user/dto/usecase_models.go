@@ -1,6 +1,10 @@
 package dto
 
-import "getme-backend/internal/app/user/entities"
+import (
+	"golang.org/x/crypto/bcrypt"
+
+	"getme-backend/internal/app/user/entities"
+)
 
 type UserAuthUsecase struct {
 	ID         int64  `json:"id"`
@@ -31,4 +35,43 @@ func ToUserAuthUsecase(user *entities.User) *UserAuthUsecase {
 		Username:  user.Nickname,
 		Avatar:    user.Avatar,
 	}
+}
+
+type UserSimpleRegistrationUsecase struct {
+	Login             string `json:"login"`
+	Password          string `json:"password"`
+	EncryptedPassword string
+}
+
+func (req *UserSimpleRegistrationUsecase) ToUserRegisterEntity() *entities.UserSimpleAuth {
+	return &entities.UserSimpleAuth{
+		Login:             req.Login,
+		EncryptedPassword: req.EncryptedPassword,
+	}
+}
+func ToUserRegisterUsecase(user *entities.UserSimpleAuth) *UserSimpleRegistrationUsecase {
+	return &UserSimpleRegistrationUsecase{
+		Login:             user.Login,
+		EncryptedPassword: user.EncryptedPassword,
+	}
+}
+
+func (u *UserSimpleRegistrationUsecase) ComparePassword(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(u.EncryptedPassword), []byte(password)) == nil
+}
+
+func (u *UserSimpleRegistrationUsecase) encryptString(s string) (string, error) {
+	enc, err := bcrypt.GenerateFromPassword([]byte(s), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(enc), nil
+}
+func (u *UserSimpleRegistrationUsecase) Encrypt() error {
+	enc, err := u.encryptString(u.Password)
+	if err != nil {
+		return err
+	}
+	u.EncryptedPassword = enc
+	return nil
 }

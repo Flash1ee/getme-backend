@@ -37,7 +37,7 @@ func (m *MockauthChecker) EXPECT() *MockauthCheckerMockRecorder {
 // Check mocks base method.
 func (m *MockauthChecker) Check(data *dto.UserAuthUsecase) bool {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Check", data)
+	ret := m.ctrl.Call(m, "AuthSimple", data)
 	ret0, _ := ret[0].(bool)
 	return ret0
 }
@@ -45,5 +45,5 @@ func (m *MockauthChecker) Check(data *dto.UserAuthUsecase) bool {
 // Check indicates an expected call of Check.
 func (mr *MockauthCheckerMockRecorder) Check(data interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockauthChecker)(nil).Check), data)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthSimple", reflect.TypeOf((*MockauthChecker)(nil).Check), data)
 }

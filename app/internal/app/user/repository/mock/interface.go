@@ -35,6 +35,21 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 	return m.recorder
 }
 
+// CheckExists mocks base method.
+func (m *MockRepository) CheckExists(tgID int64) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckExists", tgID)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckExists indicates an expected call of CheckExists.
+func (mr *MockRepositoryMockRecorder) CheckExists(tgID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckExists", reflect.TypeOf((*MockRepository)(nil).CheckExists), tgID)
+}
+
 // Create mocks base method.
 func (m *MockRepository) Create(ctx context.Context, user *entities.User) (*entities.User, error) {
 	m.ctrl.T.Helper()
@@ -48,6 +63,51 @@ func (m *MockRepository) Create(ctx context.Context, user *entities.User) (*enti
 func (mr *MockRepositoryMockRecorder) Create(ctx, user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), ctx, user)
+}
+
+// CreateSimple mocks base method.
+func (m *MockRepository) CreateSimple(auth *entities.UserSimpleAuth) (*entities.UserSimpleAuth, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateSimple", auth)
+	ret0, _ := ret[0].(*entities.UserSimpleAuth)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateSimple indicates an expected call of CreateSimple.
+func (mr *MockRepositoryMockRecorder) CreateSimple(auth interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSimple", reflect.TypeOf((*MockRepository)(nil).CreateSimple), auth)
+}
+
+// CreateWithUpdate mocks base method.
+func (m *MockRepository) CreateWithUpdate(ctx context.Context, user *entities.User) (*entities.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateWithUpdate", ctx, user)
+	ret0, _ := ret[0].(*entities.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateWithUpdate indicates an expected call of CreateWithUpdate.
+func (mr *MockRepositoryMockRecorder) CreateWithUpdate(ctx, user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateWithUpdate", reflect.TypeOf((*MockRepository)(nil).CreateWithUpdate), ctx, user)
+}
+
+// FindByLoginSimple mocks base method.
+func (m *MockRepository) FindByLoginSimple(arg0 string) (*entities.UserSimpleAuth, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByLoginSimple", arg0)
+	ret0, _ := ret[0].(*entities.UserSimpleAuth)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByLoginSimple indicates an expected call of FindByLoginSimple.
+func (mr *MockRepositoryMockRecorder) FindByLoginSimple(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByLoginSimple", reflect.TypeOf((*MockRepository)(nil).FindByLoginSimple), arg0)
 }
 
 // GetUserByTelegramID mocks base method.

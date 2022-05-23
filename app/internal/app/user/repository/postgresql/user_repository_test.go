@@ -38,7 +38,7 @@ func TestUserRepository_Create(t *testing.T) {
 
 				arg := data
 
-				mockDB.ExpectQuery(regexp.QuoteMeta(queryCreateUser)).
+				mockDB.ExpectQuery(regexp.QuoteMeta(querySimpleCreate)).
 					WithArgs(arg.TelegramID, arg.FirstName, arg.LastName, arg.Nickname, arg.Avatar).
 					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(arg.ID)).
 					WillReturnError(nil)
@@ -63,7 +63,7 @@ func TestUserRepository_Create(t *testing.T) {
 
 				arg := data
 
-				mockDB.ExpectQuery(regexp.QuoteMeta(queryCreateUser)).
+				mockDB.ExpectQuery(regexp.QuoteMeta(querySimpleCreate)).
 					WithArgs(arg.TelegramID, arg.FirstName, arg.LastName, arg.Nickname, arg.Avatar).
 					WillReturnError(errors.New("some error"))
 
@@ -85,7 +85,7 @@ func TestUserRepository_Create(t *testing.T) {
 
 				arg := data
 
-				mockDB.ExpectQuery(regexp.QuoteMeta(queryCreateUser)).
+				mockDB.ExpectQuery(regexp.QuoteMeta(querySimpleCreate)).
 					WithArgs(arg.TelegramID, arg.FirstName, arg.LastName, arg.Nickname, arg.Avatar).
 					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(999)).
 					WillReturnError(nil)

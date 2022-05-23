@@ -1,4 +1,4 @@
-package user_auth_handler
+package telegram
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"getme-backend/internal/app/middleware"
-	dto2 "getme-backend/internal/app/token/dto"
+	dto_token "getme-backend/internal/app/token/dto"
 	token_usecase "getme-backend/internal/app/token/usecase"
 	"getme-backend/internal/app/user/dto"
 	user_usecase "getme-backend/internal/app/user/usecase"
@@ -28,31 +28,52 @@ type UserAuthHandler struct {
 	bh.BaseHandler
 }
 
-func NewUserAuthHandler(log *logrus.Logger, ucUser user_usecase.Usecase, sessionClient client.AuthCheckerClient) *UserAuthHandler {
+func NewUserAuthHandler(log *logrus.Logger, ucUser user_usecase.Usecase, sessionClient client.AuthCheckerClient, ucToken token_usecase.Usecase) *UserAuthHandler {
 	h := &UserAuthHandler{
 		BaseHandler:   *bh.NewBaseHandler(log),
 		userUsecase:   ucUser,
+		tokenUsecase:  ucToken,
 		sessionClient: sessionClient,
 	}
 	h.AddMiddleware(echo_adapter.WrapMiddleware(middleware.NewUtilitiesMiddleware(logrus.New()).CheckPanic))
 	h.AddMethod(http.MethodGet, h.GET, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(h.sessionClient, log).CheckNotAuthorized))
 	return h
 }
+func (h *UserAuthHandler) getQueryParams(ctx echo.Context) (*dto.UserAuthRequest, int, error) {
+	req := dto.NewUserAuthRequest()
+	binder := echo.QueryParamsBinder(ctx)
+
+	errs := binder.String("token", &req.Token).
+		BindErrors()
+
+	if errs != nil {
+		for _, err := range errs {
+			bErr := err.(*echo.BindingError)
+			h.Log(ctx.Request()).Errorf("AUTH HANDLER: error get query param with tag field %v value = %v\n", bErr.Field, bErr.Values)
+		}
+		ctx.Response().WriteHeader(http.StatusBadRequest)
+		return nil, len(errs), errs[0]
+	}
+
+	if err := h.Validator.Struct(req); err != nil {
+		h.Log(ctx.Request()).Errorf("AUTH HANDLER: validate error, req = %v err = %v\n", req, err)
+		return nil, 1, err
+
+	}
+	return req, 0, nil
+}
 
 func (h *UserAuthHandler) GET(ctx echo.Context) error {
-	req := &dto.UserAuthRequest{}
-
-	_, status := h.GetParamToStruct(ctx, req)
-	if status != bh.OK {
-		h.Log(ctx.Request()).Errorf("AUTH HANDLER: Error get params fro auth request %v\n", req)
-		ctx.Response().WriteHeader(http.StatusBadRequest)
-		return nil
+	req, errsCount, err := h.getQueryParams(ctx)
+	if errsCount != 0 {
+		h.Log(ctx.Request()).Errorf("AUTH HANDLER: Error validation request params %v\n", req)
+		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidQueries)
+		return handler_errors.InvalidQueries
 	}
-
-	tokenSources := dto2.TokenSourcesUsecase{
+	tokenSources := dto_token.TokenSourcesUsecase{
 		IdentifierData: ctx.Request().RemoteAddr,
 	}
-	tokenDTO := dto2.TokenUsecase{
+	tokenDTO := dto_token.TokenUsecase{
 		Token: req.Token,
 	}
 

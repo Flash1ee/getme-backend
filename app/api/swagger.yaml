@@ -5,7 +5,7 @@ info:
   title: "GetMe App"
   contact:
     email: "varindv@gmail.com"
-host: "getme.me"
+host: "127.0.0.1"
 basePath: "/api/v1/"
 tags:
   - name: "mentor"
@@ -20,11 +20,11 @@ schemes:
   - "https"
   - "http"
 paths:
-  /auth:
+  /auth/telegram:
     get:
       tags:
         - "auth"
-      summary: "Получение сессии"
+      summary: "Получение сессии после отправки формы в Телеграмм"
       description: "Получение сессии после аутентефикации через Телеграм"
       produces:
         - "application/json"
@@ -50,6 +50,100 @@ paths:
           description: "Ошибка - метод недоступен"
           schema:
             $ref: '#/definitions/ErrResponse'
+  /auth/simple/register:
+    post:
+      consumes:
+        - application/json
+      description: create new account
+      parameters:
+        - description: Request body for user registration
+          in: body
+          name: register_info
+          required: true
+          schema:
+            $ref: '#/definitions/RequestRegistration'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Create user successfully
+          schema:
+            $ref: '#/definitions/IdResponse'
+        "409":
+          description: user already exist
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "418":
+          description: User are authorized
+        "422":
+          description: invalid body in request", "nickname already exist", "incorrect
+            email or password", "incorrect nickname
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: can not do bd operation
+          schema:
+            $ref: '#/definitions/ErrResponse'
+      summary: create new user
+      tags:
+        - auth
+  /auth/simple/login:
+    post:
+      consumes:
+        - application/json
+      description: "Аутентификация пользователя через логин + пароль"
+      parameters:
+        - description: "Тело аутентификации"
+          in: body
+          name: user
+          required: true
+          schema:
+            $ref: '#/definitions/RequestLogin'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Успешная авторизация"
+        "401":
+          description: "Некорректный логин или пароль"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "404":
+          description: "Пользователь не найден"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "418":
+          description: "Пользователь уже авторизован"
+        "422":
+          description: "Некорректное тело запроса"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+      summary: login user
+      tags:
+        - auth
+  /logout:
+    post:
+      consumes:
+        - application/json
+      description: logout user
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Successfully logout
+        "401":
+          description: User not are authorized
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/ErrResponse'
+      summary: logout user
+      tags:
+        - auth
   /auth/token:
     get:
       tags:
@@ -71,7 +165,7 @@ paths:
           description: "Ошибка - метод недоступен"
           schema:
             $ref: '#/definitions/ErrResponse'
-  /auth/check:
+  /auth/telegram/callback:
     get:
       tags:
         - "auth"
@@ -153,3 +247,22 @@ definitions:
         type: "string"
       email:
         type: "string"
+  RequestLogin:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  RequestRegistration:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  IdResponse:
+    properties:
+      id:
+        type: integer
+    type: object

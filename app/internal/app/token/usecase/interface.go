@@ -20,14 +20,14 @@ type Usecase interface {
 	//	app.GeneralError with Errors
 	//		token_redis_repository.InvalidStorageData
 	CheckToken(token dto.TokenUsecase) (bool, error)
-	//	CheckTokenByUser with Errors:
+	// CheckTokenByUser with Errors:
 	//		InvalidUserToken
 	//		token_redis_repository.NotFound
 	//		app.GeneralError with Errors
 	//			token_redis_repository.InvalidStorageData
 	CheckTokenByUser(token dto.TokenUsecase, userID int64) error
-	// Check Errors:
-	//      token_jwt_repository.BadToken
+	// Check with Errors:
+	//		token_jwt_repository.BadToken
 	// 		app.GeneralError with Error
 	// 			token_jwt_repository.ParseClaimsError
 	//			token_jwt_repository.TokenExpired

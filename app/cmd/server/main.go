@@ -14,10 +14,15 @@ import (
 
 var (
 	configPath string
+	sqlDB      string
+	debugMode  bool
 )
 
 func init() {
 	flag.StringVar(&configPath, "config-path", "./configs/server.toml", "path to config file")
+	flag.StringVar(&sqlDB, "sql-db", "postgres", "what sql-db the application uses")
+	flag.BoolVar(&debugMode, "debug", false, "run in debug mode (local configuration)")
+
 }
 
 func main() {
@@ -40,11 +45,12 @@ func main() {
 		}
 	}(closeResource, logger)
 
-	db, closeResource, err := utilits.NewPostgresConnection(config.Repository.DataBaseUrl)
+	db, closeResource, err := utilits.GetSQLConnection(config.Repository, sqlDB, debugMode)
 	if err != nil {
 		logger.Fatal(err)
 	}
-	logger.Info("success connect to postgres")
+
+	logger.Infof("success connect to %v\n", sqlDB)
 
 	defer func(closer func() error, log *logrus.Logger) {
 		err := closer()
@@ -53,7 +59,11 @@ func main() {
 		}
 	}(closeResource, logger)
 
-	sessionConn, err := utilits.NewGrpcConnection(config.Microservices.SessionServerUrl)
+	sessionURL := config.Microservices.SessionServerUrl
+	if debugMode {
+		sessionURL = config.Microservices.SessionServerUrlLocal
+	}
+	sessionConn, err := utilits.NewGrpcConnection(sessionURL)
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -69,5 +79,6 @@ func main() {
 	if err = serv.Start(&config); err != nil {
 		logger.Fatal(err)
 	}
+
 	logger.Info("Server was stopped")
 }

@@ -85,7 +85,7 @@ func (u *SessionUsecase) Check(uniqID string) (models.Result, error) {
 func (u *SessionUsecase) CheckWithDelete(tokenID string) (models.ResultByToken, error) {
 	userID, err := u.sessionRepository.GetUserId(tokenID, 0)
 	if err != nil {
-		return models.ResultByToken{TokenID: UnknownToken, UserID: string(UnknownUser)}, err
+		return models.ResultByToken{TokenID: UnknownToken, UserID: string(rune(UnknownUser))}, err
 	}
 
 	return models.ResultByToken{TokenID: tokenID, UserID: userID}, nil

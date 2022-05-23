@@ -1,4 +1,4 @@
-package user_auth_check_handler
+package user_telegram_auth
 
 import (
 	"net/http"
@@ -36,7 +36,7 @@ func NewUserAuthCheckHandler(log *logrus.Logger, ucUser user_usecase.Usecase, se
 }
 
 func (h *UserAuthCheckHandler) GET(ctx echo.Context) error {
-	req := &dto.UserAuthCheckRequest{}
+	req := &dto.UserAuthTelegramCheckRequest{}
 
 	_, status := h.GetParamToStruct(ctx, req)
 	if status != bh.OK {
@@ -45,8 +45,7 @@ func (h *UserAuthCheckHandler) GET(ctx echo.Context) error {
 		return nil
 	}
 
-	u, err := h.userUsecase.Auth(req.ToUserAuthUsecase())
-
+	u, err := h.userUsecase.AuthTelegram(req.ToUserAuthUsecase())
 	if err != nil {
 		h.Log(ctx.Request()).Warnf("error auth usecase; %v, req data: %v", err, req)
 		h.UsecaseError(ctx, err, codesByErrorsGET)

@@ -1,6 +1,8 @@
 package entities
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	ID           int64     `db:"id"`
@@ -14,4 +16,11 @@ type User struct {
 	IsSearchable bool      `db:"is_searchable"`
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
+}
+
+type UserSimpleAuth struct {
+	ID                int64  `db:"id"`
+	Login             string `db:"login"`
+	EncryptedPassword string `db:"encrypted_password,omitempty"`
+	UserID            int64  `db:"user_id"`
 }

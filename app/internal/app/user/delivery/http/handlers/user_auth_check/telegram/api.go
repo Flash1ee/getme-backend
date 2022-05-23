@@ -1,4 +1,4 @@
-package user_auth_check_handler
+package user_telegram_auth
 
 import (
 	"net/http"

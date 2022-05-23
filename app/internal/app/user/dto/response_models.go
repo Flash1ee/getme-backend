@@ -38,3 +38,8 @@ func ToUsersResponse(usrs []entities.User) *UsersResponse {
 	}
 	return &res
 }
+
+//easyjson:json
+type UserSimpleIDResponse struct {
+	ID int64 `json:"id"`
+}
