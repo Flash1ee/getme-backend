@@ -4,9 +4,11 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"getme-backend/internal"
+	"getme-backend/internal/app/auth/services/telegram-checker"
+	authUs "getme-backend/internal/app/auth/usecase"
+	"getme-backend/internal/app/auth/usecase/auth_usecase"
 	tokenUs "getme-backend/internal/app/token/usecase"
 	"getme-backend/internal/app/token/usecase/token_usecase"
-	telegram_checker "getme-backend/internal/app/user/services/telegram-checker"
 	userUs "getme-backend/internal/app/user/usecase"
 	"getme-backend/internal/app/user/usecase/user_usecase"
 )
@@ -16,7 +18,9 @@ type UsecaseFactory struct {
 	repositoryFactory RepositoryFactory
 	userUsecase       userUs.Usecase
 	tokenUsecase      tokenUs.Usecase
-	authChecker       *telegram_checker.TelegramChecker
+	authUsecase       authUs.Usecase
+
+	authChecker *telegram_checker.TelegramChecker
 }
 
 func NewUsecaseFactory(log *logrus.Logger, repositoryFactory RepositoryFactory, authConf internal.TelegramAuth) *UsecaseFactory {
@@ -39,4 +43,11 @@ func (f *UsecaseFactory) GetTokenUsecase() tokenUs.Usecase {
 			f.repositoryFactory.GetTokenJWTRepository())
 	}
 	return f.tokenUsecase
+}
+func (f *UsecaseFactory) GetAuthUsecase() authUs.Usecase {
+	if f.authUsecase == nil {
+		f.authUsecase = auth_usecase.NewAuthUsecase(f.repositoryFactory.GetAuthRepository(),
+			f.repositoryFactory.GetUserRepository(), f.authChecker)
+	}
+	return f.authUsecase
 }

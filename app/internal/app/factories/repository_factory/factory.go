@@ -3,6 +3,8 @@ package repository_factory
 import (
 	"github.com/sirupsen/logrus"
 
+	authRepo "getme-backend/internal/app/auth/repository"
+	authPostgresRepo "getme-backend/internal/app/auth/repository/postgresql"
 	tokenRepo "getme-backend/internal/app/token/repository"
 	token_jwt_repository "getme-backend/internal/app/token/repository/jwt"
 	token_redis_repository "getme-backend/internal/app/token/repository/redis"
@@ -15,6 +17,7 @@ type RepositoryFactory struct {
 	expectedConnections utilits.ExpectedConnections
 	logger              *logrus.Logger
 	userRepository      userRepo.Repository
+	authRepository      authRepo.Repository
 	tokenRepository     tokenRepo.Repository
 	tokenJWTRepository  tokenRepo.RepositoryJWT
 }
@@ -43,4 +46,10 @@ func (f *RepositoryFactory) GetTokenJWTRepository() tokenRepo.RepositoryJWT {
 		f.tokenJWTRepository = token_jwt_repository.NewJwtRepository()
 	}
 	return f.tokenJWTRepository
+}
+func (f *RepositoryFactory) GetAuthRepository() authRepo.Repository {
+	if f.authRepository == nil {
+		f.authRepository = authPostgresRepo.NewAuthRepository(f.expectedConnections.SqlConnection)
+	}
+	return f.authRepository
 }

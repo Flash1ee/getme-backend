@@ -6,7 +6,6 @@ import (
 
 type User struct {
 	ID           int64     `db:"id"`
-	TelegramID   int64     `db:"tg_id"`
 	FirstName    string    `db:"first_name"`
 	LastName     string    `db:"last_name"`
 	Nickname     string    `db:"nickname"`
@@ -16,11 +15,4 @@ type User struct {
 	IsSearchable bool      `db:"is_searchable"`
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
-}
-
-type UserSimpleAuth struct {
-	ID                int64  `db:"id"`
-	Login             string `db:"login"`
-	EncryptedPassword string `db:"encrypted_password,omitempty"`
-	UserID            int64  `db:"user_id"`
 }

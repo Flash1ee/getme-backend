@@ -6,6 +6,7 @@ package mock
 
 import (
 	dto "getme-backend/internal/app/user/dto"
+	entities "getme-backend/internal/app/user/entities"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -34,47 +35,47 @@ func (m *MockUsecase) EXPECT() *MockUsecaseMockRecorder {
 	return m.recorder
 }
 
-// AuthSimple mocks base method.
-func (m *MockUsecase) AuthSimple(login, password string) (int64, error) {
+// CreateBaseUser mocks base method.
+func (m *MockUsecase) CreateBaseUser(nickname string) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AuthSimple", login, password)
+	ret := m.ctrl.Call(m, "CreateBaseUser", nickname)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// AuthSimple indicates an expected call of AuthSimple.
-func (mr *MockUsecaseMockRecorder) AuthSimple(login, password interface{}) *gomock.Call {
+// CreateBaseUser indicates an expected call of CreateBaseUser.
+func (mr *MockUsecaseMockRecorder) CreateBaseUser(nickname interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthSimple", reflect.TypeOf((*MockUsecase)(nil).AuthSimple), login, password)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBaseUser", reflect.TypeOf((*MockUsecase)(nil).CreateBaseUser), nickname)
 }
 
-// AuthTelegram mocks base method.
-func (m *MockUsecase) AuthTelegram(user *dto.UserAuthUsecase) (*dto.UserAuthUsecase, error) {
+// CreateFilledUser mocks base method.
+func (m *MockUsecase) CreateFilledUser(data *dto.UserUsecase) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AuthTelegram", user)
-	ret0, _ := ret[0].(*dto.UserAuthUsecase)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// AuthTelegram indicates an expected call of AuthTelegram.
-func (mr *MockUsecaseMockRecorder) AuthTelegram(user interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthTelegram", reflect.TypeOf((*MockUsecase)(nil).AuthTelegram), user)
-}
-
-// CreateSimple mocks base method.
-func (m *MockUsecase) CreateSimple(user *dto.UserSimpleRegistrationUsecase) (int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateSimple", user)
+	ret := m.ctrl.Call(m, "CreateFilledUser", data)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateSimple indicates an expected call of CreateSimple.
-func (mr *MockUsecaseMockRecorder) CreateSimple(user interface{}) *gomock.Call {
+// CreateFilledUser indicates an expected call of CreateFilledUser.
+func (mr *MockUsecaseMockRecorder) CreateFilledUser(data interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSimple", reflect.TypeOf((*MockUsecase)(nil).CreateSimple), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFilledUser", reflect.TypeOf((*MockUsecase)(nil).CreateFilledUser), data)
+}
+
+// FindByNickname mocks base method.
+func (m *MockUsecase) FindByNickname(nickname string) (*entities.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByNickname", nickname)
+	ret0, _ := ret[0].(*entities.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByNickname indicates an expected call of FindByNickname.
+func (mr *MockUsecaseMockRecorder) FindByNickname(nickname interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByNickname", reflect.TypeOf((*MockUsecase)(nil).FindByNickname), nickname)
 }

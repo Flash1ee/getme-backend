@@ -20,7 +20,40 @@ schemes:
   - "https"
   - "http"
 paths:
-  /auth/telegram:
+  /auth/telegram/register:
+    get:
+      tags:
+        - "auth"
+      summary: "Проверка авторизации"
+      description: "Проверка авторизации через телеграм"
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "UserAuthRequest"
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserAuthRequest'
+      responses:
+        "201":
+          description: "Пользователь создан, проверка аутентификации успешна"
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: "Проверка переданных данных неуспешна"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "503":
+          description: "Ошибка сервера - метод недоступен"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+  /auth/telegram/login:
     get:
       tags:
         - "auth"
@@ -165,39 +198,7 @@ paths:
           description: "Ошибка - метод недоступен"
           schema:
             $ref: '#/definitions/ErrResponse'
-  /auth/telegram/callback:
-    get:
-      tags:
-        - "auth"
-      summary: "Проверка авторизации"
-      description: "Проверка авторизации через телеграм"
-      produces:
-        - "application/json"
-      consumes:
-        - "application/json"
-      parameters:
-        - name: "UserAuthRequest"
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/UserAuthRequest'
-      responses:
-        "201":
-          description: "Пользователь создан, проверка аутентификации успешна"
-          schema:
-            $ref: '#/definitions/User'
-        "400":
-          description: "Проверка переданных данных неуспешна"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "503":
-          description: "Ошибка сервера - метод недоступен"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+
 
 
 definitions:

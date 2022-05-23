@@ -1,0 +1,7 @@
+{"level":"info","msg":"Session-service new redis pool create","time":"2022-05-12T11:44:16Z"}
+{"level":"info","msg":"Session-service new redis pool success check","time":"2022-05-12T11:44:16Z"}
+{"level":"info","msg":"Session-service create repository","time":"2022-05-12T11:44:16Z"}
+{"level":"info","msg":"my listen url sessions-service:5001 \n","time":"2022-05-12T11:44:16Z"}
+{"level":"error","msg":"AUTHSERVER\n","time":"2022-05-12T11:44:16Z"}
+{"level":"error","msg":"can not listen url: sessions-service:5001 err :listen tcp: lookup sessions-service on 127.0.0.11:53: no such host\n","time":"2022-05-12T11:44:16Z"}
+{"level":"fatal","msg":"listen tcp: lookup sessions-service on 127.0.0.11:53: no such host","time":"2022-05-12T11:44:16Z"}
