@@ -1,6 +1,6 @@
 package telegram_checker
 
-import "getme-backend/internal/app/user/dto"
+import "getme-backend/internal/app/auth/dto"
 
 type CheckerData struct {
 	ID        int64  `query:"id" json:"id"`
@@ -11,7 +11,7 @@ type CheckerData struct {
 	Avatar    string `query:"photo_url" json:"photo_url"`
 }
 
-func (data *CheckerData) UserAuthToChecker(user *dto.UserAuthUsecase) *CheckerData {
+func (data *CheckerData) AuthToChecker(user *dto.AuthUsecase) *CheckerData {
 	return &CheckerData{
 		ID:        user.ID,
 		AuthDate:  user.AuthDate,

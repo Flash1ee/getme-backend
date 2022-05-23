@@ -4,6 +4,9 @@ import (
 	"github.com/sirupsen/logrus"
 
 	authRepo "getme-backend/internal/app/auth/repository"
+	skillRepo "getme-backend/internal/app/skill/repository"
+	skillPostgresRepo "getme-backend/internal/app/skill/repository/postgresql"
+
 	authPostgresRepo "getme-backend/internal/app/auth/repository/postgresql"
 	tokenRepo "getme-backend/internal/app/token/repository"
 	token_jwt_repository "getme-backend/internal/app/token/repository/jwt"
@@ -20,6 +23,7 @@ type RepositoryFactory struct {
 	authRepository      authRepo.Repository
 	tokenRepository     tokenRepo.Repository
 	tokenJWTRepository  tokenRepo.RepositoryJWT
+	skillRepository     skillRepo.Repository
 }
 
 func NewRepositoryFactory(logger *logrus.Logger, expectedConnections utilits.ExpectedConnections) *RepositoryFactory {
@@ -52,4 +56,11 @@ func (f *RepositoryFactory) GetAuthRepository() authRepo.Repository {
 		f.authRepository = authPostgresRepo.NewAuthRepository(f.expectedConnections.SqlConnection)
 	}
 	return f.authRepository
+}
+
+func (f *RepositoryFactory) GetSkillRepository() skillRepo.Repository {
+	if f.skillRepository == nil {
+		f.skillRepository = skillPostgresRepo.NewSkillRepository(f.expectedConnections.SqlConnection)
+	}
+	return f.skillRepository
 }

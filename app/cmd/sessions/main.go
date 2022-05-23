@@ -22,10 +22,13 @@ import (
 
 var (
 	configPath string
+	debugMode  bool
 )
 
 func init() {
 	flag.StringVar(&configPath, "config-path", "./configs/server.toml", "path to config file")
+	flag.BoolVar(&debugMode, "debug", false, "run in debug mode (local configuration)")
+
 }
 
 func main() {
@@ -44,7 +47,11 @@ func main() {
 	}
 	logger.SetLevel(level)
 
-	sessionRedisPool := utilits_redis.NewRedisPool(config.Microservices.SessionRedisUrl)
+	sessionRedisURL := config.Microservices.SessionRedisUrl
+	if debugMode {
+		sessionRedisURL = config.Microservices.SessionRedisUrlLocal
+	}
+	sessionRedisPool := utilits_redis.NewRedisPool(sessionRedisURL)
 	logger.Info("Session-service new redis pool create")
 
 	conn, err := sessionRedisPool.Dial()
@@ -70,10 +77,15 @@ func main() {
 
 	//grpc_prometheus.Register(grpc)
 
+	sessionURL := config.Microservices.SessionServerUrl
+	if debugMode {
+		sessionURL = config.Microservices.SessionServerUrlLocal
+	}
+
 	sessionRepository := repository.NewRedisRepository(sessionRedisPool, logger)
 	logger.Info("Session-service create repository")
 	server := sessionServer.NewAuthGRPCServer(logger, grpcServer, usecase.NewSessionUsecase(sessionRepository))
-	if err = server.StartGRPCServer(config.Microservices.SessionServerUrl); err != nil {
+	if err = server.StartGRPCServer(sessionURL); err != nil {
 		logger.Fatalln(err)
 	}
 	logger.Info("Session-service was stopped")

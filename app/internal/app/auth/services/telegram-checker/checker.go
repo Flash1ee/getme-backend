@@ -13,7 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"getme-backend/internal"
-	"getme-backend/internal/app/user/dto"
+	"getme-backend/internal/app/auth/dto"
 )
 
 type TelegramChecker struct {
@@ -33,11 +33,11 @@ func NewTelegramChecker(log *logrus.Logger, authConf internal.TelegramAuth) *Tel
 	return checker
 }
 
-func (service *TelegramChecker) Check(user *dto.UserAuthUsecase) bool {
+func (service *TelegramChecker) Check(user *dto.AuthUsecase) bool {
 	secretKey := service.tokenHash.Sum(nil)
 
 	params := &CheckerData{}
-	params = params.UserAuthToChecker(user)
+	params = params.AuthToChecker(user)
 
 	mapOfParams := structToMap(*params)
 	//if err != nil {

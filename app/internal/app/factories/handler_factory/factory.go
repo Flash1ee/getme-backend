@@ -10,6 +10,7 @@ import (
 	logout_handler "getme-backend/internal/app/auth/delivery/http/handlers/logout"
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/simple_register_handler"
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/telegram_register_handler"
+	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
 	"getme-backend/internal/app/token/delivery/http/handlers/token_handler"
 	"getme-backend/internal/microservices/auth/delivery/grpc/client"
 )
@@ -21,6 +22,7 @@ const (
 	REGISTER_TG
 	REGISTER_SIMPLE
 	LOGOUT
+	SKILL_INFO
 )
 
 type HandlerFactory struct {
@@ -42,6 +44,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 	ucUsecase := f.usecaseFactory.GetUserUsecase()
 	tokenUsecase := f.usecaseFactory.GetTokenUsecase()
 	authUsecase := f.usecaseFactory.GetAuthUsecase()
+	skillUsecase := f.usecaseFactory.GetSkillUsecase()
 
 	sClient := client.NewSessionClient(f.sessionClientConn)
 	return map[int]app.Handler{
@@ -51,6 +54,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		AUTH_SIMPLE:     simple_auth_handler.NewAuthHandler(f.logger, sClient, authUsecase),
 		REGISTER_SIMPLE: simple_register_handler.NewRegisterHandler(f.logger, sClient, ucUsecase, authUsecase),
 		AUTH_TOKEN:      token_handler.NewTokenHandler(f.logger, tokenUsecase, sClient),
+		SKILL_INFO:      skills_info_handler.NewInfoHandler(f.logger, sClient, skillUsecase),
 	}
 }
 
@@ -68,6 +72,8 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/auth/telegram/register": hs[REGISTER_TG],
 		"/auth/simple/register":   hs[REGISTER_SIMPLE],
 		"/auth/token":             hs[AUTH_TOKEN],
+		//=============skills============//
+		"/skills": hs[SKILL_INFO],
 	}
 	return f.urlHandler
 }
