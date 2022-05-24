@@ -14,3 +14,7 @@ var codesByErrorsGET = delivery.CodeMap{
 	postgresql_utilits.DefaultErrDB: {
 		http.StatusInternalServerError, handler_errors.BDError, logrus.ErrorLevel},
 }
+var codesByErrorsPUT = delivery.CodeMap{
+	postgresql_utilits.DefaultErrDB: {
+		http.StatusInternalServerError, handler_errors.BDError, logrus.ErrorLevel},
+}

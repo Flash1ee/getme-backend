@@ -13,7 +13,7 @@ type CheckerData struct {
 
 func (data *CheckerData) AuthToChecker(user *dto.AuthUsecase) *CheckerData {
 	return &CheckerData{
-		ID:        user.ID,
+		ID:        user.TelegramID,
 		AuthDate:  user.AuthDate,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,

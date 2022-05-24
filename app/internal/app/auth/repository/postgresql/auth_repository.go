@@ -52,6 +52,7 @@ const queryCheckExistsUser = `
 `
 
 // FindByTelegramID Errors:
+//		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors:
 // 			postgresql_utilits.DefaultErrDB
 func (repo *AuthRepository) FindByTelegramID(tgID int64) (*entities.TelegramAuth, error) {

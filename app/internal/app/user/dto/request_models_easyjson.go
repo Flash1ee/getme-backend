@@ -16,3 +16,99 @@ var (
 	_ *jwriter.Writer
 	_ easyjson.Marshaler
 )
+
+func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out *RequestUserUpdate) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "first_name":
+			out.FirstName = string(in.String())
+		case "last_name":
+			out.LastName = string(in.String())
+		case "about":
+			out.About = string(in.String())
+		default:
+			in.AddError(&jlexer.LexerError{
+				Offset: in.GetPos(),
+				Reason: "unknown field",
+				Data:   key,
+			})
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, in RequestUserUpdate) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if in.FirstName != "" {
+		const prefix string = ",\"first_name\":"
+		first = false
+		out.RawString(prefix[1:])
+		out.String(string(in.FirstName))
+	}
+	if in.LastName != "" {
+		const prefix string = ",\"last_name\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.LastName))
+	}
+	if in.About != "" {
+		const prefix string = ",\"about\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.About))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v RequestUserUpdate) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v RequestUserUpdate) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *RequestUserUpdate) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *RequestUserUpdate) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(l, v)
+}

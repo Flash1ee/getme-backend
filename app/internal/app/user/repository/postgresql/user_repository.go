@@ -97,7 +97,7 @@ VALUES (?, ?, ?, ?) RETURNING id;`
 func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error) {
 	query := repo.store.Rebind(createFilledUserQuery)
 	ID := int64(-1)
-	if err := repo.store.QueryRow(query, data.FirstName, data.FirstName, data.LastName, data.Nickname, data.Avatar).
+	if err := repo.store.QueryRow(query, data.FirstName.String, data.LastName.String, data.Nickname, data.Avatar.String).
 		Scan(&ID); err != nil {
 		if _, ok := err.(*pq.Error); ok {
 			return ID, parsePQError(err.(*pq.Error))
@@ -123,5 +123,24 @@ func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
+	return user, nil
+}
+
+const queryUpdateUser = `update users set
+    first_name = COALESCE(NULLIF(TRIM(?), ''), first_name),
+    last_name = COALESCE(NULLIF(TRIM(?), ''), last_name),
+    about = COALESCE(NULLIF(TRIM(?), ''), about)
+WHERE id = ? returning first_name, last_name, nickname, about, avatar, is_searchable;`
+
+func (repo *UserRepository) UpdateUser(user *entities.User) (*entities.User, error) {
+	query := repo.store.Rebind(queryUpdateUser)
+	userFromDB := &entities.User{}
+
+	err := repo.store.QueryRowx(query, user.FirstName.String, user.LastName.String, user.About.String, user.ID).
+		Scan(&userFromDB.FirstName, &userFromDB.LastName, &userFromDB.Nickname, &userFromDB.About, &userFromDB.Avatar, &userFromDB.IsSearchable)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+
 	return user, nil
 }

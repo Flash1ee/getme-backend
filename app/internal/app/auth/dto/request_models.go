@@ -18,13 +18,13 @@ type AuthTelegramCheckRequest struct {
 
 func (req *AuthTelegramCheckRequest) ToAuthUsecase() *AuthUsecase {
 	return &AuthUsecase{
-		ID:        req.ID,
-		AuthDate:  req.AuthDate,
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Username:  req.Username,
-		Avatar:    req.Avatar,
-		Hash:      req.Hash,
+		TelegramID: req.ID,
+		AuthDate:   req.AuthDate,
+		FirstName:  req.FirstName,
+		LastName:   req.LastName,
+		Username:   req.Username,
+		Avatar:     req.Avatar,
+		Hash:       req.Hash,
 	}
 }
 func (req *AuthTelegramCheckRequest) ToUserUsecase() *dto.UserUsecase {

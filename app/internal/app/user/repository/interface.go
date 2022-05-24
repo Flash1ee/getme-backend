@@ -22,4 +22,8 @@ type Repository interface {
 	// 			postgresql_utilits.DefaultErrDB
 	CreateBaseUser(nickname string) (int64, error)
 	CreateFilledUser(data *entities.User) (int64, error)
+	// UpdateUser Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	UpdateUser(user *entities.User) (*entities.User, error)
 }

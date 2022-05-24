@@ -84,6 +84,11 @@ func (h *RegisterHandler) GET(ctx echo.Context) error {
 	}
 
 	h.Log(ctx.Request()).Debugf("user success auth %v", u)
+
+	//queryParam := url.Values{
+	//	"token": []string{res.TokenID},
+	//}
+	//ctx.Redirect(http.StatusPermanentRedirect, "/api/v1/auth/telegram/login"+"?"+queryParam.Encode())
 	h.Respond(ctx, http.StatusCreated, dto.ToUserResponseFromUsecase(u))
 	return nil
 }

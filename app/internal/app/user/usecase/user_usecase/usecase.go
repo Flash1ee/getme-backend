@@ -35,7 +35,8 @@ func (u *UserUsecase) CreateBaseUser(nickname string) (int64, error) {
 }
 
 func (u *UserUsecase) CreateFilledUser(data *dto.UserUsecase) (int64, error) {
-	us, err := u.userRepository.CreateFilledUser(data.ToUserEntity())
+	entityUser := data.ToUserEntity()
+	us, err := u.userRepository.CreateFilledUser(entityUser)
 
 	return us, err
 }
@@ -46,4 +47,13 @@ func (u *UserUsecase) FindByID(id int64) (*dto.UserUsecase, error) {
 	}
 
 	return dto.ToUserUsecase(user), nil
+}
+
+func (u *UserUsecase) UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error) {
+	userDTO := user.ToUserEntity()
+	res, err := u.userRepository.UpdateUser(userDTO)
+	if err != nil {
+		return nil, err
+	}
+	return dto.ToUserUsecase(res), nil
 }

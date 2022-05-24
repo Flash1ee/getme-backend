@@ -29,7 +29,7 @@ func (m *UserUsecase) ToUserEntity() *entities.User {
 		LastName: sql.NullString{
 			String: m.LastName,
 		},
-		Nickname: m.About,
+		Nickname: m.Nickname,
 		Avatar: sql.NullString{
 			String: m.Avatar,
 		},

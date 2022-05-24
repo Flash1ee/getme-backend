@@ -21,6 +21,10 @@ type Repository interface {
 	CreateSimple(auth *entities.SimpleAuth) (*entities.SimpleAuth, error)
 
 	UpdateTelegramAuthTime(tgID int64) error
+	// FindByTelegramID Errors:
+	//		postgresql_utilits.NotFound
+	// 		app.GeneralError with Errors:
+	// 			postgresql_utilits.DefaultErrDB
 	FindByTelegramID(tgID int64) (*entities.TelegramAuth, error)
 	CreateTelegramAuthRecord(auth *entities.TelegramAuth) (*entities.TelegramAuth, error)
 

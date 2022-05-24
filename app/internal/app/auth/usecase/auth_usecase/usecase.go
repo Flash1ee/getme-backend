@@ -1,7 +1,6 @@
 package auth_usecase
 
 import (
-	"database/sql"
 	"fmt"
 
 	"github.com/pkg/errors"
@@ -63,7 +62,7 @@ func (u *AuthUsecase) AuthTelegram(user *dto.AuthUsecase) (*dto.AuthUsecase, err
 	// Check exists user!
 
 	if _, err := u.authRepository.FindByTelegramID(user.TelegramID); err != nil {
-		if err == sql.ErrNoRows {
+		if err == postgresql_utilits.NotFound {
 			res, err := u.authRepository.CreateTelegramAuthRecord(user.ToTelegramEntity())
 			if err != nil {
 				return nil, errors.Wrapf(err,

@@ -15,4 +15,5 @@ type Usecase interface {
 	FindByNickname(nickname string) (*entities.User, error)
 	CreateBaseUser(nickname string) (int64, error)
 	CreateFilledUser(data *dto.UserUsecase) (int64, error)
+	UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error)
 }
