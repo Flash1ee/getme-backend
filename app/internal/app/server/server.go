@@ -8,6 +8,7 @@ import (
 	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
 
+	"getme-backend/internal/app/auth/dto"
 	_ "getme-backend/statik"
 
 	"getme-backend/internal"
@@ -81,8 +82,23 @@ func (s *Server) Start(config *internal.Config) error {
 	s.Logger.Info("start http server")
 
 	router.GET(
-		"/login", func(c echo.Context) error {
-			err = c.Render(http.StatusOK, "login.tmpl", map[string]interface{}{})
+		"/login", func(ctx echo.Context) error {
+			req := &dto.AuthRequest{}
+			binder := echo.QueryParamsBinder(ctx)
+
+			errs := binder.String("token", &req.Token).
+				BindErrors()
+
+			if errs != nil {
+				for _, err := range errs {
+					bErr := err.(*echo.BindingError)
+					s.Logger.Errorf("/login error parse query params:field = %v value = %v\n", bErr.Field, bErr.Values)
+					return err
+				}
+				ctx.Response().WriteHeader(http.StatusBadRequest)
+			}
+
+			err = ctx.Render(http.StatusOK, "login.tmpl", req)
 			if err != nil {
 				return err
 			}

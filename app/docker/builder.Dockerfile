@@ -8,7 +8,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt-get install jq -y
 
-EXPOSE 8080
+EXPOSE 80
 
 RUN make build
 
