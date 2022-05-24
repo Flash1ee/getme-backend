@@ -41,7 +41,7 @@ func (h *HelpHandlers) GetInt64FromParam(ctx echo.Context, name string) (int64, 
 	number := ctx.Param(name)
 	numberInt, err := strconv.ParseInt(number, 10, 64)
 	if number == "" || err != nil {
-		//h.Log(ctx).Infof("can't get parametrs %s, was got %v)", name, number)
+		h.Log(ctx.Request()).Infof("can't get parametrs %s, was got %v)", name, number)
 		return app.InvalidInt, http.StatusBadRequest, handler_errors.InvalidParameters
 	}
 	return numberInt, app.InvalidInt, nil

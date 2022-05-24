@@ -9,6 +9,7 @@ import (
 
 type Repository interface {
 	//	FindByID with Errors:
+	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	FindByID(id int64) (*entities.User, error)

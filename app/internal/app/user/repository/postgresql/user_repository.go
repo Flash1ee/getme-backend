@@ -114,6 +114,7 @@ const queryFindByID = `
 SELECT * from users where id = ?;`
 
 //	FindByID with Errors:
+//		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
 func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
@@ -122,6 +123,9 @@ func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
 
 	err := repo.store.Get(user, query, id)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, postgresql_utilits.NotFound
+		}
 		return nil, postgresql_utilits.NewDBError(err)
 	}
 	return user, nil
