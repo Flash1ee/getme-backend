@@ -88,8 +88,7 @@ func (s *Server) Start(config *internal.Config) error {
 
 			errs := binder.String("token", &req.Token).
 				BindErrors()
-
-			if errs != nil {
+			if errs != nil || req.Token == "" {
 				for _, err := range errs {
 					bErr := err.(*echo.BindingError)
 					s.Logger.Errorf("/login error parse query params:field = %v value = %v\n", bErr.Field, bErr.Values)
