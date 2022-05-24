@@ -68,14 +68,15 @@ func (s *Server) Start(config *internal.Config) error {
 
 	staticServer := http.FileServer(swaggerFS)
 	routerApi.GET("/swagger/editor", func(c echo.Context) error {
-		return c.Redirect(http.StatusPermanentRedirect, "/api/editor/swagger-editor/")
+		return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-editor/")
 	})
 
 	routerApi.GET("/swagger/ui", func(c echo.Context) error {
-		return c.Redirect(http.StatusPermanentRedirect, "/api/editor/swagger-ui/")
+		return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-ui/")
 	})
-	routerApi.GET("/editor/swagger-editor/*", echo.WrapHandler(http.StripPrefix("/api/editor/", staticServer)))
-	routerApi.GET("/editor/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/editor/", staticServer)))
+
+	routerApi.GET("/editor/swagger-editor/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
+	routerApi.GET("/editor/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
 
 	s.Logger.Info("start http server")
 

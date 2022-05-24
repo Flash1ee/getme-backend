@@ -130,6 +130,7 @@ build-swagger:
 	cp -rf ./api/swagger.json ./swagger/swagger-ui/.
 	cp -rf ./api/swagger.json ./swagger/swagger-editor/.
 	go get github.com/rakyll/statik
+	rm -rf ./statik/
 	statik -src=$(CURDIR)/swagger
 
 build-editor-swagger:
