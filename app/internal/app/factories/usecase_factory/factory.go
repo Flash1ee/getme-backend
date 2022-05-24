@@ -56,7 +56,7 @@ func (f *UsecaseFactory) GetAuthUsecase() authUs.Usecase {
 }
 func (f *UsecaseFactory) GetSkillUsecase() skillUs.Usecase {
 	if f.skillUsecase == nil {
-		f.skillUsecase = skill_usecase.NewSkillUsecase(f.repositoryFactory.GetSkillRepository())
+		f.skillUsecase = skill_usecase.NewSkillUsecase(f.repositoryFactory.GetSkillRepository(), f.repositoryFactory.GetUserRepository())
 	}
 
 	return f.skillUsecase

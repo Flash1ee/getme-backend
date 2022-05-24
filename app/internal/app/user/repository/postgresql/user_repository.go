@@ -6,6 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 
+	skill_entities "getme-backend/internal/app/skill/entities"
 	"getme-backend/internal/app/user/entities"
 	postgresql_utilits "getme-backend/internal/pkg/utilits/postgresql"
 )
@@ -143,4 +144,26 @@ func (repo *UserRepository) UpdateUser(user *entities.User) (*entities.User, err
 	}
 
 	return user, nil
+}
+
+const queryGetUsersBySkills = `SELECT first_name, last_name, nickname, about, avatar, is_searchable from users 
+	JOIN users_skills as us on us.user_id = users.id where us.skill_name IN (?);`
+
+//	GetUsersBySkills with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]entities.User, error) {
+	skills := getSkillNameFromSkills(data)
+	users := &[]entities.User{}
+	query, args, err := sqlx.In(queryGetUsersBySkills, skills)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	query = repo.store.Rebind(query)
+
+	if err = repo.store.Select(users, query, args...); err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+
+	return *users, nil
 }

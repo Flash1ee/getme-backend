@@ -16,6 +16,19 @@ type UserResponse struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
+//easyjson:json
+type UsersResponse struct {
+	Users []UserResponse `json:"users"`
+}
+
+//easyjson:json
+func ToUsersResponse(users []UserUsecase) UsersResponse {
+	res := UsersResponse{}
+	for _, val := range users {
+		res.Users = append(res.Users, ToUserResponse(&val))
+	}
+	return res
+}
 func ToUserResponse(user *UserUsecase) UserResponse {
 	return UserResponse{
 		FirstName:    user.FirstName,

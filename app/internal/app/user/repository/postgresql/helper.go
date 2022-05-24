@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	skill_entities "getme-backend/internal/app/skill/entities"
 	"getme-backend/internal/app/user/entities"
 )
 
@@ -34,4 +35,11 @@ func getRepositoryData(t *testing.T) *entities.User {
 		UpdatedAt:    time.Now(),
 	}
 
+}
+func getSkillNameFromSkills(data []skill_entities.Skill) []string {
+	res := make([]string, 0, len(data))
+	for _, val := range data {
+		res = append(res, val.Name)
+	}
+	return res
 }

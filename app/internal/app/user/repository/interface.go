@@ -1,6 +1,7 @@
 package user_repository
 
 import (
+	skill_entities "getme-backend/internal/app/skill/entities"
 	"getme-backend/internal/app/user/entities"
 )
 
@@ -26,4 +27,8 @@ type Repository interface {
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	UpdateUser(user *entities.User) (*entities.User, error)
+	//	GetUsersBySkills with Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	GetUsersBySkills(data []skill_entities.Skill) ([]entities.User, error)
 }

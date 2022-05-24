@@ -11,6 +11,16 @@ type SkillsUsecase struct {
 	Skills []SkillUsecase `json:"skills"`
 }
 
+func (model *SkillsUsecase) ToSkillEntites() []entities.Skill {
+	res := make([]entities.Skill, 0, len(model.Skills))
+	for _, val := range model.Skills {
+		res = append(res, entities.Skill{
+			Name:  val.Name,
+			Color: val.Color,
+		})
+	}
+	return res
+}
 func ToSkillUsecase(data *entities.Skill) *SkillUsecase {
 	return &SkillUsecase{
 		Name:  data.Name,

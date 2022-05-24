@@ -11,6 +11,7 @@ import (
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/simple_register_handler"
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/telegram_register_handler"
 	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
+	skills_user_handler "getme-backend/internal/app/skill/delivery/http/skills/user_handler"
 	"getme-backend/internal/app/token/delivery/http/handlers/token_handler"
 	user_profile_handler "getme-backend/internal/app/user/delivery/http/handlers/profile"
 	"getme-backend/internal/microservices/auth/delivery/grpc/client"
@@ -25,6 +26,7 @@ const (
 	LOGOUT
 	SKILL_INFO
 	PROFILE
+	USER_SKILLS
 )
 
 type HandlerFactory struct {
@@ -58,6 +60,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		AUTH_TOKEN:      token_handler.NewTokenHandler(f.logger, tokenUsecase, sClient),
 		SKILL_INFO:      skills_info_handler.NewInfoHandler(f.logger, sClient, skillUsecase),
 		PROFILE:         user_profile_handler.NewProfileHandler(f.logger, sClient, ucUsecase),
+		USER_SKILLS:     skills_user_handler.NewUserHandler(f.logger, sClient, skillUsecase),
 	}
 }
 
@@ -76,7 +79,8 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/auth/simple/register":   hs[REGISTER_SIMPLE],
 		"/auth/token":             hs[AUTH_TOKEN],
 		//=============skills=============//
-		"/skills": hs[SKILL_INFO],
+		"/skills":       hs[SKILL_INFO],
+		"/skills/users": hs[USER_SKILLS],
 		//=============user=============//
 		"/profile": hs[PROFILE],
 	}

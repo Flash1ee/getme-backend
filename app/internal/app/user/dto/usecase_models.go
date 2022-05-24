@@ -50,3 +50,12 @@ func ToUserUsecase(data *entities.User) *UserUsecase {
 		UpdatedAt:    data.UpdatedAt,
 	}
 }
+
+func ToUsersUsecase(data []entities.User) []UserUsecase {
+	res := make([]UserUsecase, 0, len(data))
+	for _, val := range data {
+		res = append(res, *ToUserUsecase(&val))
+	}
+
+	return res
+}

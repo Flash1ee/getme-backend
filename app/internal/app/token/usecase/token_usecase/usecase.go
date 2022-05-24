@@ -63,7 +63,7 @@ func (u *TokenUsecase) GetTokenByData(tokenSources dto.TokenSourcesUsecase) (dto
 // 			token_jwt_repository.ParseClaimsError
 //			token_jwt_repository.TokenExpired
 func (u *TokenUsecase) Check(identifierData dto.TokenSourcesUsecase, token dto.TokenUsecase) error {
-	sources := identifierData.ToTokenSourcesEntity(0)
+	sources := identifierData.ToTokenSourcesEntity(expiredJWTTime)
 	return u.repositoryJWT.Check(*sources, *token.ToTokenEntity())
 
 }
