@@ -57,7 +57,7 @@ func (h *RegisterHandler) POST(ctx echo.Context) error {
 		return handler_errors.InvalidBody
 	}
 	var userID int64
-	_, err = h.userUsecase.FindByNickname(req.Login)
+	u, err := h.userUsecase.FindByNickname(req.Login)
 	if err != nil {
 		if errors.Is(err, user_usecase.UserNotFound) {
 			userID, err = h.userUsecase.CreateBaseUser(req.Login)
@@ -72,6 +72,8 @@ func (h *RegisterHandler) POST(ctx echo.Context) error {
 			return handler_errors.InternalError
 		}
 
+	} else {
+		userID = u.ID
 	}
 
 	usecaseDTO := req.ToSimpleRegistrationUsecase()

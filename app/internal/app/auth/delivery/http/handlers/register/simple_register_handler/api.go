@@ -12,6 +12,8 @@ import (
 )
 
 var codeByError = delivery.CodeMap{
+	user_usecase.SimpleAuthExists: {
+		http.StatusConflict, handler_errors.UserAlreadyExists, logrus.InfoLevel},
 	user_usecase.NicknameExists: {
 		http.StatusConflict, handler_errors.UserAlreadyExists, logrus.InfoLevel},
 	user_usecase.LoginExists: {
