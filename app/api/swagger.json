@@ -226,7 +226,7 @@
         ]
       }
     },
-    "/auth/telegram": {
+    "/auth/telegram/login": {
       "get": {
         "description": "Получение сессии после аутентефикации через Телеграм",
         "parameters": [
@@ -270,7 +270,7 @@
         ]
       }
     },
-    "/auth/telegram/callback": {
+    "/auth/telegram/register": {
       "get": {
         "consumes": [
           "application/json"

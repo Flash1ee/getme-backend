@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/sirupsen/logrus"
+
 	"getme-backend/internal/microservices/auth/delivery/grpc/client"
 	"getme-backend/internal/microservices/auth/sessions/usecase"
-
-	"github.com/sirupsen/logrus"
 
 	"getme-backend/internal/pkg/utilits"
 )
@@ -116,6 +116,31 @@ func (m *SessionMiddleware) AddUserIdFunc(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+//// CheckNotAuthorizedFunc Errors:
+////		Status 418 "user already authorized"
+//func (m *SessionMiddleware) CheckNotAuthorizedFunc(next hf.HandlerFunc) hf.HandlerFunc {
+//	return func(ctx echo.Context) {
+//		sessionID, err := ctx.Request().Cookie("session_id")
+//		if err != nil {
+//			m.Log(ctx.Request()).Debug("User not Authorized")
+//			next.ServeHTTP(ctx)
+//			return
+//		}
+//
+//		uniqID := sessionID.Value
+//		if res, err := m.SessionClient.Check(context.Background(), uniqID); err != nil {
+//			m.Log(ctx.Request()).Debug("User not Authorized")
+//			m.clearCookie(ctx.Response(), sessionID)
+//			next.ServeHTTP(ctx)
+//			return
+//		} else {
+//			m.Log(ctx.Request()).Warnf("UserAuthorized: %d", res.UserID)
+//			m.updateCookie(ctx.Response(), sessionID)
+//		}
+//		ctx.Response().WriteHeader(http.StatusTeapot)
+//	}
+//}
 
 // AddUserId Errors:
 //		Nothing return only add user_id and session_id to context

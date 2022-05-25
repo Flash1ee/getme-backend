@@ -17,3 +17,8 @@ type User struct {
 	CreatedAt    time.Time      `db:"created_at"`
 	UpdatedAt    time.Time      `db:"updated_at"`
 }
+
+type UserWithSkill struct {
+	User
+	Skill string `db:"skill_name"`
+}

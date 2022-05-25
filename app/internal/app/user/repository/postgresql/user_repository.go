@@ -150,24 +150,35 @@ func (repo *UserRepository) UpdateUser(user *entities.User) (*entities.User, err
 	return user, nil
 }
 
-const queryGetUsersBySkills = `SELECT first_name, last_name, nickname, about, avatar, is_searchable from users 
-	JOIN users_skills as us on us.user_id = users.id where us.skill_name IN (?);`
+const queryGetUsersBySkillsFirst = `SELECT first_name, last_name, nickname, about, avatar, is_searchable, skill_name from users
+JOIN users_skills as us on us.user_id = users.id where us.skill_name IN (?)`
+const queryGetUsersBySkillsSecond = ` and skill_name = (
+select skill_name from users_skills where user_id = us.user_id and skill_name IN (?) order by skill_name limit 1
+    );`
 
 //	GetUsersBySkills with Errors:
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]entities.User, error) {
+func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error) {
 	skills := getSkillNameFromSkills(data)
-	users := &[]entities.User{}
-	query, args, err := sqlx.In(queryGetUsersBySkills, skills)
+	usersWithSkills := &[]entities.UserWithSkill{}
+	queryFirst, args, err := sqlx.In(queryGetUsersBySkillsFirst, skills)
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
+	querySecond, _, err := sqlx.In(queryGetUsersBySkillsSecond, skills)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	query := queryFirst + querySecond
 	query = repo.store.Rebind(query)
+	var queryArgs []interface{}
+	queryArgs = append(queryArgs, args...)
+	queryArgs = append(queryArgs, args...)
 
-	if err = repo.store.Select(users, query, args...); err != nil {
+	if err = repo.store.Select(usersWithSkills, query, queryArgs...); err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
 
-	return *users, nil
+	return *usersWithSkills, nil
 }

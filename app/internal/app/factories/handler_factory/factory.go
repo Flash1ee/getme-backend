@@ -85,8 +85,8 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/skills":       hs[SKILL_INFO],
 		"/skills/users": hs[USER_SKILLS],
 		//=============user=============//
-		"/profile":     hs[PROFILE],
-		"/profile/:id": hs[PROFILE_ID],
+		"/user":     hs[PROFILE],
+		"/user/:id": hs[PROFILE_ID],
 	}
 	return f.urlHandler
 }

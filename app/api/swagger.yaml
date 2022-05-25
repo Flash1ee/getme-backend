@@ -16,10 +16,134 @@ tags:
     description: "Взаимодействие с пользователем"
   - name: "auth"
     description: "Аутентификация"
+  - name: "skills"
+    description: "Взаимодействия с скиллами"
 schemes:
-  - "https"
+#  - "https"
   - "http"
 paths:
+  /user:
+    get:
+      tags:
+        - "user"
+      summary: "Получение данных текущего пользователя"
+      description: "Получение данных текущего пользователя"
+      produces:
+          - "application/json"
+      responses:
+        "200":
+          description: "Данные пользователя"
+          schema:
+            $ref: '#/definitions/User'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+    post:
+      tags:
+        - "user"
+      summary: "Обновление даных пользователя"
+      description: "Обновление/изменение даных пользователя"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - description: "Тело запроса с новыми данными"
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/RequestUserUpdate'
+      responses:
+        "200":
+          description: "Данные пользователя с изменениями"
+          schema:
+            $ref: '#/definitions/User'
+        "422":
+          description: "Ошибка в переданном теле запроса"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+  /user/{:id}:
+    get:
+      tags:
+        - "user"
+      summary: "Получение данных пользователя по id"
+      description: "Получение данных текущего пользователя"
+      produces:
+        - "application/json"
+      parameters:
+        - description: id
+          in: path
+          name: user_id
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: "Данные пользователя с указанным id"
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: "Ошибка в переданном параметре пути"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "404":
+          description: "Пользователь с данным id не найден"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+  /skills:
+    get:
+      tags:
+        - "skills"
+      summary: "Получение списка всех скиллов"
+      description: "Получение списка всех скиллов"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Список всех скиллов"
+          schema:
+            $ref: '#/definitions/SkillsResponse'
+        "500":
+            description: "Ошибка сервера"
+            schema:
+              $ref: '#/definitions/ErrResponse'
+  /skills/users:
+    get:
+      tags:
+        - "skills"
+      summary: "Получение всех пользователей с указанными скиллами"
+      description: "Получить список пользователей у которых есть хотя бы один скилл из переданного списка"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "skills"
+          in: "query"
+          description: "список скиллов в формате skills=x,y,z"
+          required: true
+          type: array
+      responses:
+        "200":
+          description: "Список пользователей, у которых совпал хотя бы один из указанных скиллов"
+          schema:
+            $ref: '#/definitions/UsersWithSkillResponse'
+        "400":
+          description: "Ошибка в переданном query параметре skills"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+
   /auth/telegram/register:
     get:
       tags:
@@ -267,3 +391,44 @@ definitions:
       id:
         type: integer
     type: object
+  SkillResponse:
+    properties:
+      name:
+        type: string
+      color:
+        type: string
+    type: object
+  SkillsResponse:
+    properties:
+      skills:
+        items:
+          $ref: '#/definitions/SkillResponse'
+        type: array
+    type: object
+  UserWithSkillResponse:
+    properties:
+      user:
+        type: object
+        $ref: '#/definitions/User'
+      skill:
+        type: string
+    type: object
+  UsersWithSkillResponse:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/UserWithSkillResponse'
+        type: array
+    type: object
+  RequestUserUpdate:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      about:
+        type: string
+
+
+
+

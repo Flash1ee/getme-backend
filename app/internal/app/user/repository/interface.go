@@ -31,5 +31,5 @@ type Repository interface {
 	//	GetUsersBySkills with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	GetUsersBySkills(data []skill_entities.Skill) ([]entities.User, error)
+	GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error)
 }

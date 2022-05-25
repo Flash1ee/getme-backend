@@ -19,6 +19,10 @@ type UserUsecase struct {
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
 }
+type UserWithSkillUsecase struct {
+	UserUsecase
+	Skill string
+}
 
 func (m *UserUsecase) ToUserEntity() *entities.User {
 	return &entities.User{
@@ -51,11 +55,28 @@ func ToUserUsecase(data *entities.User) *UserUsecase {
 	}
 }
 
-func ToUsersUsecase(data []entities.User) []UserUsecase {
-	res := make([]UserUsecase, 0, len(data))
+func ToUsersWithSkillUsecase(data []entities.UserWithSkill) []UserWithSkillUsecase {
+	res := make([]UserWithSkillUsecase, 0, len(data))
 	for _, val := range data {
-		res = append(res, *ToUserUsecase(&val))
+		res = append(res, *ToUserWithSkillUsecase(&val))
 	}
 
 	return res
+}
+func ToUserWithSkillUsecase(data *entities.UserWithSkill) *UserWithSkillUsecase {
+	return &UserWithSkillUsecase{
+		UserUsecase: UserUsecase{
+			ID:           data.ID,
+			FirstName:    data.FirstName.String,
+			LastName:     data.LastName.String,
+			Nickname:     data.Nickname,
+			About:        data.About.String,
+			Avatar:       data.Avatar.String,
+			Email:        data.Email.String,
+			IsSearchable: data.IsSearchable,
+			CreatedAt:    data.CreatedAt,
+			UpdatedAt:    data.UpdatedAt,
+		},
+		Skill: data.Skill,
+	}
 }
