@@ -62,8 +62,8 @@ func (h *RegisterHandler) POST(ctx echo.Context) error {
 		if errors.Is(err, user_usecase.UserNotFound) {
 			userID, err = h.userUsecase.CreateBaseUser(req.Login)
 			if err != nil {
+				h.UsecaseError(ctx, err, codeByError)
 				h.Log(ctx.Request()).Warnf("RegisterHandler - Auth: can not create Base user, err %s", err)
-				h.Error(ctx, http.StatusInternalServerError, handler_errors.InternalError)
 				return handler_errors.InternalError
 			}
 		} else {
