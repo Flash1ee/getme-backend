@@ -26,6 +26,7 @@ func (h *ErrorConvertor) UsecaseError(ctx echo.Context, usecaseErr error, codeBy
 	var generalError *app.GeneralError
 	//orginalError := usecaseErr
 	if errors.As(usecaseErr, &generalError) {
+		h.Log(ctx.Request()).Warnf("external error =  %v", errors.Cause(usecaseErr).(*app.GeneralError).ExternalErr)
 		usecaseErr = errors.Cause(usecaseErr).(*app.GeneralError).Err
 	}
 
