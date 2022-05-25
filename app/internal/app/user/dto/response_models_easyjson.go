@@ -241,7 +241,30 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto2(in *jlexer.Lexer, out
 		}
 		switch key {
 		case "skill":
-			out.Skill = string(in.String())
+			if in.IsNull() {
+				in.Skip()
+				out.Skill = nil
+			} else {
+				in.Delim('[')
+				if out.Skill == nil {
+					if !in.IsDelim(']') {
+						out.Skill = make([]string, 0, 4)
+					} else {
+						out.Skill = []string{}
+					}
+				} else {
+					out.Skill = (out.Skill)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v7 string
+					v7 = string(in.String())
+					out.Skill = append(out.Skill, v7)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "id":
+			out.ID = int64(in.Int64())
 		case "first_name":
 			out.FirstName = string(in.String())
 		case "last_name":
@@ -283,7 +306,23 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto2(out *jwriter.Writer, 
 	{
 		const prefix string = ",\"skill\":"
 		out.RawString(prefix[1:])
-		out.String(string(in.Skill))
+		if in.Skill == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v8, v9 := range in.Skill {
+				if v8 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v9))
+			}
+			out.RawByte(']')
+		}
+	}
+	{
+		const prefix string = ",\"id\":"
+		out.RawString(prefix)
+		out.Int64(int64(in.ID))
 	}
 	if in.FirstName != "" {
 		const prefix string = ",\"first_name\":"
@@ -315,12 +354,12 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto2(out *jwriter.Writer, 
 		out.RawString(prefix)
 		out.Bool(bool(in.IsSearchable))
 	}
-	{
+	if true {
 		const prefix string = ",\"created_at\":"
 		out.RawString(prefix)
 		out.Raw((in.CreatedAt).MarshalJSON())
 	}
-	{
+	if true {
 		const prefix string = ",\"updated_at\":"
 		out.RawString(prefix)
 		out.Raw((in.UpdatedAt).MarshalJSON())
@@ -370,6 +409,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto3(in *jlexer.Lexer, out
 			continue
 		}
 		switch key {
+		case "id":
+			out.ID = int64(in.Int64())
 		case "first_name":
 			out.FirstName = string(in.String())
 		case "last_name":
@@ -408,30 +449,24 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto3(out *jwriter.Writer, 
 	out.RawByte('{')
 	first := true
 	_ = first
+	{
+		const prefix string = ",\"id\":"
+		out.RawString(prefix[1:])
+		out.Int64(int64(in.ID))
+	}
 	if in.FirstName != "" {
 		const prefix string = ",\"first_name\":"
-		first = false
-		out.RawString(prefix[1:])
+		out.RawString(prefix)
 		out.String(string(in.FirstName))
 	}
 	if in.LastName != "" {
 		const prefix string = ",\"last_name\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.LastName))
 	}
 	{
 		const prefix string = ",\"nickname\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Nickname))
 	}
 	if in.About != "" {
@@ -449,12 +484,12 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto3(out *jwriter.Writer, 
 		out.RawString(prefix)
 		out.Bool(bool(in.IsSearchable))
 	}
-	{
+	if true {
 		const prefix string = ",\"created_at\":"
 		out.RawString(prefix)
 		out.Raw((in.CreatedAt).MarshalJSON())
 	}
-	{
+	if true {
 		const prefix string = ",\"updated_at\":"
 		out.RawString(prefix)
 		out.Raw((in.UpdatedAt).MarshalJSON())

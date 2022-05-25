@@ -19,9 +19,9 @@ type UserUsecase struct {
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
 }
-type UserWithSkillUsecase struct {
+type UserWithSkillsUsecase struct {
 	UserUsecase
-	Skill string
+	Skill []string
 }
 
 func (m *UserUsecase) ToUserEntity() *entities.User {
@@ -55,16 +55,24 @@ func ToUserUsecase(data *entities.User) *UserUsecase {
 	}
 }
 
-func ToUsersWithSkillUsecase(data []entities.UserWithSkill) []UserWithSkillUsecase {
-	res := make([]UserWithSkillUsecase, 0, len(data))
+func ToUsersWithSkillUsecase(data []entities.UserWithSkills) []UserWithSkillsUsecase {
+	res := make([]UserWithSkillsUsecase, 0, len(data))
 	for _, val := range data {
 		res = append(res, *ToUserWithSkillUsecase(&val))
 	}
 
 	return res
 }
-func ToUserWithSkillUsecase(data *entities.UserWithSkill) *UserWithSkillUsecase {
-	return &UserWithSkillUsecase{
+func ToUserWithSkillsUsecase(data []entities.UserWithSkills) []UserWithSkillsUsecase {
+	res := make([]UserWithSkillsUsecase, 0, len(data))
+	for _, val := range data {
+		res = append(res, *ToUserWithSkillUsecase(&val))
+	}
+
+	return res
+}
+func ToUserWithSkillUsecase(data *entities.UserWithSkills) *UserWithSkillsUsecase {
+	return &UserWithSkillsUsecase{
 		UserUsecase: UserUsecase{
 			ID:           data.ID,
 			FirstName:    data.FirstName.String,
@@ -77,6 +85,6 @@ func ToUserWithSkillUsecase(data *entities.UserWithSkill) *UserWithSkillUsecase 
 			CreatedAt:    data.CreatedAt,
 			UpdatedAt:    data.UpdatedAt,
 		},
-		Skill: data.Skill,
+		Skill: data.Skills,
 	}
 }

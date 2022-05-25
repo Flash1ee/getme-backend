@@ -37,6 +37,7 @@ func ToUpdateResponseFromUsecase(usr *dto.UserUsecase) *UpdateResponse {
 }
 func ToUserResponseFromUsecase(data *AuthUsecase) *dto.UserResponse {
 	return &dto.UserResponse{
+		ID:        data.ID,
 		FirstName: data.FirstName,
 		LastName:  data.LastName,
 		Nickname:  data.Username,

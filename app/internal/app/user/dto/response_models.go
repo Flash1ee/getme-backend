@@ -6,14 +6,15 @@ import "time"
 
 //easyjson:json
 type UserResponse struct {
+	ID           int64     `json:"id"`
 	FirstName    string    `json:"first_name,omitempty"`
 	LastName     string    `json:"last_name,omitempty"`
 	Nickname     string    `json:"nickname"`
 	About        string    `json:"about,omitempty"`
 	Avatar       string    `json:"avatar,omitempty"`
 	IsSearchable bool      `json:"is_mentor"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	CreatedAt    time.Time `json:"created_at,omitempty"`
+	UpdatedAt    time.Time `json:"updated_at,omitempty"`
 }
 
 //easyjson:json
@@ -24,7 +25,7 @@ type UsersResponse struct {
 //easyjson:json
 type UserWithSkillResponse struct {
 	UserResponse
-	Skill string `json:"skill"`
+	Skill []string `json:"skill"`
 }
 
 //easyjson:json
@@ -32,7 +33,7 @@ type UsersWithSkillResponse struct {
 	Users []UserWithSkillResponse `json:"users"`
 }
 
-func ToUsersWithSkillResponse(users []UserWithSkillUsecase) UsersWithSkillResponse {
+func ToUsersWithSkillResponse(users []UserWithSkillsUsecase) UsersWithSkillResponse {
 	res := UsersWithSkillResponse{}
 	for _, val := range users {
 		res.Users = append(res.Users, ToUserWithSkillResponse(&val))
@@ -40,9 +41,10 @@ func ToUsersWithSkillResponse(users []UserWithSkillUsecase) UsersWithSkillRespon
 	return res
 }
 
-func ToUserWithSkillResponse(user *UserWithSkillUsecase) UserWithSkillResponse {
+func ToUserWithSkillResponse(user *UserWithSkillsUsecase) UserWithSkillResponse {
 	return UserWithSkillResponse{
 		UserResponse: UserResponse{
+			ID:           user.ID,
 			FirstName:    user.FirstName,
 			LastName:     user.LastName,
 			Nickname:     user.Nickname,
@@ -58,6 +60,7 @@ func ToUserWithSkillResponse(user *UserWithSkillUsecase) UserWithSkillResponse {
 }
 func ToUserResponse(user *UserUsecase) UserResponse {
 	return UserResponse{
+		ID:           user.ID,
 		FirstName:    user.FirstName,
 		LastName:     user.LastName,
 		Nickname:     user.Nickname,

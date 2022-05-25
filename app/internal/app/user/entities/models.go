@@ -22,3 +22,8 @@ type UserWithSkill struct {
 	User
 	Skill string `db:"skill_name"`
 }
+
+type UserWithSkills struct {
+	User
+	Skills []string `db:"skill_name"`
+}
