@@ -19,7 +19,7 @@ tags:
   - name: "skills"
     description: "Взаимодействия с скиллами"
 schemes:
-#  - "https"
+  #  - "https"
   - "http"
 paths:
   /user:
@@ -29,7 +29,7 @@ paths:
       summary: "Получение данных текущего пользователя"
       description: "Получение данных текущего пользователя"
       produces:
-          - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "Данные пользователя"
@@ -68,7 +68,7 @@ paths:
           description: "Ошибка сервера"
           schema:
             $ref: '#/definitions/ErrResponse'
-  /user/{:id}:
+  /user/{:user_id}:
     get:
       tags:
         - "user"
@@ -77,7 +77,7 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - description: id
+        - description: user_id
           in: path
           name: user_id
           required: true
@@ -113,9 +113,9 @@ paths:
           schema:
             $ref: '#/definitions/SkillsResponse'
         "500":
-            description: "Ошибка сервера"
-            schema:
-              $ref: '#/definitions/ErrResponse'
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
   /skills/users:
     get:
       tags:
@@ -410,8 +410,11 @@ definitions:
       user:
         type: object
         $ref: '#/definitions/User'
-      skill:
-        type: string
+      skills:
+        type: array
+        items:
+          type: string
+        example: ['frontend', "backend"]
     type: object
   UsersWithSkillResponse:
     properties:
