@@ -40,7 +40,6 @@ func ToUserResponseFromUsecase(data *AuthUsecase) *dto.UserResponse {
 		ID:        data.ID,
 		FirstName: data.FirstName,
 		LastName:  data.LastName,
-		Nickname:  data.Username,
 		Avatar:    data.Avatar,
 	}
 }

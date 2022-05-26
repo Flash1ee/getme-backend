@@ -21,7 +21,7 @@ type UserUsecase struct {
 }
 type UserWithSkillsUsecase struct {
 	UserUsecase
-	Skill []string
+	Skills []string
 }
 
 func (m *UserUsecase) ToUserEntity() *entities.User {
@@ -85,6 +85,6 @@ func ToUserWithSkillUsecase(data *entities.UserWithSkills) *UserWithSkillsUsecas
 			CreatedAt:    data.CreatedAt,
 			UpdatedAt:    data.UpdatedAt,
 		},
-		Skill: data.Skills,
+		Skills: data.Skills,
 	}
 }

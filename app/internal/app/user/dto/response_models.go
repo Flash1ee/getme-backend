@@ -1,20 +1,15 @@
 package dto
 
-import "time"
-
 //go:generate easyjson -all -disallow_unknown_fields response_models.go
 
 //easyjson:json
 type UserResponse struct {
-	ID           int64     `json:"id"`
-	FirstName    string    `json:"first_name,omitempty"`
-	LastName     string    `json:"last_name,omitempty"`
-	Nickname     string    `json:"nickname"`
-	About        string    `json:"about,omitempty"`
-	Avatar       string    `json:"avatar,omitempty"`
-	IsSearchable bool      `json:"is_mentor"`
-	CreatedAt    time.Time `json:"created_at,omitempty"`
-	UpdatedAt    time.Time `json:"updated_at,omitempty"`
+	ID           int64  `json:"id"`
+	FirstName    string `json:"first_name,omitempty"`
+	LastName     string `json:"last_name,omitempty"`
+	About        string `json:"about,omitempty"`
+	Avatar       string `json:"avatar,omitempty"`
+	IsSearchable bool   `json:"is_mentor"`
 }
 
 //easyjson:json
@@ -25,7 +20,7 @@ type UsersResponse struct {
 //easyjson:json
 type UserWithSkillResponse struct {
 	UserResponse
-	Skill []string `json:"skill"`
+	Skills []string `json:"skills"`
 }
 
 //easyjson:json
@@ -47,14 +42,11 @@ func ToUserWithSkillResponse(user *UserWithSkillsUsecase) UserWithSkillResponse 
 			ID:           user.ID,
 			FirstName:    user.FirstName,
 			LastName:     user.LastName,
-			Nickname:     user.Nickname,
 			About:        user.About,
 			Avatar:       user.Avatar,
 			IsSearchable: user.IsSearchable,
-			CreatedAt:    user.CreatedAt,
-			UpdatedAt:    user.UpdatedAt,
 		},
-		Skill: user.Skill,
+		Skills: user.Skills,
 	}
 
 }
@@ -63,11 +55,8 @@ func ToUserResponse(user *UserUsecase) UserResponse {
 		ID:           user.ID,
 		FirstName:    user.FirstName,
 		LastName:     user.LastName,
-		Nickname:     user.Nickname,
 		About:        user.About,
 		Avatar:       user.Avatar,
 		IsSearchable: user.IsSearchable,
-		CreatedAt:    user.CreatedAt,
-		UpdatedAt:    user.UpdatedAt,
 	}
 }

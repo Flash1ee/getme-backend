@@ -240,25 +240,25 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto2(in *jlexer.Lexer, out
 			continue
 		}
 		switch key {
-		case "skill":
+		case "skills":
 			if in.IsNull() {
 				in.Skip()
-				out.Skill = nil
+				out.Skills = nil
 			} else {
 				in.Delim('[')
-				if out.Skill == nil {
+				if out.Skills == nil {
 					if !in.IsDelim(']') {
-						out.Skill = make([]string, 0, 4)
+						out.Skills = make([]string, 0, 4)
 					} else {
-						out.Skill = []string{}
+						out.Skills = []string{}
 					}
 				} else {
-					out.Skill = (out.Skill)[:0]
+					out.Skills = (out.Skills)[:0]
 				}
 				for !in.IsDelim(']') {
 					var v7 string
 					v7 = string(in.String())
-					out.Skill = append(out.Skill, v7)
+					out.Skills = append(out.Skills, v7)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -269,22 +269,12 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto2(in *jlexer.Lexer, out
 			out.FirstName = string(in.String())
 		case "last_name":
 			out.LastName = string(in.String())
-		case "nickname":
-			out.Nickname = string(in.String())
 		case "about":
 			out.About = string(in.String())
 		case "avatar":
 			out.Avatar = string(in.String())
 		case "is_mentor":
 			out.IsSearchable = bool(in.Bool())
-		case "created_at":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.CreatedAt).UnmarshalJSON(data))
-			}
-		case "updated_at":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.UpdatedAt).UnmarshalJSON(data))
-			}
 		default:
 			in.AddError(&jlexer.LexerError{
 				Offset: in.GetPos(),
@@ -304,13 +294,13 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto2(out *jwriter.Writer, 
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"skill\":"
+		const prefix string = ",\"skills\":"
 		out.RawString(prefix[1:])
-		if in.Skill == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+		if in.Skills == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v8, v9 := range in.Skill {
+			for v8, v9 := range in.Skills {
 				if v8 > 0 {
 					out.RawByte(',')
 				}
@@ -334,11 +324,6 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto2(out *jwriter.Writer, 
 		out.RawString(prefix)
 		out.String(string(in.LastName))
 	}
-	{
-		const prefix string = ",\"nickname\":"
-		out.RawString(prefix)
-		out.String(string(in.Nickname))
-	}
 	if in.About != "" {
 		const prefix string = ",\"about\":"
 		out.RawString(prefix)
@@ -353,16 +338,6 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto2(out *jwriter.Writer, 
 		const prefix string = ",\"is_mentor\":"
 		out.RawString(prefix)
 		out.Bool(bool(in.IsSearchable))
-	}
-	if true {
-		const prefix string = ",\"created_at\":"
-		out.RawString(prefix)
-		out.Raw((in.CreatedAt).MarshalJSON())
-	}
-	if true {
-		const prefix string = ",\"updated_at\":"
-		out.RawString(prefix)
-		out.Raw((in.UpdatedAt).MarshalJSON())
 	}
 	out.RawByte('}')
 }
@@ -415,22 +390,12 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto3(in *jlexer.Lexer, out
 			out.FirstName = string(in.String())
 		case "last_name":
 			out.LastName = string(in.String())
-		case "nickname":
-			out.Nickname = string(in.String())
 		case "about":
 			out.About = string(in.String())
 		case "avatar":
 			out.Avatar = string(in.String())
 		case "is_mentor":
 			out.IsSearchable = bool(in.Bool())
-		case "created_at":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.CreatedAt).UnmarshalJSON(data))
-			}
-		case "updated_at":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.UpdatedAt).UnmarshalJSON(data))
-			}
 		default:
 			in.AddError(&jlexer.LexerError{
 				Offset: in.GetPos(),
@@ -464,11 +429,6 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto3(out *jwriter.Writer, 
 		out.RawString(prefix)
 		out.String(string(in.LastName))
 	}
-	{
-		const prefix string = ",\"nickname\":"
-		out.RawString(prefix)
-		out.String(string(in.Nickname))
-	}
 	if in.About != "" {
 		const prefix string = ",\"about\":"
 		out.RawString(prefix)
@@ -483,16 +443,6 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto3(out *jwriter.Writer, 
 		const prefix string = ",\"is_mentor\":"
 		out.RawString(prefix)
 		out.Bool(bool(in.IsSearchable))
-	}
-	if true {
-		const prefix string = ",\"created_at\":"
-		out.RawString(prefix)
-		out.Raw((in.CreatedAt).MarshalJSON())
-	}
-	if true {
-		const prefix string = ",\"updated_at\":"
-		out.RawString(prefix)
-		out.Raw((in.UpdatedAt).MarshalJSON())
 	}
 	out.RawByte('}')
 }
