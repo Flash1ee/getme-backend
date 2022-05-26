@@ -47,7 +47,9 @@ func (h *UserHandler) GET(ctx echo.Context) error {
 		ctx.Response().WriteHeader(http.StatusBadRequest)
 		return nil
 	}
-	req.Skills = strings.Split(req.Skills[0], ",")
+	if len(req.Skills) == 1 {
+		req.Skills = strings.Split(req.Skills[0], ",")
+	}
 
 	users, err := h.skillUsecase.GetUsersBySkills(req.ToSkillUsecase())
 	if err != nil {
