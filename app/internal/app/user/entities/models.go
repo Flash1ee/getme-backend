@@ -20,7 +20,7 @@ type User struct {
 
 type UserWithSkill struct {
 	User
-	Skill string `db:"skill_name"`
+	Skill sql.NullString `db:"skill_name"`
 }
 
 type UserWithSkills struct {

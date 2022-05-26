@@ -51,6 +51,6 @@ func (h *UserByIDHandler) GET(ctx echo.Context) error {
 		h.UsecaseError(ctx, err, codeByErrorGET)
 		return err
 	}
-	h.Respond(ctx, http.StatusOK, dto.ToUserResponse(res))
+	h.Respond(ctx, http.StatusOK, dto.ToUserWithSkillsResponse(res))
 	return nil
 }

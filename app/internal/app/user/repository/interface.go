@@ -12,7 +12,7 @@ type Repository interface {
 	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	FindByID(id int64) (*entities.User, error)
+	FindByID(id int64) (*[]entities.UserWithSkill, error)
 	//	FindByNickname with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB

@@ -40,13 +40,17 @@ func (u *UserUsecase) CreateFilledUser(data *dto.UserUsecase) (int64, error) {
 
 	return us, err
 }
-func (u *UserUsecase) FindByID(id int64) (*dto.UserUsecase, error) {
+func (u *UserUsecase) FindByID(id int64) (*dto.UserWithSkillsUsecase, error) {
 	user, err := u.userRepository.FindByID(id)
 	if err != nil {
 		return nil, err
 	}
+	if user == nil {
+		return &dto.UserWithSkillsUsecase{}, nil
+	}
+	res := filterUsersData(*user)
 
-	return dto.ToUserUsecase(user), nil
+	return dto.ToUserWithSkillUsecase(res), nil
 }
 
 func (u *UserUsecase) UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error) {

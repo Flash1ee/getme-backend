@@ -18,26 +18,28 @@ type UsersResponse struct {
 }
 
 //easyjson:json
-type UserWithSkillResponse struct {
+type UserWithSkillsResponse struct {
 	UserResponse
 	Skills []string `json:"skills"`
 }
 
 //easyjson:json
 type UsersWithSkillResponse struct {
-	Users []UserWithSkillResponse `json:"users"`
+	Users []UserWithSkillsResponse `json:"users"`
 }
 
 func ToUsersWithSkillResponse(users []UserWithSkillsUsecase) UsersWithSkillResponse {
-	res := UsersWithSkillResponse{}
+	res := UsersWithSkillResponse{
+		Users: []UserWithSkillsResponse{},
+	}
 	for _, val := range users {
-		res.Users = append(res.Users, ToUserWithSkillResponse(&val))
+		res.Users = append(res.Users, ToUserWithSkillsResponse(&val))
 	}
 	return res
 }
 
-func ToUserWithSkillResponse(user *UserWithSkillsUsecase) UserWithSkillResponse {
-	return UserWithSkillResponse{
+func ToUserWithSkillsResponse(user *UserWithSkillsUsecase) UserWithSkillsResponse {
+	return UserWithSkillsResponse{
 		UserResponse: UserResponse{
 			ID:           user.ID,
 			FirstName:    user.FirstName,

@@ -52,7 +52,9 @@ func filterUsersData(users []entities.UserWithSkill) []entities.UserWithSkills {
 	res := make([]entities.User, 0)
 	resFinal := make([]entities.UserWithSkills, 0)
 	for _, val := range users {
-		skills[val.ID] = append(skills[val.ID], val.Skill)
+		if val.Skill.Valid {
+			skills[val.ID] = append(skills[val.ID], val.Skill.String)
+		}
 		if _, ok := ids[val.ID]; !ok {
 			ids[val.ID] = struct{}{}
 			res = append(res, val.User)

@@ -110,24 +110,31 @@ func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error)
 
 }
 
-const queryFindByID = `
-SELECT * from users where id = ?;`
+//const queryFindByID = `
+//SELECT * from users where id = ?;`
+
+const queryFindByID = `SELECT first_name, last_name, about, avatar, is_searchable, skill_name from users 
+    left join users_skills us on users.id = us.user_id 
+    left join skills s on us.skill_name = s.name 
+	where users.id = ?;
+`
 
 //	FindByID with Errors:
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
+func (repo *UserRepository) FindByID(id int64) (*[]entities.UserWithSkill, error) {
 	query := repo.store.Rebind(queryFindByID)
-	user := &entities.User{}
+	user := &[]entities.UserWithSkill{}
 
-	err := repo.store.Get(user, query, id)
+	err := repo.store.Select(user, query, id)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, postgresql_utilits.NotFound
-		}
 		return nil, postgresql_utilits.NewDBError(err)
 	}
+	if len(*user) == 0 {
+		return nil, postgresql_utilits.NotFound
+	}
+
 	return user, nil
 }
 

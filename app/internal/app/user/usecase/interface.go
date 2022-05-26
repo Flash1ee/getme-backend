@@ -11,7 +11,7 @@ type Usecase interface {
 	//	FindByID with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	FindByID(id int64) (*dto.UserUsecase, error)
+	FindByID(id int64) (*dto.UserWithSkillsUsecase, error)
 	FindByNickname(nickname string) (*entities.User, error)
 	CreateBaseUser(nickname string) (int64, error)
 	CreateFilledUser(data *dto.UserUsecase) (int64, error)
