@@ -48,6 +48,7 @@ type AuthSimpleRequest struct {
 	Password string `json:"password" validate:"required"`
 }
 
+//@TODO Firstname + Lastname, иначе в бд пусто. а ник не отдаю
 //easyjson:json
 type AuthSimpleRegistrationRequest struct {
 	Login    string `json:"login" validate:"required,alphanumunicode, min=5, max=25"`

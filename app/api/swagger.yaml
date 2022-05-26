@@ -34,7 +34,7 @@ paths:
         "200":
           description: "Данные пользователя"
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/UserWithSkillResponse'
         "500":
           description: "Ошибка сервера"
           schema:
@@ -364,14 +364,18 @@ definitions:
   User:
     type: "object"
     properties:
-      nickname:
+      id:
+        type: "integer"
+      first_name:
         type: "string"
-      fullname:
+      last_name:
         type: "string"
       about:
         type: "string"
-      email:
+      avatar:
         type: "string"
+      is_mentor:
+        type: "boolean"
   RequestLogin:
     properties:
       login:
