@@ -10,6 +10,8 @@ basePath: "/api/v1/"
 tags:
   - name: "mentor"
     description: "Взаимодействия с менторами"
+  - name: "offer"
+    description: "Работа с заявками на менторство"
   - name: "plan"
     description: "Взаимодействия с планом развития"
   - name: "user"
@@ -22,6 +24,61 @@ schemes:
   #  - "https"
   - "http"
 paths:
+  /offers:
+    get:
+      tags:
+        - "offer"
+      summary: "Список подавших заявку к ментору менти"
+      description:  "Список подавших заявку к ментору менти"
+      responses:
+        "200":
+          description: "Список менти"
+          schema:
+            $ref: '#/definitions/UsersResponse'
+        "404":
+          description: "Пользователь с данным id не ментор"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - description: "Тело запроса с данными для заявки на менторство"
+          in: body
+          name: offer
+          required: true
+          schema:
+            $ref: '#/definitions/RequestOffer'
+    post:
+      tags:
+        - "offer"
+      summary: "Подать заявку к ментору"
+      description: "Запись к ментору"
+      responses:
+        "200":
+          description: "Запись успешна"
+          schema:
+            $ref: '#/definitions/OfferIDResponse'
+        "404":
+          description: "Ментор с данным ID не найден или скилл с таким именем не существует"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "409":
+          description: "Заявка от к ментору уже существует"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+      produces:
+        - "application/json"
+
   /user:
     get:
       tags:
@@ -395,6 +452,11 @@ definitions:
       id:
         type: integer
     type: object
+  OfferIDResponse:
+    properties:
+      offer_id:
+        type: integer
+    type: object
   SkillResponse:
     properties:
       name:
@@ -427,6 +489,13 @@ definitions:
           $ref: '#/definitions/UserWithSkillResponse'
         type: array
     type: object
+  UsersResponse:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/User'
+        type: array
+    type: object
   RequestUserUpdate:
     properties:
       first_name:
@@ -435,6 +504,12 @@ definitions:
         type: string
       about:
         type: string
+  RequestOffer:
+      properties:
+        skill_name:
+          type: string
+        mentor_id:
+          type: integer
 
 
 
