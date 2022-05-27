@@ -48,7 +48,8 @@ const checkExistsSkill = "SELECT count(*) from skills where name = ?;"
 // 			postgresql_utilits.DefaultErrDB
 func (repo *SkillRepository) CheckExists(skillName string) error {
 	cnt := int64(0)
-	if err := repo.store.Get(&cnt, checkExistsSkill, skillName); err != nil {
+	query := repo.store.Rebind(checkExistsSkill)
+	if err := repo.store.Get(&cnt, query, skillName); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return postgresql_utilits.NotFound
 		}
