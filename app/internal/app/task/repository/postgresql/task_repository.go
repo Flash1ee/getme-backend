@@ -1,4 +1,4 @@
-package postgresql
+package task_postgresql
 
 import (
 	"github.com/jmoiron/sqlx"

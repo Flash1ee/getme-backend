@@ -52,7 +52,7 @@ func ToUserWithSkillsResponse(user *UserWithSkillsUsecase) UserWithSkillsRespons
 	}
 
 }
-func ToUserResponse(user *UserUsecase) UserResponse {
+func ToUserResponse(user UserUsecase) UserResponse {
 	return UserResponse{
 		ID:           user.ID,
 		FirstName:    user.FirstName,
@@ -61,4 +61,13 @@ func ToUserResponse(user *UserUsecase) UserResponse {
 		Avatar:       user.Avatar,
 		IsSearchable: user.IsSearchable,
 	}
+}
+func ToUsersResponse(user []UserUsecase) UsersResponse {
+	res := &UsersResponse{
+		Users: make([]UserResponse, 0),
+	}
+	for _, val := range user {
+		res.Users = append(res.Users, ToUserResponse(val))
+	}
+	return *res
 }

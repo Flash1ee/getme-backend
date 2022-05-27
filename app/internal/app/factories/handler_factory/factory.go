@@ -10,6 +10,7 @@ import (
 	logout_handler "getme-backend/internal/app/auth/delivery/http/handlers/logout"
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/simple_register_handler"
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/telegram_register_handler"
+	"getme-backend/internal/app/offer/delivery/http/offer_handler"
 	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
 	skills_user_handler "getme-backend/internal/app/skill/delivery/http/skills/user_handler"
 	"getme-backend/internal/app/token/delivery/http/handlers/token_handler"
@@ -29,6 +30,7 @@ const (
 	PROFILE
 	PROFILE_ID
 	USER_SKILLS
+	OFFERS
 )
 
 type HandlerFactory struct {
@@ -51,6 +53,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 	tokenUsecase := f.usecaseFactory.GetTokenUsecase()
 	authUsecase := f.usecaseFactory.GetAuthUsecase()
 	skillUsecase := f.usecaseFactory.GetSkillUsecase()
+	offersUsecase := f.usecaseFactory.GetOfferUsecase()
 
 	sClient := client.NewSessionClient(f.sessionClientConn)
 	return map[int]app.Handler{
@@ -64,6 +67,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		PROFILE:         user_profile_handler.NewProfileHandler(f.logger, sClient, ucUsecase),
 		USER_SKILLS:     skills_user_handler.NewUserHandler(f.logger, sClient, skillUsecase),
 		PROFILE_ID:      user_by_id_handler.NewUserByIDHandler(f.logger, sClient, ucUsecase),
+		OFFERS:          offer_handler.NewOfferHandler(f.logger, sClient, offersUsecase),
 	}
 }
 
@@ -87,6 +91,8 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		//=============user=============//
 		"/user":     hs[PROFILE],
 		"/user/:id": hs[PROFILE_ID],
+		//=============offers=============//
+		"/offers": hs[OFFERS],
 	}
 	return f.urlHandler
 }

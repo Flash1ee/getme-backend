@@ -1,7 +1,10 @@
-package repository_postgresql
+package skill_repository_postgresql
 
 import (
+	"database/sql"
+
 	"github.com/jmoiron/sqlx"
+	"github.com/pkg/errors"
 
 	"getme-backend/internal/app/skill/entities"
 	postgresql_utilits "getme-backend/internal/pkg/utilits/postgresql"
@@ -23,7 +26,7 @@ const queryGetAllSkills = `select name from skills;`
 
 // GetAllSkills Errors:
 // 		app.GeneralError with Errors:
-// 			repository.DefaultErrDB
+// 			postgresql_utilits.DefaultErrDB
 func (repo *SkillRepository) GetAllSkills() ([]entities.Skill, error) {
 	res := make([]entities.Skill, 0, defaultCountSkills)
 
@@ -34,4 +37,26 @@ func (repo *SkillRepository) GetAllSkills() ([]entities.Skill, error) {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
 	return res, nil
+}
+
+const checkExistsSkill = "SELECT count(*) from skills where name = ?;"
+
+// CheckExists Errors:
+//		postgresql_utilits.Exists
+//		postgresql_utilits.NotFound
+// 		app.GeneralError with Errors:
+// 			postgresql_utilits.DefaultErrDB
+func (repo *SkillRepository) CheckExists(skillName string) error {
+	cnt := int64(0)
+	if err := repo.store.Get(&cnt, checkExistsSkill, skillName); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return postgresql_utilits.NotFound
+		}
+		return postgresql_utilits.NewDBError(errors.Wrap(err, "CheckExists skill_repository"))
+	}
+
+	if cnt != 0 {
+		return postgresql_utilits.Exists
+	}
+	return postgresql_utilits.NotFound
 }

@@ -7,6 +7,8 @@ import (
 	"getme-backend/internal/app/auth/services/telegram-checker"
 	authUs "getme-backend/internal/app/auth/usecase"
 	"getme-backend/internal/app/auth/usecase/auth_usecase"
+	offerUs "getme-backend/internal/app/offer/usecase"
+	offer_usecase "getme-backend/internal/app/offer/usecase/usecase"
 	skillUs "getme-backend/internal/app/skill/usecase"
 	"getme-backend/internal/app/skill/usecase/skill_usecase"
 	tokenUs "getme-backend/internal/app/token/usecase"
@@ -22,6 +24,7 @@ type UsecaseFactory struct {
 	tokenUsecase      tokenUs.Usecase
 	authUsecase       authUs.Usecase
 	skillUsecase      skillUs.Usecase
+	offersUsecase     offerUs.Usecase
 
 	authChecker *telegram_checker.TelegramChecker
 }
@@ -60,4 +63,11 @@ func (f *UsecaseFactory) GetSkillUsecase() skillUs.Usecase {
 	}
 
 	return f.skillUsecase
+}
+func (f *UsecaseFactory) GetOfferUsecase() offerUs.Usecase {
+	if f.offersUsecase == nil {
+		f.offersUsecase = offer_usecase.NewOfferUsecase(f.repositoryFactory.GetOfferRepository(), f.repositoryFactory.GetUserRepository(), f.repositoryFactory.GetSkillRepository())
+	}
+
+	return f.offersUsecase
 }

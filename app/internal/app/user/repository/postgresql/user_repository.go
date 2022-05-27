@@ -2,9 +2,11 @@ package repository_postgresql
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
+	"github.com/pkg/errors"
 
 	skill_entities "getme-backend/internal/app/skill/entities"
 	"getme-backend/internal/app/user/entities"
@@ -138,6 +140,27 @@ func (repo *UserRepository) FindByID(id int64) (*[]entities.UserWithSkill, error
 	return user, nil
 }
 
+const queryIsMentor = ` and is_searchable = true;`
+
+//	FindMentorByID with Errors:
+//		postgresql_utilits.NotFound
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *UserRepository) FindMentorByID(id int64) (*[]entities.UserWithSkill, error) {
+	query := repo.store.Rebind(queryFindByID + queryIsMentor)
+
+	usersWithSkills := &[]entities.UserWithSkill{}
+	err := repo.store.Select(usersWithSkills, query, id)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	if len(*usersWithSkills) == 0 {
+		return nil, postgresql_utilits.NotFound
+	}
+
+	return usersWithSkills, nil
+}
+
 const queryUpdateUser = `update users set
     first_name = COALESCE(NULLIF(TRIM(?), ''), first_name),
     last_name = COALESCE(NULLIF(TRIM(?), ''), last_name),
@@ -196,4 +219,23 @@ func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]ent
 	}
 
 	return *usersWithSkills, nil
+}
+
+const queryGetMenteeByOffers = `
+SELECT first_name, last_name, about, avatar, is_searchable from users join getme_db.public.offers
+    on users.id = offers.mentee_id and offers.mentor_id = ?;`
+
+//	GetMenteeByMentor with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (r *UserRepository) GetMenteeByMentor(mentorID int64) ([]entities.User, error) {
+	users := &[]entities.User{}
+
+	query := r.store.Rebind(queryGetMenteeByOffers)
+
+	if err := r.store.Select(users, query, mentorID); err != nil {
+		return nil, postgresql_utilits.NewDBError(errors.Wrap(err, fmt.Sprintf("UserRepository: GetMenteeByMentor(%v)", mentorID)))
+	}
+
+	return *users, nil
 }

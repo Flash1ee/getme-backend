@@ -13,6 +13,9 @@ type Repository interface {
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	FindByID(id int64) (*[]entities.UserWithSkill, error)
+
+	FindMentorByID(id int64) (*[]entities.UserWithSkill, error)
+
 	//	FindByNickname with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
@@ -32,4 +35,8 @@ type Repository interface {
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error)
+	//	GetMenteeByMentor with Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	GetMenteeByMentor(mentorID int64) ([]entities.User, error)
 }

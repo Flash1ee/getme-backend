@@ -40,6 +40,13 @@ func (m *UserUsecase) ToUserEntity() *entities.User {
 	}
 }
 
+func ToUserUsecases(data []entities.User) []UserUsecase {
+	res := make([]UserUsecase, 0, len(data))
+	for _, val := range data {
+		res = append(res, *ToUserUsecase(&val))
+	}
+	return res
+}
 func ToUserUsecase(data *entities.User) *UserUsecase {
 	return &UserUsecase{
 		ID:           data.ID,
