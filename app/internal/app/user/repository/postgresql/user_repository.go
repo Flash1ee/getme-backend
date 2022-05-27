@@ -199,6 +199,14 @@ select skill_name from users_skills where user_id = us.user_id and skill_name IN
 func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error) {
 	skills := getSkillNameFromSkills(data)
 	usersWithSkills := &[]entities.UserWithSkill{}
+	if len(skills) == 0 {
+		query := repo.store.Rebind(queryGetUsersBySkillsAll)
+		if err := repo.store.Select(usersWithSkills, query); err != nil {
+			return nil, postgresql_utilits.NewDBError(err)
+		}
+		return *usersWithSkills, nil
+	}
+
 	queryFirst, args, err := sqlx.In(queryGetUsersBySkill, skills)
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
@@ -215,18 +223,13 @@ func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]ent
 	queryArgs = append(queryArgs, args...)
 	//queryArgs = append(queryArgs, args...)
 
-	if err = repo.store.Select(usersWithSkills, query, queryArgs...); err != nil || len(*usersWithSkills) == 0 {
-		if !errors.Is(err, sql.ErrNoRows) && err != nil {
-			return nil, postgresql_utilits.NewDBError(err)
-		}
-		query := repo.store.Rebind(queryGetUsersBySkillsAll)
-		err = repo.store.Select(usersWithSkills, query)
-		if err != nil {
+	if err = repo.store.Select(usersWithSkills, query, queryArgs...); err != nil {
+		if !errors.Is(err, sql.ErrNoRows) {
 			return nil, postgresql_utilits.NewDBError(err)
 		}
 	}
-
 	return *usersWithSkills, nil
+
 }
 
 const queryGetMenteeByOffers = `

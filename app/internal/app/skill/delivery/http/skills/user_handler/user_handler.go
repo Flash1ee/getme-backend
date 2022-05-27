@@ -42,11 +42,11 @@ func (h *UserHandler) GET(ctx echo.Context) error {
 		return nil
 	}
 
-	if len(req.Skills) == 0 {
-		h.Log(ctx.Request()).Errorf("SKILLS Handler : No skills in query params %v\n", req.Skills)
-		ctx.Response().WriteHeader(http.StatusBadRequest)
-		return nil
-	}
+	//if len(req.Skills) == 0 {
+	//	h.Log(ctx.Request()).Errorf("SKILLS Handler : No skills in query params %v\n", req.Skills)
+	//	ctx.Response().WriteHeader(http.StatusBadRequest)
+	//	return nil
+	//}
 	if len(req.Skills) == 1 {
 		req.Skills = strings.Split(req.Skills[0], ",")
 	}
