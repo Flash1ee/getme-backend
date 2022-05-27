@@ -7,4 +7,5 @@ var (
 	MentorNotExist = errors.New("mentor with this ID not exits")
 	NotMentor      = errors.New("this user not mentor")
 	AlreadyExists  = errors.New("offer from this mentee to this mentor already exists")
+	LogicError     = errors.New("mentor = mentee - logic error")
 )

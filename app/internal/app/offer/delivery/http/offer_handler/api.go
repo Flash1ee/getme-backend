@@ -12,13 +12,15 @@ import (
 	postgresql_utilits "getme-backend/internal/pkg/utilits/postgresql"
 )
 
-var codeByErrPOST = delivery.CodeMap{
+var codeByErrGET = delivery.CodeMap{
 	offer_usecase.NotMentor: {
 		http.StatusNotFound, UserNotMentor, logrus.ErrorLevel},
 	postgresql_utilits.DefaultErrDB: {
 		http.StatusInternalServerError, handler_errors.BDError, logrus.ErrorLevel},
 }
-var codeByErrGET = delivery.CodeMap{
+var codeByErrPOST = delivery.CodeMap{
+	offer_usecase.LogicError: {
+		http.StatusBadRequest, LogicError, logrus.ErrorLevel},
 	offer_usecase.AlreadyExists: {
 		http.StatusConflict, OfferAlreadyExists, logrus.ErrorLevel},
 	skill_usecase.SkillNotExists: {

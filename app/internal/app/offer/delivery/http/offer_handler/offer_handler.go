@@ -29,8 +29,8 @@ func NewOfferHandler(log *logrus.Logger, sClient session_client.AuthCheckerClien
 		offerUsecase:  offerUs,
 	}
 
-	h.AddMethod(http.MethodGet, h.POST, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(sClient, log).CheckFunc))
-	h.AddMethod(http.MethodPost, h.GET, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(sClient, log).CheckFunc))
+	h.AddMethod(http.MethodGet, h.GET, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(sClient, log).CheckFunc))
+	h.AddMethod(http.MethodPost, h.POST, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(sClient, log).CheckFunc))
 
 	return h
 }
@@ -66,6 +66,12 @@ func (h *OfferHandler) POST(ctx echo.Context) error {
 		h.Log(ctx.Request()).Warnf("can not parse request %s", err)
 		h.Error(ctx, http.StatusUnprocessableEntity, handler_errors.InvalidBody)
 		return handler_errors.InvalidBody
+	}
+	err = h.Validator.Struct(req)
+	if err != nil {
+		h.Log(ctx.Request()).Warnf("validator %v\ndata = %v", err, req)
+		h.Error(ctx, http.StatusUnprocessableEntity, handler_errors.InvalidBody)
+		return err
 	}
 	usecaseDTO := dto.ToOfferUsecaseDTO(*req)
 	usecaseDTO.MenteeID = userID

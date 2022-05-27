@@ -5,6 +5,6 @@ package dto
 //easyjson:json
 type RequestCreateOffer struct {
 	//SkillName string `json:"skill_name" validate:"required,min=2,alphanumunicode"`
-	SkillName string `json:"skill_name" validate:"alphanumunicode"`
+	SkillName string `json:"skill_name"`
 	MentorID  int64  `json:"mentor_id" validate:"required,min=0"`
 }

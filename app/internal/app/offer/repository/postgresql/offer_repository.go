@@ -31,7 +31,7 @@ func (r *OfferRepository) Create(data *entities.Offer) (int64, error) {
 	id := int64(-1)
 	query := r.store.Rebind(queryCreateOffer)
 
-	if err := r.store.QueryRowx(query, data).Scan(&id); err != nil {
+	if err := r.store.QueryRowx(query, data.SkillName, data.MentorID, data.MenteeID).Scan(&id); err != nil {
 		return id, postgresql_utilits.NewDBError(err)
 	}
 	return id, nil
@@ -49,7 +49,8 @@ const checkExistsOffer = "SELECT count(*) from getme_db.public.offers where ment
 // 			postgresql_utilits.DefaultErrDB
 func (repo *OfferRepository) CheckExists(menteeID, mentorID int64) error {
 	cnt := int64(0)
-	if err := repo.store.Get(&cnt, checkExistsOffer, menteeID, mentorID); err != nil {
+	query := repo.store.Rebind(checkExistsOffer)
+	if err := repo.store.Get(&cnt, query, menteeID, mentorID); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return postgresql_utilits.NotFound
 		}

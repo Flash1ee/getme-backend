@@ -115,7 +115,7 @@ func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error)
 //const queryFindByID = `
 //SELECT * from users where id = ?;`
 
-const queryFindByID = `SELECT first_name, last_name, about, avatar, is_searchable, skill_name from users 
+const queryFindByID = `SELECT users.id, first_name, last_name, about, avatar, is_searchable, skill_name from users 
     left join users_skills us on users.id = us.user_id 
     left join skills s on us.skill_name = s.name 
 	where users.id = ?;

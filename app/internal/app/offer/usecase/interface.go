@@ -9,6 +9,7 @@ type Usecase interface {
 	//	Create with Errors:
 	// 	skill_usecase.SkillNotExists
 	// 	offer_usecase.MentorNotExist
+	//	offer_usecase.LogicError
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	Create(data *dto.OfferUsecaseDTO) (int64, error)

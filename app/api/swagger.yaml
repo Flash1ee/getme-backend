@@ -64,6 +64,10 @@ paths:
           description: "Запись успешна"
           schema:
             $ref: '#/definitions/OfferIDResponse'
+        "400":
+          description: "Логическая ошибка = ментор и менти должны быть разными"
+          schema:
+            $ref: '#/definitions/ErrResponse'
         "404":
           description: "Ментор с данным ID не найден или скилл с таким именем не существует"
           schema:

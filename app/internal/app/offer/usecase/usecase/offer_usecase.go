@@ -8,7 +8,6 @@ import (
 	offer_repository "getme-backend/internal/app/offer/repository"
 	offer_usecase "getme-backend/internal/app/offer/usecase"
 	skill_repository "getme-backend/internal/app/skill/repository"
-	skill_usecase "getme-backend/internal/app/skill/usecase"
 	dto2 "getme-backend/internal/app/user/dto"
 	user_repository "getme-backend/internal/app/user/repository"
 	"getme-backend/internal/pkg/usecase"
@@ -32,6 +31,7 @@ func NewOfferUsecase(repoOffer offer_repository.Repository, repoUser user_reposi
 
 //	Create with Errors:
 // 	skill_usecase.SkillNotExists
+//	offer_usecase.LogicError
 // 	offer_usecase.MentorNotExist
 // 	offer_usecase.AlreadyExists
 // 		app.GeneralError with Errors
@@ -40,15 +40,18 @@ func (u *OfferUsecase) Create(data *dto.OfferUsecaseDTO) (int64, error) {
 	if data == nil {
 		return app.InvalidInt, offer_usecase.NilDataArg
 	}
+	if data.MentorID == data.MenteeID {
+		return app.InvalidInt, offer_usecase.LogicError
+	}
 	if _, err := u.userRepository.FindMentorByID(data.MentorID); err != nil {
 		if errors.Is(err, postgresql_utilits.NotFound) {
 			return app.InvalidInt, offer_usecase.MentorNotExist
 		}
 	}
 	if err := u.skillRepository.CheckExists(data.SkillName); err != postgresql_utilits.Exists {
-		return app.InvalidInt, skill_usecase.SkillNotExists
+		//return app.InvalidInt, skill_usecase.SkillNotExists
 	}
-	if err := u.offerRepository.CheckExists(data.MenteeID, data.MentorID); err != nil {
+	if err := u.offerRepository.CheckExists(data.MenteeID, data.MentorID); err != postgresql_utilits.NotFound {
 		return app.InvalidInt, offer_usecase.AlreadyExists
 	}
 	res, err := u.offerRepository.Create(data.ToEntity())
