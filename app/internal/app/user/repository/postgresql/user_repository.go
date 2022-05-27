@@ -118,7 +118,7 @@ func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error)
 const queryFindByID = `SELECT users.id, first_name, last_name, about, avatar, is_searchable, skill_name from users 
     left join users_skills us on users.id = us.user_id 
     left join skills s on us.skill_name = s.name 
-	where users.id = ?;
+	where users.id = ?
 `
 
 //	FindByID with Errors:
@@ -219,7 +219,7 @@ func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]ent
 		if !errors.Is(err, sql.ErrNoRows) && err != nil {
 			return nil, postgresql_utilits.NewDBError(err)
 		}
-		query = repo.store.Rebind(queryGetUsersBySkillsAll)
+		query := repo.store.Rebind(queryGetUsersBySkillsAll)
 		err = repo.store.Select(usersWithSkills, query)
 		if err != nil {
 			return nil, postgresql_utilits.NewDBError(err)
