@@ -29,6 +29,17 @@ type UsersWithSkillResponse struct {
 }
 
 //easyjson:json
+type UserWithOfferIDResponse struct {
+	UserResponse
+	OfferID int64 `json:"offer_id"`
+}
+
+//easyjson:json
+type UsersWithOfferIDResponse struct {
+	Users []UserWithOfferIDResponse `json:"users"`
+}
+
+//easyjson:json
 type UserStatusResponse struct {
 	IsMentor bool `json:"is_mentor"`
 }
@@ -67,12 +78,18 @@ func ToUserResponse(user UserUsecase) UserResponse {
 		IsSearchable: user.IsSearchable,
 	}
 }
-func ToUsersResponse(user []UserUsecase) UsersResponse {
-	res := &UsersResponse{
-		Users: make([]UserResponse, 0),
+func ToUserWithOfferIDResponse(user UserWithOfferIDUsecase) UserWithOfferIDResponse {
+	return UserWithOfferIDResponse{
+		UserResponse: ToUserResponse(user.UserUsecase),
+		OfferID:      user.OfferID,
+	}
+}
+func ToUsersWithOfferIDResponse(user []UserWithOfferIDUsecase) UsersWithOfferIDResponse {
+	res := &UsersWithOfferIDResponse{
+		Users: make([]UserWithOfferIDResponse, 0),
 	}
 	for _, val := range user {
-		res.Users = append(res.Users, ToUserResponse(val))
+		res.Users = append(res.Users, ToUserWithOfferIDResponse(val))
 	}
 	return *res
 }

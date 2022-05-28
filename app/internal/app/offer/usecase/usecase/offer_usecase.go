@@ -66,15 +66,15 @@ func (u *OfferUsecase) Create(data *dto.OfferUsecaseDTO) (int64, error) {
 // 	offer_usecase.NotMentor
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (u *OfferUsecase) Get(mentorID int64) ([]dto2.UserUsecase, error) {
+func (u *OfferUsecase) Get(mentorID int64) ([]dto2.UserWithOfferIDUsecase, error) {
 	if _, err := u.userRepository.FindMentorByID(mentorID); err != nil {
 		if errors.Is(err, postgresql_utilits.NotFound) {
 			return nil, offer_usecase.NotMentor
 		}
 	}
-	res, err := u.userRepository.GetMenteeByMentor(mentorID)
+	res, err := u.userRepository.GetMenteeByMentorWithOfferID(mentorID)
 	if err != nil {
 		return nil, err
 	}
-	return dto2.ToUserUsecases(res), nil
+	return dto2.ToUserWithOfferIDUsecases(res), nil
 }

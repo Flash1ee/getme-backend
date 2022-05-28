@@ -48,7 +48,7 @@ func (h *OfferHandler) GET(ctx echo.Context) error {
 		return err
 	}
 
-	h.Respond(ctx, http.StatusOK, dto2.ToUsersResponse(res))
+	h.Respond(ctx, http.StatusOK, dto2.ToUsersWithOfferIDResponse(res))
 	return nil
 }
 

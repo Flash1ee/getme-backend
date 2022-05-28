@@ -38,10 +38,10 @@ type Repository interface {
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error)
-	//	GetMenteeByMentor with Errors:
+	//	GetMenteeByMentorWithOfferID with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	GetMenteeByMentor(mentorID int64) ([]entities.User, error)
+	GetMenteeByMentorWithOfferID(mentorID int64) ([]entities.UserWithOfferID, error)
 	//UpdateMentorStatus with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB

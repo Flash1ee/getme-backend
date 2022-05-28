@@ -113,7 +113,7 @@ func (mr *MockRepositoryMockRecorder) FindMentorByID(id interface{}) *gomock.Cal
 // GetMenteeByMentor mocks base method.
 func (m *MockRepository) GetMenteeByMentor(mentorID int64) ([]entities0.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMenteeByMentor", mentorID)
+	ret := m.ctrl.Call(m, "GetMenteeByMentorWithOfferID", mentorID)
 	ret0, _ := ret[0].([]entities0.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
@@ -122,7 +122,7 @@ func (m *MockRepository) GetMenteeByMentor(mentorID int64) ([]entities0.User, er
 // GetMenteeByMentor indicates an expected call of GetMenteeByMentor.
 func (mr *MockRepositoryMockRecorder) GetMenteeByMentor(mentorID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenteeByMentor", reflect.TypeOf((*MockRepository)(nil).GetMenteeByMentor), mentorID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenteeByMentorWithOfferID", reflect.TypeOf((*MockRepository)(nil).GetMenteeByMentor), mentorID)
 }
 
 // GetUsersBySkills mocks base method.

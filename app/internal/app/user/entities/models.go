@@ -27,3 +27,7 @@ type UserWithSkills struct {
 	User
 	Skills []string `db:"skill_name"`
 }
+type UserWithOfferID struct {
+	User
+	OfferID int64 `db:"offer_id"`
+}

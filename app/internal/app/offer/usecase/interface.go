@@ -17,5 +17,5 @@ type Usecase interface {
 	// 	offer_usecase.NotMentor
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	Get(mentorID int64) ([]dto2.UserUsecase, error)
+	Get(mentorID int64) ([]dto2.UserWithOfferIDUsecase, error)
 }

@@ -242,19 +242,19 @@ func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]ent
 }
 
 const queryGetMenteeByOffers = `
-SELECT first_name, last_name, about, avatar, is_searchable from users join getme_db.public.offers
+SELECT offers.id as offer_id, first_name, last_name, about, avatar, is_searchable from users join getme_db.public.offers
     on users.id = offers.mentee_id and offers.mentor_id = ?;`
 
-//	GetMenteeByMentor with Errors:
+//	GetMenteeByMentorWithOfferID with Errors:
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (r *UserRepository) GetMenteeByMentor(mentorID int64) ([]entities.User, error) {
-	users := &[]entities.User{}
+func (r *UserRepository) GetMenteeByMentorWithOfferID(mentorID int64) ([]entities.UserWithOfferID, error) {
+	users := &[]entities.UserWithOfferID{}
 
 	query := r.store.Rebind(queryGetMenteeByOffers)
 
 	if err := r.store.Select(users, query, mentorID); err != nil {
-		return nil, postgresql_utilits.NewDBError(errors.Wrap(err, fmt.Sprintf("UserRepository: GetMenteeByMentor(%v)", mentorID)))
+		return nil, postgresql_utilits.NewDBError(errors.Wrap(err, fmt.Sprintf("UserRepository: GetMenteeByMentorWithOfferID(%v)", mentorID)))
 	}
 
 	return *users, nil

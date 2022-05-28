@@ -112,3 +112,73 @@ func (v *RequestUserUpdate) UnmarshalJSON(data []byte) error {
 func (v *RequestUserUpdate) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(l, v)
 }
+func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto1(in *jlexer.Lexer, out *RequestUpdateStatus) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "IsMentor":
+			out.IsMentor = bool(in.Bool())
+		default:
+			in.AddError(&jlexer.LexerError{
+				Offset: in.GetPos(),
+				Reason: "unknown field",
+				Data:   key,
+			})
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto1(out *jwriter.Writer, in RequestUpdateStatus) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"IsMentor\":"
+		out.RawString(prefix[1:])
+		out.Bool(bool(in.IsMentor))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v RequestUpdateStatus) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto1(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v RequestUpdateStatus) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson7df0efccEncodeGetmeBackendInternalAppUserDto1(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *RequestUpdateStatus) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto1(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *RequestUpdateStatus) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson7df0efccDecodeGetmeBackendInternalAppUserDto1(l, v)
+}

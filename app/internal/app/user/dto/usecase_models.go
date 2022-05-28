@@ -24,6 +24,10 @@ type UserWithSkillsUsecase struct {
 	Skills []string
 }
 
+type UserWithOfferIDUsecase struct {
+	UserUsecase
+	OfferID int64
+}
 type UserStatusUsecase struct {
 	UserID   int64
 	IsMentor bool
@@ -51,10 +55,10 @@ func (m *UserUsecase) ToUserEntity() *entities.User {
 	}
 }
 
-func ToUserUsecases(data []entities.User) []UserUsecase {
-	res := make([]UserUsecase, 0, len(data))
+func ToUserWithOfferIDUsecases(data []entities.UserWithOfferID) []UserWithOfferIDUsecase {
+	res := make([]UserWithOfferIDUsecase, 0, len(data))
 	for _, val := range data {
-		res = append(res, *ToUserUsecase(&val))
+		res = append(res, *ToUserWithOfferIDUsecase(&val))
 	}
 	return res
 }
@@ -70,6 +74,13 @@ func ToUserUsecase(data *entities.User) *UserUsecase {
 		IsSearchable: data.IsSearchable,
 		CreatedAt:    data.CreatedAt,
 		UpdatedAt:    data.UpdatedAt,
+	}
+}
+func ToUserWithOfferIDUsecase(data *entities.UserWithOfferID) *UserWithOfferIDUsecase {
+	u := ToUserUsecase(&data.User)
+	return &UserWithOfferIDUsecase{
+		UserUsecase: *u,
+		OfferID:     data.OfferID,
 	}
 }
 
