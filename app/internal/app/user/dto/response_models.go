@@ -28,6 +28,11 @@ type UsersWithSkillResponse struct {
 	Users []UserWithSkillsResponse `json:"users"`
 }
 
+//easyjson:json
+type UserStatusResponse struct {
+	IsMentor bool `json:"is_mentor"`
+}
+
 func ToUsersWithSkillResponse(users []UserWithSkillsUsecase) UsersWithSkillResponse {
 	res := UsersWithSkillResponse{
 		Users: []UserWithSkillsResponse{},

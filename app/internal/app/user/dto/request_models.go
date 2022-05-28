@@ -9,10 +9,21 @@ type RequestUserUpdate struct {
 	About     string `json:"about,omitempty" validate:"min=10,max=100"`
 }
 
+//easyjson:json
+type RequestUpdateStatus struct {
+	IsMentor bool `query:"mentor" validate:"required"`
+}
+
 func (req *RequestUserUpdate) ToUserUsecase() *UserUsecase {
 	return &UserUsecase{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		About:     req.About,
 	}
+}
+func (req *RequestUpdateStatus) ToStatusUpdateUsecase() *UserStatusUsecase {
+	return &UserStatusUsecase{
+		IsMentor: req.IsMentor,
+	}
+
 }

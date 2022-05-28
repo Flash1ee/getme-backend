@@ -115,18 +115,18 @@ func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error)
 //const queryFindByID = `
 //SELECT * from users where id = ?;`
 
-const queryFindByID = `SELECT users.id, first_name, last_name, about, avatar, is_searchable, skill_name from users 
+const queryFindByIDWithSkill = `SELECT users.id, first_name, last_name, about, avatar, is_searchable, skill_name from users 
     left join users_skills us on users.id = us.user_id 
     left join skills s on us.skill_name = s.name 
 	where users.id = ?
 `
 
-//	FindByID with Errors:
+//	FindByIDWithSkill with Errors:
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) FindByID(id int64) (*[]entities.UserWithSkill, error) {
-	query := repo.store.Rebind(queryFindByID)
+func (repo *UserRepository) FindByIDWithSkill(id int64) (*[]entities.UserWithSkill, error) {
+	query := repo.store.Rebind(queryFindByIDWithSkill)
 	user := &[]entities.UserWithSkill{}
 
 	err := repo.store.Select(user, query, id)
@@ -135,6 +135,29 @@ func (repo *UserRepository) FindByID(id int64) (*[]entities.UserWithSkill, error
 	}
 	if len(*user) == 0 {
 		return nil, postgresql_utilits.NotFound
+	}
+
+	return user, nil
+}
+
+const queryFindByID = `SELECT users.id, first_name, last_name, about, avatar, is_searchable from users 
+	where users.id = ?
+`
+
+//	FindByID with Errors:
+//		postgresql_utilits.NotFound
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
+	query := repo.store.Rebind(queryFindByID)
+	user := &entities.User{}
+
+	err := repo.store.Get(user, query, id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, postgresql_utilits.NotFound
+		}
+		return nil, postgresql_utilits.NewDBError(err)
 	}
 
 	return user, nil
@@ -182,16 +205,10 @@ func (repo *UserRepository) UpdateUser(user *entities.User) (*entities.User, err
 
 const queryGetUsersBySkillsAll = `SELECT users.id, first_name, last_name, nickname, about, avatar, is_searchable, skill_name from users
 JOIN users_skills as us on us.user_id = users.id `
-const queryGetUsersBySkill = queryGetUsersBySkillsAll + `where us.skill_name IN (?)`
-const queryGetUsersBySkillsSecond = ` and skill_name = (
-select skill_name from users_skills where user_id = us.user_id and skill_name IN (?) order by skill_name limit 1
-   );`
 
-//const queryGetUsersBySkillsFirst = `SELECT first_name, last_name, nickname, about, avatar, is_searchable, skill_name from users
-//JOIN users_skills as us on us.user_id = users.id where us.skill_name IN (?)`
-//const queryGetUsersBySkillsSecond = ` and skill_name = (
-//select skill_name from users_skills where user_id = us.user_id and skill_name IN (?) order by skill_name limit 1
-//    );`
+const queryGetUsersBySkill = queryGetUsersBySkillsAll + `where us.skill_name IN (?)`
+
+const queryConditionIsMentor = ` and is_searchable = true`
 
 //	GetUsersBySkills with Errors:
 // 		app.GeneralError with Errors
@@ -200,28 +217,20 @@ func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]ent
 	skills := getSkillNameFromSkills(data)
 	usersWithSkills := &[]entities.UserWithSkill{}
 	if len(skills) == 0 {
-		query := repo.store.Rebind(queryGetUsersBySkillsAll)
+		query := repo.store.Rebind(queryGetUsersBySkillsAll + queryConditionIsMentor)
 		if err := repo.store.Select(usersWithSkills, query); err != nil {
 			return nil, postgresql_utilits.NewDBError(err)
 		}
 		return *usersWithSkills, nil
 	}
 
-	queryFirst, args, err := sqlx.In(queryGetUsersBySkill, skills)
+	query, args, err := sqlx.In(queryGetUsersBySkill+queryConditionIsMentor, skills)
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
-	//querySecond, _, err := sqlx.In(queryGetUsersBySkillsSecond, skills)
-	//if err != nil {
-	//	return nil, postgresql_utilits.NewDBError(err)
-	//}
-	query := queryFirst
-
-	//query := queryFirst + querySecond
 	query = repo.store.Rebind(query)
 	var queryArgs []interface{}
 	queryArgs = append(queryArgs, args...)
-	//queryArgs = append(queryArgs, args...)
 
 	if err = repo.store.Select(usersWithSkills, query, queryArgs...); err != nil {
 		if !errors.Is(err, sql.ErrNoRows) {
@@ -249,4 +258,38 @@ func (r *UserRepository) GetMenteeByMentor(mentorID int64) ([]entities.User, err
 	}
 
 	return *users, nil
+}
+
+const queryUpdateUserStatus = `
+update users set is_searchable = not is_searchable where users.id = ? returning is_searchable;
+`
+
+//UpdateMentorStatus with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (r *UserRepository) UpdateMentorStatus(mentorID int64) (bool, error) {
+	query := r.store.Rebind(queryUpdateUserStatus)
+	isMentor := false
+	if err := r.store.QueryRow(query, mentorID).Scan(&isMentor); err != nil {
+		return false, postgresql_utilits.NewDBError(errors.Wrapf(err,
+			"UserRepository: UpdateMentorStatus(%v) can not update user status", mentorID))
+	}
+	return isMentor, nil
+}
+
+const querySetUserStatus = `
+update users set is_searchable = ? where users.id = ? returning is_searchable;
+`
+
+//SetMentorStatus with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (r *UserRepository) SetMentorStatus(mentorID int64, status bool) (bool, error) {
+	query := r.store.Rebind(querySetUserStatus)
+	isMentor := false
+	if err := r.store.QueryRow(query, status, mentorID).Scan(&isMentor); err != nil {
+		return false, postgresql_utilits.NewDBError(errors.Wrapf(err,
+			"UserRepository: SetMentorStatus(%v, %v) can not set user status", mentorID, status))
+	}
+	return isMentor, nil
 }

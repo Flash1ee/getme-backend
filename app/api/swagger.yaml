@@ -160,6 +160,48 @@ paths:
           description: "Ошибка сервера"
           schema:
             $ref: '#/definitions/ErrResponse'
+  /user/status:
+    get:
+      tags:
+        - "user"
+      summary: "Получение статуса пользователя-ментора"
+      description: "Если true - показывается в поиске, иначе - нет"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Статус ментора"
+          schema:
+            $ref: '#/definitions/UserStatusResponse'
+        "404":
+          description: "Текущий пользователь не найден"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+    put:
+      tags:
+        - "user"
+      summary: "Обновить статус пользователя-ментора"
+      description: "Если true - показывается в поиске, иначе - нет"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Статус ментора"
+          schema:
+            $ref: '#/definitions/UserStatusResponse'
+        "404":
+          description: "Текущий пользователь не найден"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+
   /skills:
     get:
       tags:
@@ -177,6 +219,7 @@ paths:
           description: "Ошибка сервера"
           schema:
             $ref: '#/definitions/ErrResponse'
+
   /skills/users:
     get:
       tags:
@@ -474,6 +517,11 @@ definitions:
         items:
           $ref: '#/definitions/SkillResponse'
         type: array
+    type: object
+  UserStatusResponse:
+    properties:
+      is_mentor:
+        type: boolean
     type: object
   UserWithSkillResponse:
     properties:

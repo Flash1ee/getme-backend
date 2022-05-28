@@ -51,7 +51,7 @@ func (h *UserHandler) GET(ctx echo.Context) error {
 		req.Skills = strings.Split(req.Skills[0], ",")
 	}
 
-	users, err := h.skillUsecase.GetUsersBySkills(req.ToSkillUsecase())
+	users, err := h.skillUsecase.GetMentorsBySkills(req.ToSkillUsecase())
 	if err != nil {
 		h.Log(ctx.Request()).Warnf("skills_user_handler error method GET; error -  %s", err)
 		h.UsecaseError(ctx, err, codeByErrorGET)

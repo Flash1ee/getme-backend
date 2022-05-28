@@ -33,10 +33,10 @@ func (u *SkillUsecase) GetAllSkills() (*dto.SkillsUsecase, error) {
 	return dto.ToSkillUsecaseSlice(res), nil
 }
 
-// GetUsersBySkills with Errors:
+// GetMentorsBySkills with Errors:
 //	app.GeneralError with Errors:
 //		postgresql_utilits.DefaultErrDB
-func (u *SkillUsecase) GetUsersBySkills(data *dto.SkillsUsecase) ([]dto2.UserWithSkillsUsecase, error) {
+func (u *SkillUsecase) GetMentorsBySkills(data *dto.SkillsUsecase) ([]dto2.UserWithSkillsUsecase, error) {
 	res, err := u.usersRepo.GetUsersBySkills(data.ToSkillEntites())
 	if err != nil {
 		return nil, err

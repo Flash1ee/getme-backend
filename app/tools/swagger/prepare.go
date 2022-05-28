@@ -26,7 +26,12 @@ func init() {
 }
 func main() {
 	f, err := os.Open(yamlPath)
-	defer f.Close()
+	defer func(f *os.File) {
+		err = f.Close()
+		if err != nil {
+			log.Error(err)
+		}
+	}(f)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -64,5 +69,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	defer res.Close()
+	defer func(res *os.File) {
+		err := res.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(res)
 }

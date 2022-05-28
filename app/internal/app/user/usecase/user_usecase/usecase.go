@@ -41,7 +41,7 @@ func (u *UserUsecase) CreateFilledUser(data *dto.UserUsecase) (int64, error) {
 	return us, err
 }
 func (u *UserUsecase) FindByID(id int64) (*dto.UserWithSkillsUsecase, error) {
-	user, err := u.userRepository.FindByID(id)
+	user, err := u.userRepository.FindByIDWithSkill(id)
 	if err != nil {
 		return nil, err
 	}
@@ -60,4 +60,42 @@ func (u *UserUsecase) UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error
 		return nil, err
 	}
 	return dto.ToUserUsecase(res), nil
+}
+
+//GetMentorStatus with Errors:
+//		postgresql_utilits.NotFound
+//		app.GeneralError with Errors
+//			postgresql_utilits.DefaultErrDB
+func (u *UserUsecase) GetMentorStatus(id int64) (*dto.UserStatusUsecase, error) {
+	user, err := u.userRepository.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+	res := &dto.UserStatusUsecase{}
+	switch user.IsSearchable {
+	case true:
+		res.IsMentor = true
+	default:
+		res.IsMentor = false
+	}
+
+	return res, nil
+}
+
+//	UpdateMentorStatus with Errors:
+//		postgresql_utilits.NotFound
+//		app.GeneralError with Errors
+//			postgresql_utilits.DefaultErrDB
+func (u *UserUsecase) UpdateMentorStatus(data *dto.UserStatusUsecase) (*dto.UserStatusUsecase, error) {
+	_, err := u.userRepository.FindByID(data.UserID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := u.userRepository.UpdateMentorStatus(data.UserID)
+	//res, err := u.userRepository.SetMentorStatus(data.UserID, data.IsMentor)
+
+	return &dto.UserStatusUsecase{
+		UserID:   data.UserID,
+		IsMentor: res,
+	}, nil
 }

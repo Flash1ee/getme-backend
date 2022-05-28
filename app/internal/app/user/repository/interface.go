@@ -8,18 +8,21 @@ import (
 //go:generate mockgen -destination=mock/$GOFILE -package=mock -source=$GOFILE
 
 type Repository interface {
-	//	FindByID with Errors:
+	//	FindByIDWithSkill with Errors:
 	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	FindByID(id int64) (*[]entities.UserWithSkill, error)
-
+	FindByIDWithSkill(id int64) (*[]entities.UserWithSkill, error)
 	FindMentorByID(id int64) (*[]entities.UserWithSkill, error)
-
 	//	FindByNickname with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	FindByNickname(nickname string) (*entities.User, error)
+	//	FindByID with Errors:
+	//		postgresql_utilits.NotFound
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	FindByID(id int64) (*entities.User, error)
 	// CreateBaseUser Errors:
 	// 		user_repository.EmailAlreadyExist
 	// 		user_repository.NicknameAlreadyExist
@@ -39,4 +42,12 @@ type Repository interface {
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	GetMenteeByMentor(mentorID int64) ([]entities.User, error)
+	//UpdateMentorStatus with Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	UpdateMentorStatus(mentorID int64) (bool, error)
+	//SetMentorStatus with Errors:
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	SetMentorStatus(mentorID int64, status bool) (bool, error)
 }

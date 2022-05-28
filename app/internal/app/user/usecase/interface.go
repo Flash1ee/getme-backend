@@ -16,4 +16,14 @@ type Usecase interface {
 	CreateBaseUser(nickname string) (int64, error)
 	CreateFilledUser(data *dto.UserUsecase) (int64, error)
 	UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error)
+	//	GetMentorStatus with Errors:
+	//		postgresql_utilits.NotFound
+	//		app.GeneralError with Errors
+	//			postgresql_utilits.DefaultErrDB
+	GetMentorStatus(id int64) (*dto.UserStatusUsecase, error)
+	//UpdateMentorStatus with Errors:
+	//		postgresql_utilits.NotFound
+	//		app.GeneralError with Errors
+	//			postgresql_utilits.DefaultErrDB
+	UpdateMentorStatus(user *dto.UserStatusUsecase) (*dto.UserStatusUsecase, error)
 }

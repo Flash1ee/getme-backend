@@ -24,6 +24,17 @@ type UserWithSkillsUsecase struct {
 	Skills []string
 }
 
+type UserStatusUsecase struct {
+	UserID   int64
+	IsMentor bool
+}
+
+func (m *UserStatusUsecase) ToResponseStatus() UserStatusResponse {
+	return UserStatusResponse{
+		IsMentor: m.IsMentor,
+	}
+}
+
 func (m *UserUsecase) ToUserEntity() *entities.User {
 	return &entities.User{
 		ID: m.ID,

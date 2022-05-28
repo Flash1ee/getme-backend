@@ -10,8 +10,8 @@ type Usecase interface {
 	//	app.GeneralError with Errors:
 	//		postgresql_utilits.DefaultErrDB
 	GetAllSkills() (*dto.SkillsUsecase, error)
-	// GetUsersBySkills with Errors:
+	// GetMentorsBySkills with Errors:
 	//	app.GeneralError with Errors:
 	//		postgresql_utilits.DefaultErrDB
-	GetUsersBySkills(data *dto.SkillsUsecase) ([]dto2.UserWithSkillsUsecase, error)
+	GetMentorsBySkills(data *dto.SkillsUsecase) ([]dto2.UserWithSkillsUsecase, error)
 }
