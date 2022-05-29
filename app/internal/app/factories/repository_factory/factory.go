@@ -6,7 +6,10 @@ import (
 	authRepo "getme-backend/internal/app/auth/repository"
 	offerRepo "getme-backend/internal/app/offer/repository"
 	offerPostgresRepo "getme-backend/internal/app/offer/repository/postgresql"
+	planRepo "getme-backend/internal/app/plan/repository"
+	planPostgresRepo "getme-backend/internal/app/plan/repository/postgresql"
 	skillRepo "getme-backend/internal/app/skill/repository"
+
 	skillPostgresRepo "getme-backend/internal/app/skill/repository/postgresql"
 
 	authPostgresRepo "getme-backend/internal/app/auth/repository/postgresql"
@@ -27,6 +30,7 @@ type RepositoryFactory struct {
 	tokenJWTRepository  tokenRepo.RepositoryJWT
 	skillRepository     skillRepo.Repository
 	offerRepository     offerRepo.Repository
+	planRepository      planRepo.Repository
 }
 
 func NewRepositoryFactory(logger *logrus.Logger, expectedConnections utilits.ExpectedConnections) *RepositoryFactory {
@@ -73,4 +77,11 @@ func (f *RepositoryFactory) GetOfferRepository() offerRepo.Repository {
 		f.offerRepository = offerPostgresRepo.NewOfferRepository(f.expectedConnections.SqlConnection)
 	}
 	return f.offerRepository
+}
+
+func (f *RepositoryFactory) GetPlanRepository() planRepo.Repository {
+	if f.planRepository == nil {
+		f.planRepository = planPostgresRepo.NewPlanRepository(f.expectedConnections.SqlConnection)
+	}
+	return f.planRepository
 }

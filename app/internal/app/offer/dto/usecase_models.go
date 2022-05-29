@@ -10,7 +10,20 @@ type OfferUsecaseDTO struct {
 	MentorID  int64
 	MenteeID  int64
 }
+type OfferAcceptUsecaseDTO struct {
+	OfferID     int64
+	Title       string
+	Description string
+	Skills      []string
+}
 
+func ToOfferAcceptUsecaseDTO(req RequestAcceptOffer) *OfferAcceptUsecaseDTO {
+	return &OfferAcceptUsecaseDTO{
+		Title:       req.Title,
+		Description: req.Description,
+		Skills:      req.Skills,
+	}
+}
 func ToOfferUsecaseDTO(req RequestCreateOffer) *OfferUsecaseDTO {
 	return &OfferUsecaseDTO{
 		SkillName: req.SkillName,

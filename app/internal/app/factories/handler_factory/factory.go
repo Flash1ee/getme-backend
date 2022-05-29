@@ -11,6 +11,7 @@ import (
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/simple_register_handler"
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/telegram_register_handler"
 	"getme-backend/internal/app/offer/delivery/http/offer_handler"
+	offer_id_accept_handler "getme-backend/internal/app/offer/delivery/http/offer_id_handler/accept_handler"
 	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
 	skills_user_handler "getme-backend/internal/app/skill/delivery/http/skills/user_handler"
 	"getme-backend/internal/app/token/delivery/http/handlers/token_handler"
@@ -33,6 +34,7 @@ const (
 	USER_SKILLS
 	OFFERS
 	USER_STATUS
+	OFFER_ACCEPT
 )
 
 type HandlerFactory struct {
@@ -71,6 +73,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		PROFILE_ID:      user_by_id_handler.NewUserByIDHandler(f.logger, sClient, ucUsecase),
 		OFFERS:          offer_handler.NewOfferHandler(f.logger, sClient, offersUsecase),
 		USER_STATUS:     user_status_handler.NewStatusHandler(f.logger, sClient, ucUsecase),
+		OFFER_ACCEPT:    offer_id_accept_handler.NewAcceptHandler(f.logger, sClient, offersUsecase),
 	}
 }
 
@@ -96,7 +99,8 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/user/:id":    hs[PROFILE_ID],
 		"/user/status": hs[USER_STATUS],
 		//=============offers=============//
-		"/offers": hs[OFFERS],
+		"/offers":           hs[OFFERS],
+		"/offer/:id/accept": hs[OFFER_ACCEPT],
 	}
 	return f.urlHandler
 }

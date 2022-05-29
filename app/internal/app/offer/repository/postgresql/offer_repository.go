@@ -1,4 +1,4 @@
-package offer_postgresql
+package offer_repository_postgresql
 
 import (
 	"database/sql"
@@ -36,9 +36,6 @@ func (r *OfferRepository) Create(data *entities.Offer) (int64, error) {
 	}
 	return id, nil
 }
-func (r *OfferRepository) Accept(id int64) error {
-	return nil
-}
 
 const checkExistsOffer = "SELECT count(*) from getme_db.public.offers where mentee_id = ? and mentor_id = ?;"
 
@@ -61,4 +58,36 @@ func (repo *OfferRepository) CheckExists(menteeID, mentorID int64) error {
 		return postgresql_utilits.Exists
 	}
 	return postgresql_utilits.NotFound
+}
+
+const queryGetOfferByID = `SELECT * from offers where id = ?`
+
+// GetByID Errors:
+//		postgresql_utilits.NotFound
+// 		app.GeneralError with Errors:
+// 			postgresql_utilits.DefaultErrDB
+func (repo *OfferRepository) GetByID(id int64) (*entities.Offer, error) {
+	res := &entities.Offer{}
+
+	query := repo.store.Rebind(queryGetOfferByID)
+	if err := repo.store.Get(res, query, id); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, postgresql_utilits.NotFound
+		}
+		return nil, postgresql_utilits.NewDBError(errors.Wrap(err, fmt.Sprintf("OfferRepository - GetByID(%v)", id)))
+	}
+	return res, nil
+}
+
+const queryDeleteOfferByID = `UPDATE getme_db.public.offers set status = false where id = ?;`
+
+// Delete Errors:
+// 		app.GeneralError with Errors:
+// 			postgresql_utilits.DefaultErrDB
+func (repo *OfferRepository) Delete(id int64) error {
+	query := repo.store.Rebind(queryDeleteOfferByID)
+	if _, err := repo.store.Exec(query, id); err != nil {
+		return postgresql_utilits.NewDBError(errors.Wrap(err, fmt.Sprintf("OfferRepository - Delete(%v)", id)))
+	}
+	return nil
 }

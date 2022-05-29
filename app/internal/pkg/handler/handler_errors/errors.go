@@ -6,7 +6,9 @@ import (
 
 /// NOT FOUND
 var (
-	UserNotFound             = errors.New("user not found")
+	UserNotFound  = errors.New("user not found")
+	OfferNotFound = errors.New("offer not found")
+
 	UserWithNicknameNotFound = errors.New("user with this nickname not found")
 )
 
@@ -47,3 +49,8 @@ var (
 
 var InternalError = errors.New("server error")
 var NoModify = errors.New("content not modify")
+
+// Logic Error
+var (
+	LogicError = errors.New("logic error in workking of service")
+)

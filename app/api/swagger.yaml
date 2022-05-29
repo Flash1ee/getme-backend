@@ -43,6 +43,13 @@ paths:
           description: "Ошибка сервера"
           schema:
             $ref: '#/definitions/ErrResponse'
+      produces:
+        - "application/json"
+    post:
+      tags:
+        - "offer"
+      summary: "Подать заявку к ментору"
+      description: "Запись к ментору"
       consumes:
         - "application/json"
       produces:
@@ -54,11 +61,6 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/RequestOffer'
-    post:
-      tags:
-        - "offer"
-      summary: "Подать заявку к ментору"
-      description: "Запись к ментору"
       responses:
         "200":
           description: "Запись успешна"
@@ -80,8 +82,80 @@ paths:
           description: "Ошибка сервера"
           schema:
             $ref: '#/definitions/ErrResponse'
+  /offer/{offer_id}/accept:
+    post:
+      tags:
+        - "offer"
+      summary: "Принять заявку на менторство"
+      description: "Метод для ментора на принятия завяки на менторство с id = id"
+      consumes:
+        - "application/json"
       produces:
         - "application/json"
+      parameters:
+        - description: "ID заявки на менторство"
+          in: path
+          name: offer_id
+          required: true
+          type: integer
+        - description: "Данные для создания плана"
+          in: body
+          name: plan_info
+          required: true
+          schema:
+            $ref: "#/definitions/RequestAcceptOffer"
+      responses:
+        "200":
+          description: "Созданный план"
+          schema:
+            $ref: '#/definitions/UserWithSkillResponse'
+        "400":
+          description: "Ошибка offer_id - у текущего пользователя нет заявки с таким id"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "404":
+          description: "Заявка с id = offer_id не найдена"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "422":
+          description: "Ошибка в переданном теле"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+    delete:
+      tags:
+        - "offer"
+      summary: "Отклонить-удалить заявку на менторство"
+      description: "Метод для ментора на отклонение завяки на менторство с id = offer_id"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - description: "ID заявки на менторство"
+          in: path
+          name: offer_id
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: "Заявка отклонена(удалена)"
+        "400":
+          description: "Ошибка offer_id - у текущего пользователя нет заявки с таким id"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "404":
+          description: "Заявка с id = offer_id не найдена"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+        "500":
+          description: "Ошибка сервера"
+          schema:
+            $ref: '#/definitions/ErrResponse'
+
 
   /user:
     get:
@@ -493,6 +567,18 @@ definitions:
         type: string
       password:
         type: string
+    type: object
+  RequestAcceptOffer:
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+        example: ["backend", "frontend"]
     type: object
   IdResponse:
     properties:

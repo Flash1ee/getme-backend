@@ -14,6 +14,7 @@ import (
 	tokenUs "getme-backend/internal/app/token/usecase"
 	"getme-backend/internal/app/token/usecase/token_usecase"
 	userUs "getme-backend/internal/app/user/usecase"
+
 	"getme-backend/internal/app/user/usecase/user_usecase"
 )
 
@@ -66,7 +67,8 @@ func (f *UsecaseFactory) GetSkillUsecase() skillUs.Usecase {
 }
 func (f *UsecaseFactory) GetOfferUsecase() offerUs.Usecase {
 	if f.offersUsecase == nil {
-		f.offersUsecase = offer_usecase.NewOfferUsecase(f.repositoryFactory.GetOfferRepository(), f.repositoryFactory.GetUserRepository(), f.repositoryFactory.GetSkillRepository())
+		f.offersUsecase = offer_usecase.NewOfferUsecase(f.repositoryFactory.GetOfferRepository(), f.repositoryFactory.GetUserRepository(), f.repositoryFactory.GetSkillRepository(), f.repositoryFactory.GetPlanRepository())
+
 	}
 
 	return f.offersUsecase

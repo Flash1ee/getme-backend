@@ -94,3 +94,119 @@ func (v *RequestCreateOffer) UnmarshalJSON(data []byte) error {
 func (v *RequestCreateOffer) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson7df0efccDecodeGetmeBackendInternalAppOfferDto(l, v)
 }
+func easyjson7df0efccDecodeGetmeBackendInternalAppOfferDto1(in *jlexer.Lexer, out *RequestAcceptOffer) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "title":
+			out.Title = string(in.String())
+		case "description":
+			out.Description = string(in.String())
+		case "skills":
+			if in.IsNull() {
+				in.Skip()
+				out.Skills = nil
+			} else {
+				in.Delim('[')
+				if out.Skills == nil {
+					if !in.IsDelim(']') {
+						out.Skills = make([]string, 0, 4)
+					} else {
+						out.Skills = []string{}
+					}
+				} else {
+					out.Skills = (out.Skills)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v1 string
+					v1 = string(in.String())
+					out.Skills = append(out.Skills, v1)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.AddError(&jlexer.LexerError{
+				Offset: in.GetPos(),
+				Reason: "unknown field",
+				Data:   key,
+			})
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson7df0efccEncodeGetmeBackendInternalAppOfferDto1(out *jwriter.Writer, in RequestAcceptOffer) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"title\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.Title))
+	}
+	{
+		const prefix string = ",\"description\":"
+		out.RawString(prefix)
+		out.String(string(in.Description))
+	}
+	{
+		const prefix string = ",\"skills\":"
+		out.RawString(prefix)
+		if in.Skills == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v2, v3 := range in.Skills {
+				if v2 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v3))
+			}
+			out.RawByte(']')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v RequestAcceptOffer) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson7df0efccEncodeGetmeBackendInternalAppOfferDto1(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v RequestAcceptOffer) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson7df0efccEncodeGetmeBackendInternalAppOfferDto1(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *RequestAcceptOffer) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson7df0efccDecodeGetmeBackendInternalAppOfferDto1(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *RequestAcceptOffer) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson7df0efccDecodeGetmeBackendInternalAppOfferDto1(l, v)
+}
