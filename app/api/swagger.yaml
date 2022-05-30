@@ -69,7 +69,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsersResponse'
+                $ref: '#/components/schemas/UsersWithOfferIDResponse'
         404:
           description: Пользователь с данным id не ментор
           content:
@@ -830,3 +830,29 @@ components:
           type: string
         mentor_id:
           type: integer
+    UsersWithOfferIDResponse:
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserWithOfferIDResponse"
+    UserWithOfferIDResponse:
+      type: object
+      properties:
+        offer_id:
+          type: integer
+          required: true
+        skill_name:
+          type: string
+          required: false
+        id:
+          type: integer
+        first_name:
+            type: string
+        last_name:
+            type: string
+        about:
+            type: string
+        is_mentor:
+            type: boolean
+
