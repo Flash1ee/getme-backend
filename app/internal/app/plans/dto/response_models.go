@@ -13,18 +13,20 @@ type PlanResponse struct {
 
 //easyjson:json
 type PlanResponseMentor struct {
-	ID       int64  `json:"id"`
-	Name     string `json:"name"`
-	About    string `json:"about"`
-	MenteeID *int64 `json:"mentee_id,omitempty"`
+	ID       int64   `json:"id"`
+	Name     string  `json:"name"`
+	About    string  `json:"about"`
+	Progress float64 `json:"progress"`
+	MenteeID *int64  `json:"mentee_id,omitempty"`
 }
 
 //easyjson:json
 type PlanResponseMentee struct {
-	ID       int64  `json:"id"`
-	Name     string `json:"name"`
-	About    string `json:"about"`
-	MentorID *int64 `json:"mentor_id,omitempty"`
+	ID       int64   `json:"id"`
+	Name     string  `json:"name"`
+	About    string  `json:"about"`
+	Progress float64 `json:"progress"`
+	MentorID *int64  `json:"mentor_id,omitempty"`
 }
 
 //easyjson:json

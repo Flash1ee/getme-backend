@@ -269,6 +269,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto2(in *jlexer.Lexer, ou
 			out.Name = string(in.String())
 		case "about":
 			out.About = string(in.String())
+		case "progress":
+			out.Progress = float64(in.Float64())
 		case "mentee_id":
 			if in.IsNull() {
 				in.Skip()
@@ -327,6 +329,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppPlansDto2(out *jwriter.Writer,
 		const prefix string = ",\"about\":"
 		out.RawString(prefix)
 		out.String(string(in.About))
+	}
+	{
+		const prefix string = ",\"progress\":"
+		out.RawString(prefix)
+		out.Float64(float64(in.Progress))
 	}
 	if in.MenteeID != nil {
 		const prefix string = ",\"mentee_id\":"
@@ -407,6 +414,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto3(in *jlexer.Lexer, ou
 			out.Name = string(in.String())
 		case "about":
 			out.About = string(in.String())
+		case "progress":
+			out.Progress = float64(in.Float64())
 		case "mentor_id":
 			if in.IsNull() {
 				in.Skip()
@@ -466,6 +475,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppPlansDto3(out *jwriter.Writer,
 		out.RawString(prefix)
 		out.String(string(in.About))
 	}
+	{
+		const prefix string = ",\"progress\":"
+		out.RawString(prefix)
+		out.Float64(float64(in.Progress))
+	}
 	if in.MentorID != nil {
 		const prefix string = ",\"mentor_id\":"
 		out.RawString(prefix)
@@ -522,6 +536,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto4(in *jlexer.Lexer, ou
 			out.Name = string(in.String())
 		case "about":
 			out.About = string(in.String())
+		case "progress":
+			out.Progress = float64(in.Float64())
 		case "mentee_id":
 			if in.IsNull() {
 				in.Skip()
@@ -564,6 +580,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppPlansDto4(out *jwriter.Writer,
 		const prefix string = ",\"about\":"
 		out.RawString(prefix)
 		out.String(string(in.About))
+	}
+	{
+		const prefix string = ",\"progress\":"
+		out.RawString(prefix)
+		out.Float64(float64(in.Progress))
 	}
 	if in.MenteeID != nil {
 		const prefix string = ",\"mentee_id\":"
@@ -621,6 +642,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto5(in *jlexer.Lexer, ou
 			out.Name = string(in.String())
 		case "about":
 			out.About = string(in.String())
+		case "progress":
+			out.Progress = float64(in.Float64())
 		case "mentor_id":
 			if in.IsNull() {
 				in.Skip()
@@ -663,6 +686,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppPlansDto5(out *jwriter.Writer,
 		const prefix string = ",\"about\":"
 		out.RawString(prefix)
 		out.String(string(in.About))
+	}
+	{
+		const prefix string = ",\"progress\":"
+		out.RawString(prefix)
+		out.Float64(float64(in.Progress))
 	}
 	if in.MentorID != nil {
 		const prefix string = ",\"mentor_id\":"

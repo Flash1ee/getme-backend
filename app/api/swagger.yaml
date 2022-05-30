@@ -676,6 +676,8 @@ components:
           type: string
         about:
           type: string
+        progress:
+          type: number
         mentee_id:
           type: integer
     PlanMentee:
@@ -687,6 +689,8 @@ components:
           type: string
         about:
           type: string
+        progress:
+          type: number
         mentor_id:
           type: integer
     RequestLogin:
@@ -768,7 +772,7 @@ components:
     MentorPlanWithSkillResponse:
       type: object
       properties:
-        user:
+        plan:
           $ref: '#/components/schemas/PlanMentor'
         skills:
           type: array
@@ -780,14 +784,14 @@ components:
     MentorsPlansWithSkillResponse:
       type: object
       properties:
-        users:
+        plans:
           type: array
           items:
             $ref: '#/components/schemas/MentorPlanWithSkillResponse'
     MenteePlanWithSkillResponse:
       type: object
       properties:
-        user:
+        plan:
           $ref: '#/components/schemas/PlanMentee'
         skills:
           type: array
@@ -799,7 +803,7 @@ components:
     MenteePlansWithSkillResponse:
       type: object
       properties:
-        users:
+        plans:
           type: array
           items:
             $ref: '#/components/schemas/MenteePlanWithSkillResponse'

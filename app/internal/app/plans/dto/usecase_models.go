@@ -51,6 +51,7 @@ func (m *PlansUsecaseDTO) ToPlanResponseMentor() *PlanResponseMentor {
 		ID:       m.ID,
 		Name:     m.Name,
 		About:    m.About,
+		Progress: m.Progress,
 		MenteeID: &m.MenteeID,
 	}
 }
@@ -59,6 +60,7 @@ func (m *PlansUsecaseDTO) ToPlanResponseMentee() *PlanResponseMentee {
 		ID:       m.ID,
 		Name:     m.Name,
 		About:    m.About,
+		Progress: m.Progress,
 		MentorID: &m.MentorID,
 	}
 }
