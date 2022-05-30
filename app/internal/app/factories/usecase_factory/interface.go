@@ -3,7 +3,7 @@ package usecase_factory
 import (
 	auth_repository "getme-backend/internal/app/auth/repository"
 	offer_repository "getme-backend/internal/app/offer/repository"
-	plan_repository "getme-backend/internal/app/plan/repository"
+	plan_repository "getme-backend/internal/app/plans/repository"
 	skill_repository "getme-backend/internal/app/skill/repository"
 	token_repository "getme-backend/internal/app/token/repository"
 	repUser "getme-backend/internal/app/user/repository"

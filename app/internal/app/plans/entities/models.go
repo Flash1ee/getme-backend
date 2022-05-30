@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"database/sql"
 	"time"
 
 	skill_entities "getme-backend/internal/app/skill/entities"
@@ -21,6 +22,16 @@ type PlansSkills struct {
 	ID        int64  `db:"id"`
 	PlanID    int64  `db:"plan_id"`
 	SkillName string `db:"skill_name"`
+}
+
+type PlanWithSkill struct {
+	Plan
+	Skill sql.NullString `db:"skill_name"`
+}
+
+type PlanWithSkills struct {
+	Plan
+	Skills []string `db:"skill_name"`
 }
 
 func ToPlansSkills(planID int64, skills []skill_entities.Skill) []PlansSkills {

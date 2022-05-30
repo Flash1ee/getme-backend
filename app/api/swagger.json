@@ -17,9 +17,38 @@
       },
       "type": "object"
     },
+    "OfferIDResponse": {
+      "properties": {
+        "offer_id": {
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
     "OkResponse": {
       "properties": {
         "OK": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "RequestAcceptOffer": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "skills": {
+          "example": [
+            "backend",
+            "frontend"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "title": {
           "type": "string"
         }
       },
@@ -36,6 +65,16 @@
       },
       "type": "object"
     },
+    "RequestOffer": {
+      "properties": {
+        "mentor_id": {
+          "type": "integer"
+        },
+        "skill_name": {
+          "type": "string"
+        }
+      }
+    },
     "RequestRegistration": {
       "properties": {
         "login": {
@@ -43,6 +82,41 @@
         },
         "password": {
           "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "RequestUserUpdate": {
+      "properties": {
+        "about": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      }
+    },
+    "SkillResponse": {
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SkillsResponse": {
+      "properties": {
+        "skills": {
+          "items": {
+            "$ref": "#/definitions/SkillResponse"
+          },
+          "type": "array"
         }
       },
       "type": "object"
@@ -60,13 +134,19 @@
         "about": {
           "type": "string"
         },
-        "email": {
+        "avatar": {
           "type": "string"
         },
-        "fullname": {
+        "first_name": {
           "type": "string"
         },
-        "nickname": {
+        "id": {
+          "type": "integer"
+        },
+        "is_mentor": {
+          "type": "boolean"
+        },
+        "last_name": {
           "type": "string"
         }
       },
@@ -98,6 +178,55 @@
         },
         "username": {
           "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserStatusResponse": {
+      "properties": {
+        "is_mentor": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "UserWithSkillResponse": {
+      "properties": {
+        "skills": {
+          "example": [
+            "frontend",
+            "backend"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user": {
+          "$ref": "#/definitions/User",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "UsersResponse": {
+      "properties": {
+        "users": {
+          "items": {
+            "$ref": "#/definitions/User"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "UsersWithSkillResponse": {
+      "properties": {
+        "users": {
+          "items": {
+            "$ref": "#/definitions/UserWithSkillResponse"
+          },
+          "type": "array"
         }
       },
       "type": "object"
@@ -381,10 +510,453 @@
           "auth"
         ]
       }
+    },
+    "/offer/{offer_id}/accept": {
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Метод для ментора на отклонение завяки на менторство с id = offer_id",
+        "parameters": [
+          {
+            "description": "ID заявки на менторство",
+            "in": "path",
+            "name": "offer_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Заявка отклонена(удалена)"
+          },
+          "400": {
+            "description": "Ошибка offer_id - у текущего пользователя нет заявки с таким id",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Заявка с id = offer_id не найдена",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Отклонить-удалить заявку на менторство",
+        "tags": [
+          "offer"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Метод для ментора на принятия завяки на менторство с id = id",
+        "parameters": [
+          {
+            "description": "ID заявки на менторство",
+            "in": "path",
+            "name": "offer_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Данные для создания плана",
+            "in": "body",
+            "name": "plan_info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestAcceptOffer"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Созданный план",
+            "schema": {
+              "$ref": "#/definitions/UserWithSkillResponse"
+            }
+          },
+          "400": {
+            "description": "Ошибка offer_id - у текущего пользователя нет заявки с таким id",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Заявка с id = offer_id не найдена",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "422": {
+            "description": "Ошибка в переданном теле",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Принять заявку на менторство",
+        "tags": [
+          "offer"
+        ]
+      }
+    },
+    "/offers": {
+      "get": {
+        "description": "Список подавших заявку к ментору менти",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Список менти",
+            "schema": {
+              "$ref": "#/definitions/UsersResponse"
+            }
+          },
+          "404": {
+            "description": "Пользователь с данным id не ментор",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Список подавших заявку к ментору менти",
+        "tags": [
+          "offer"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Запись к ментору",
+        "parameters": [
+          {
+            "description": "Тело запроса с данными для заявки на менторство",
+            "in": "body",
+            "name": "offer",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestOffer"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Запись успешна",
+            "schema": {
+              "$ref": "#/definitions/OfferIDResponse"
+            }
+          },
+          "400": {
+            "description": "Логическая ошибка = ментор и менти должны быть разными",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Ментор с данным ID не найден или скилл с таким именем не существует",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "409": {
+            "description": "Заявка от к ментору уже существует",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Подать заявку к ментору",
+        "tags": [
+          "offer"
+        ]
+      }
+    },
+    "/skills": {
+      "get": {
+        "description": "Получение списка всех скиллов",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Список всех скиллов",
+            "schema": {
+              "$ref": "#/definitions/SkillsResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Получение списка всех скиллов",
+        "tags": [
+          "skills"
+        ]
+      }
+    },
+    "/skills/users": {
+      "get": {
+        "description": "Получить список пользователей у которых есть хотя бы один скилл из переданного списка",
+        "parameters": [
+          {
+            "description": "список скиллов в формате skills=x,y,z",
+            "in": "query",
+            "name": "skills",
+            "required": true,
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Список пользователей, у которых совпал хотя бы один из указанных скиллов",
+            "schema": {
+              "$ref": "#/definitions/UsersWithSkillResponse"
+            }
+          },
+          "400": {
+            "description": "Ошибка в переданном query параметре skills",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Получение всех пользователей с указанными скиллами (если нет совпадений, выводятся все менторы)",
+        "tags": [
+          "skills"
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "description": "Получение данных текущего пользователя",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные пользователя",
+            "schema": {
+              "$ref": "#/definitions/UserWithSkillResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Получение данных текущего пользователя",
+        "tags": [
+          "user"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Обновление/изменение даных пользователя",
+        "parameters": [
+          {
+            "description": "Тело запроса с новыми данными",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestUserUpdate"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные пользователя с изменениями",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "422": {
+            "description": "Ошибка в переданном теле запроса",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Обновление даных пользователя",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/status": {
+      "get": {
+        "description": "Если true - показывается в поиске, иначе - нет",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Статус ментора",
+            "schema": {
+              "$ref": "#/definitions/UserStatusResponse"
+            }
+          },
+          "404": {
+            "description": "Текущий пользователь не найден",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Получение статуса пользователя-ментора",
+        "tags": [
+          "user"
+        ]
+      },
+      "put": {
+        "description": "Если true - показывается в поиске, иначе - нет",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Статус ментора",
+            "schema": {
+              "$ref": "#/definitions/UserStatusResponse"
+            }
+          },
+          "404": {
+            "description": "Текущий пользователь не найден",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Обновить статус пользователя-ментора",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/{:user_id}": {
+      "get": {
+        "description": "Получение данных текущего пользователя",
+        "parameters": [
+          {
+            "description": "user_id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Данные пользователя с указанным id",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Ошибка в переданном параметре пути",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "404": {
+            "description": "Пользователь с данным id не найден",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "schema": {
+              "$ref": "#/definitions/ErrResponse"
+            }
+          }
+        },
+        "summary": "Получение данных пользователя по id",
+        "tags": [
+          "user"
+        ]
+      }
     }
   },
   "schemes": [
-    "https",
     "http"
   ],
   "swagger": "2.0",
@@ -392,6 +964,10 @@
     {
       "description": "Взаимодействия с менторами",
       "name": "mentor"
+    },
+    {
+      "description": "Работа с заявками на менторство",
+      "name": "offer"
     },
     {
       "description": "Взаимодействия с планом развития",
@@ -404,6 +980,10 @@
     {
       "description": "Аутентификация",
       "name": "auth"
+    },
+    {
+      "description": "Взаимодействия с скиллами",
+      "name": "skills"
     }
   ]
 }

@@ -2,7 +2,7 @@ package offer_usecase
 
 import (
 	"getme-backend/internal/app/offer/dto"
-	plan_dto "getme-backend/internal/app/plan/dto"
+	plan_dto "getme-backend/internal/app/plans/dto"
 	dto2 "getme-backend/internal/app/user/dto"
 )
 
@@ -24,7 +24,7 @@ type Usecase interface {
 	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	Accept(userID int64, data *dto.OfferAcceptUsecaseDTO) (*plan_dto.PlanCreateUsecaseDTO, error)
+	Accept(userID int64, data *dto.OfferAcceptUsecaseDTO) (*plan_dto.PlansCreateUsecaseDTO, error)
 	//Delete with Errors:
 	//		InvalidOfferID
 	//		postgresql_utilits.NotFound

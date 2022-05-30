@@ -6,8 +6,8 @@ import (
 	authRepo "getme-backend/internal/app/auth/repository"
 	offerRepo "getme-backend/internal/app/offer/repository"
 	offerPostgresRepo "getme-backend/internal/app/offer/repository/postgresql"
-	planRepo "getme-backend/internal/app/plan/repository"
-	planPostgresRepo "getme-backend/internal/app/plan/repository/postgresql"
+	planRepo "getme-backend/internal/app/plans/repository"
+	planPostgresRepo "getme-backend/internal/app/plans/repository/postgresql"
 	skillRepo "getme-backend/internal/app/skill/repository"
 
 	skillPostgresRepo "getme-backend/internal/app/skill/repository/postgresql"

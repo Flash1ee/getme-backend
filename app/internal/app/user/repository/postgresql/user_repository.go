@@ -242,7 +242,7 @@ func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]ent
 }
 
 const queryGetMenteeByOffers = `
-SELECT offers.id as offer_id, first_name, last_name, about, avatar, is_searchable from users join getme_db.public.offers
+SELECT offers.id as offer_id, users.id as id, first_name, last_name, about, avatar, is_searchable from users join getme_db.public.offers
     on users.id = offers.mentee_id and offers.mentor_id = ? and offers.status = true;`
 
 //	GetMenteeByMentorWithOfferID with Errors:

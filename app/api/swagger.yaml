@@ -1,654 +1,828 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
-  description: "Приложение для поиска менторов с целью изучения информационных технологий."
-  version: "1.0.0"
-  title: "GetMe App"
+  title: GetMe App
+  description: Приложение для поиска менторов с целью изучения информационных технологий.
   contact:
-    email: "varindv@gmail.com"
-host: "127.0.0.1"
-basePath: "/api/v1/"
+    email: varindv@gmail.com
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1/api/v1/
+  - url: http://android.glidemess.pw/api/v1/
 tags:
-  - name: "mentor"
-    description: "Взаимодействия с менторами"
-  - name: "offer"
-    description: "Работа с заявками на менторство"
-  - name: "plan"
-    description: "Взаимодействия с планом развития"
-  - name: "user"
-    description: "Взаимодействие с пользователем"
-  - name: "auth"
-    description: "Аутентификация"
-  - name: "skills"
-    description: "Взаимодействия с скиллами"
-schemes:
-  #  - "https"
-  - "http"
+  - name: mentor
+    description: Взаимодействия с менторами
+  - name: offer
+    description: Работа с заявками на менторство
+  - name: plan
+    description: Взаимодействия с планом развития
+  - name: user
+    description: Взаимодействие с пользователем
+  - name: auth
+    description: Аутентификация
+  - name: skills
+    description: Взаимодействия с скиллами
 paths:
+  /plans:
+    get:
+      tags:
+        - plan
+      summary: Список планов развития
+      description: Список планов в зависимости от выбранной роли (как ментор, как менти)
+      parameters:
+        - in: query
+          name: role
+          description: Роль пользователя
+          required: true
+          schema:
+            type: integer
+            enum: [mentor, mentee]
+      responses:
+        200:
+          description: Список планов
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MentorsPlansWithSkillResponse'
+                  - $ref: '#/components/schemas/MenteePlansWithSkillResponse'
+        400:
+          description: Ошибка в параметре запроса role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /offers:
     get:
       tags:
-        - "offer"
-      summary: "Список подавших заявку к ментору менти"
-      description:  "Список подавших заявку к ментору менти"
+        - offer
+      summary: Список подавших заявку к ментору менти
+      description: Список подавших заявку к ментору менти
       responses:
-        "200":
-          description: "Список менти"
-          schema:
-            $ref: '#/definitions/UsersResponse'
-        "404":
-          description: "Пользователь с данным id не ментор"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-      produces:
-        - "application/json"
+        200:
+          description: Список менти
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        404:
+          description: Пользователь с данным id не ментор
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
     post:
       tags:
-        - "offer"
-      summary: "Подать заявку к ментору"
-      description: "Запись к ментору"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - description: "Тело запроса с данными для заявки на менторство"
-          in: body
-          name: offer
-          required: true
-          schema:
-            $ref: '#/definitions/RequestOffer'
+        - offer
+      summary: Подать заявку к ментору
+      description: Запись к ментору
+      requestBody:
+        description: Тело запроса с данными для заявки на менторство
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestOffer'
+        required: true
       responses:
-        "200":
-          description: "Запись успешна"
-          schema:
-            $ref: '#/definitions/OfferIDResponse'
-        "400":
-          description: "Логическая ошибка = ментор и менти должны быть разными"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "404":
-          description: "Ментор с данным ID не найден или скилл с таким именем не существует"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "409":
-          description: "Заявка от к ментору уже существует"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        200:
+          description: Запись успешна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferIDResponse'
+        400:
+          description: Логическая ошибка = ментор и менти должны быть разными
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: Ментор с данным ID не найден или скилл с таким именем не существует
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        409:
+          description: Заявка от к ментору уже существует
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+      x-codegen-request-body-name: offer
   /offer/{offer_id}/accept:
     post:
       tags:
-        - "offer"
-      summary: "Принять заявку на менторство"
-      description: "Метод для ментора на принятия завяки на менторство с id = id"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
+        - offer
+      summary: Принять заявку на менторство
+      description: Метод для ментора на принятия завяки на менторство с id = id
       parameters:
-        - description: "ID заявки на менторство"
+        - name: offer_id
           in: path
-          name: offer_id
-          required: true
-          type: integer
-        - description: "Данные для создания плана"
-          in: body
-          name: plan_info
+          description: ID заявки на менторство
           required: true
           schema:
-            $ref: "#/definitions/RequestAcceptOffer"
+            type: integer
+      requestBody:
+        description: Данные для создания плана
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAcceptOffer'
+        required: true
       responses:
-        "200":
-          description: "Созданный план"
-          schema:
-            $ref: '#/definitions/UserWithSkillResponse'
-        "400":
-          description: "Ошибка offer_id - у текущего пользователя нет заявки с таким id"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "404":
-          description: "Заявка с id = offer_id не найдена"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "422":
-          description: "Ошибка в переданном теле"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        200:
+          description: Созданный план
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithSkillResponse'
+        400:
+          description: Ошибка offer_id - у текущего пользователя нет заявки с таким
+            id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: Заявка с id = offer_id не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        422:
+          description: Ошибка в переданном теле
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+      x-codegen-request-body-name: plan_info
     delete:
       tags:
-        - "offer"
-      summary: "Отклонить-удалить заявку на менторство"
-      description: "Метод для ментора на отклонение завяки на менторство с id = offer_id"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
+        - offer
+      summary: Отклонить-удалить заявку на менторство
+      description: Метод для ментора на отклонение завяки на менторство с id = offer_id
       parameters:
-        - description: "ID заявки на менторство"
+        - name: offer_id
           in: path
-          name: offer_id
+          description: ID заявки на менторство
           required: true
-          type: integer
+          schema:
+            type: integer
       responses:
-        "200":
-          description: "Заявка отклонена(удалена)"
-        "400":
-          description: "Ошибка offer_id - у текущего пользователя нет заявки с таким id"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "404":
-          description: "Заявка с id = offer_id не найдена"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-
-
+        200:
+          description: Заявка отклонена(удалена)
+          content: {}
+        400:
+          description: Ошибка offer_id - у текущего пользователя нет заявки с таким
+            id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: Заявка с id = offer_id не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /user:
     get:
       tags:
-        - "user"
-      summary: "Получение данных текущего пользователя"
-      description: "Получение данных текущего пользователя"
-      produces:
-        - "application/json"
+        - user
+      summary: Получение данных текущего пользователя
+      description: Получение данных текущего пользователя
       responses:
-        "200":
-          description: "Данные пользователя"
-          schema:
-            $ref: '#/definitions/UserWithSkillResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        200:
+          description: Данные пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithSkillResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
     post:
       tags:
-        - "user"
-      summary: "Обновление даных пользователя"
-      description: "Обновление/изменение даных пользователя"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - description: "Тело запроса с новыми данными"
-          in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/RequestUserUpdate'
+        - user
+      summary: Обновление даных пользователя
+      description: Обновление/изменение даных пользователя
+      requestBody:
+        description: Тело запроса с новыми данными
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUserUpdate'
+        required: true
       responses:
-        "200":
-          description: "Данные пользователя с изменениями"
-          schema:
-            $ref: '#/definitions/User'
-        "422":
-          description: "Ошибка в переданном теле запроса"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-  /user/{:user_id}:
+        200:
+          description: Данные пользователя с изменениями
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        422:
+          description: Ошибка в переданном теле запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+      x-codegen-request-body-name: body
+  /user/{user_id}:
     get:
       tags:
-        - "user"
-      summary: "Получение данных пользователя по id"
-      description: "Получение данных текущего пользователя"
-      produces:
-        - "application/json"
+        - user
+      summary: Получение данных пользователя по id
+      description: Получение данных текущего пользователя
       parameters:
-        - description: user_id
+        - name: user_id
           in: path
-          name: user_id
+          description: user_id
           required: true
-          type: integer
+          schema:
+            type: integer
       responses:
-        "200":
-          description: "Данные пользователя с указанным id"
-          schema:
-            $ref: '#/definitions/User'
-        "400":
-          description: "Ошибка в переданном параметре пути"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "404":
-          description: "Пользователь с данным id не найден"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        200:
+          description: Данные пользователя с указанным id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Ошибка в переданном параметре пути
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: Пользователь с данным id не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /user/status:
     get:
       tags:
-        - "user"
-      summary: "Получение статуса пользователя-ментора"
-      description: "Если true - показывается в поиске, иначе - нет"
-      produces:
-        - "application/json"
+        - user
+      summary: Получение статуса пользователя-ментора
+      description: Если true - показывается в поиске, иначе - нет
       responses:
-        "200":
-          description: "Статус ментора"
-          schema:
-            $ref: '#/definitions/UserStatusResponse'
-        "404":
-          description: "Текущий пользователь не найден"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        200:
+          description: Статус ментора
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatusResponse'
+        404:
+          description: Текущий пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
     put:
       tags:
-        - "user"
-      summary: "Обновить статус пользователя-ментора"
-      description: "Если true - показывается в поиске, иначе - нет"
-      produces:
-        - "application/json"
+        - user
+      summary: Обновить статус пользователя-ментора
+      description: Если true - показывается в поиске, иначе - нет
       responses:
-        "200":
-          description: "Статус ментора"
-          schema:
-            $ref: '#/definitions/UserStatusResponse'
-        "404":
-          description: "Текущий пользователь не найден"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-
+        200:
+          description: Статус ментора
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatusResponse'
+        404:
+          description: Текущий пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /skills:
     get:
       tags:
-        - "skills"
-      summary: "Получение списка всех скиллов"
-      description: "Получение списка всех скиллов"
-      produces:
-        - "application/json"
+        - skills
+      summary: Получение списка всех скиллов
+      description: Получение списка всех скиллов
       responses:
-        "200":
-          description: "Список всех скиллов"
-          schema:
-            $ref: '#/definitions/SkillsResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-
+        200:
+          description: Список всех скиллов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillsResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /skills/users:
     get:
       tags:
-        - "skills"
-      summary: "Получение всех пользователей с указанными скиллами (если нет совпадений, выводятся все менторы)"
-      description: "Получить список пользователей у которых есть хотя бы один скилл из переданного списка"
-      produces:
-        - "application/json"
+        - skills
+      summary: Получение всех пользователей с указанными скиллами (если нет совпадений,
+        выводятся все менторы)
+      description: Получить список пользователей у которых есть хотя бы один скилл
+        из переданного списка
       parameters:
-        - name: "skills"
-          in: "query"
-          description: "список скиллов в формате skills=x,y,z"
+        - name: skills
+          in: query
+          description: список скиллов в формате skills=x,y,z
           required: true
-          type: array
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
-        "200":
-          description: "Список пользователей, у которых совпал хотя бы один из указанных скиллов"
-          schema:
-            $ref: '#/definitions/UsersWithSkillResponse'
-        "400":
-          description: "Ошибка в переданном query параметре skills"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-
+        200:
+          description: Список пользователей, у которых совпал хотя бы один из указанных
+            скиллов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersWithSkillResponse'
+        400:
+          description: Ошибка в переданном query параметре skills
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /auth/telegram/register:
     get:
       tags:
-        - "auth"
-      summary: "Проверка авторизации"
-      description: "Проверка авторизации через телеграм"
-      produces:
-        - "application/json"
-      consumes:
-        - "application/json"
-      parameters:
-        - name: "UserAuthRequest"
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/UserAuthRequest'
+        - auth
+      summary: Проверка авторизации
+      description: Проверка авторизации через телеграм
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthRequest'
+        required: true
       responses:
-        "201":
-          description: "Пользователь создан, проверка аутентификации успешна"
-          schema:
-            $ref: '#/definitions/User'
-        "400":
-          description: "Проверка переданных данных неуспешна"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "503":
-          description: "Ошибка сервера - метод недоступен"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        201:
+          description: Пользователь создан, проверка аутентификации успешна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Проверка переданных данных неуспешна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        503:
+          description: Ошибка сервера - метод недоступен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+      x-codegen-request-body-name: UserAuthRequest
   /auth/telegram/login:
     get:
       tags:
-        - "auth"
-      summary: "Получение сессии после отправки формы в Телеграмм"
-      description: "Получение сессии после аутентефикации через Телеграм"
-      produces:
-        - "application/json"
+        - auth
+      summary: Получение сессии после отправки формы в Телеграмм
+      description: Получение сессии после аутентефикации через Телеграм
       parameters:
-        - name: "Token"
-          in: "query"
-          description: "Токен, подтверждающий авторизацию через телеграм"
+        - name: Token
+          in: query
+          description: Токен, подтверждающий авторизацию через телеграм
           required: true
-          type: "string"
-
+          schema:
+            type: string
       responses:
-        "200":
-          description: "Успешная авторизация, выставление сессионной куки"
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "400":
-          description: "Ошибка в запросе - не указан токен / указан невалидный токен"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "503":
-          description: "Ошибка - метод недоступен"
-          schema:
-            $ref: '#/definitions/ErrResponse'
+        200:
+          description: Успешная авторизация, выставление сессионной куки
+          content: {}
+        400:
+          description: Ошибка в запросе - не указан токен / указан невалидный токен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        503:
+          description: Ошибка - метод недоступен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /auth/simple/register:
     post:
-      consumes:
-        - application/json
+      tags:
+        - auth
+      summary: create new user
       description: create new account
-      parameters:
-        - description: Request body for user registration
-          in: body
-          name: register_info
-          required: true
-          schema:
-            $ref: '#/definitions/RequestRegistration'
-      produces:
-        - application/json
+      requestBody:
+        description: Request body for user registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestRegistration'
+        required: true
       responses:
-        "201":
+        201:
           description: Create user successfully
-          schema:
-            $ref: '#/definitions/IdResponse'
-        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+        409:
           description: user already exist
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "418":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        418:
           description: User are authorized
-        "422":
+          content: {}
+        422:
           description: invalid body in request", "nickname already exist", "incorrect
             email or password", "incorrect nickname
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
           description: can not do bd operation
-          schema:
-            $ref: '#/definitions/ErrResponse'
-      summary: create new user
-      tags:
-        - auth
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+      x-codegen-request-body-name: register_info
   /auth/simple/login:
     post:
-      consumes:
-        - application/json
-      description: "Аутентификация пользователя через логин + пароль"
-      parameters:
-        - description: "Тело аутентификации"
-          in: body
-          name: user
-          required: true
-          schema:
-            $ref: '#/definitions/RequestLogin'
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: "Успешная авторизация"
-        "401":
-          description: "Некорректный логин или пароль"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "404":
-          description: "Пользователь не найден"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "418":
-          description: "Пользователь уже авторизован"
-        "422":
-          description: "Некорректное тело запроса"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-      summary: login user
       tags:
         - auth
+      summary: login user
+      description: Аутентификация пользователя через логин + пароль
+      requestBody:
+        description: Тело аутентификации
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestLogin'
+        required: true
+      responses:
+        200:
+          description: Успешная авторизация
+          content: {}
+        401:
+          description: Некорректный логин или пароль
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        418:
+          description: Пользователь уже авторизован
+          content: {}
+        422:
+          description: Некорректное тело запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+      x-codegen-request-body-name: user
   /logout:
     post:
-      consumes:
-        - application/json
-      description: logout user
-      produces:
-        - application/json
-      responses:
-        "201":
-          description: Successfully logout
-        "401":
-          description: User not are authorized
-        "500":
-          description: server error
-          schema:
-            $ref: '#/definitions/ErrResponse'
-      summary: logout user
       tags:
         - auth
+      summary: logout user
+      description: logout user
+      responses:
+        201:
+          description: Successfully logout
+          content: {}
+        401:
+          description: User not are authorized
+          content: {}
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /auth/token:
     get:
       tags:
-        - "auth"
-      summary: "Получение токена"
-      description: "Получение токена для подтверждения аутентификации через телеграм"
-      produces:
-        - "application/json"
+        - auth
+      summary: Получение токена
+      description: Получение токена для подтверждения аутентификации через телеграм
       responses:
-        "200":
-          description: "Успешная авторизация, выставление сессионной куки"
-          schema:
-            $ref: '#/definitions/Token'
-        "500":
-          description: "Ошибка сервера"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-        "503":
-          description: "Ошибка - метод недоступен"
-          schema:
-            $ref: '#/definitions/ErrResponse'
-
-
-
-definitions:
-  ErrResponse:
-    properties:
-      error:
-        type: string
-    type: object
-  OkResponse:
-    properties:
-      OK:
-        type: string
-    type: object
-  Token:
-    type: "object"
-    properties:
-      token:
-        type: "string"
-  UserAuthRequest:
-    type: "object"
-    properties:
-      token:
-        type: "string"
-      id:
-        type: "integer"
-        format: "int64"
-      auth_date:
-        type: "string"
-      first_name:
-        type: "string"
-      last_name:
-        type: "string"
-      username:
-        type: "string"
-      photo_url:
-        type: "string"
-      hash:
-        type: "string"
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-      first_name:
-        type: "string"
-      last_name:
-        type: "string"
-      about:
-        type: "string"
-      avatar:
-        type: "string"
-      is_mentor:
-        type: "boolean"
-  RequestLogin:
-    properties:
-      login:
-        type: string
-      password:
-        type: string
-    type: object
-  RequestRegistration:
-    properties:
-      login:
-        type: string
-      password:
-        type: string
-    type: object
-  RequestAcceptOffer:
-    properties:
-      title:
-        type: string
-      description:
-        type: string
-      skills:
-        items:
+        200:
+          description: Успешная авторизация, выставление сессионной куки
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        503:
+          description: Ошибка - метод недоступен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+components:
+  schemas:
+    ErrResponse:
+      type: object
+      properties:
+        error:
           type: string
-        type: array
-        example: ["backend", "frontend"]
-    type: object
-  IdResponse:
-    properties:
-      id:
-        type: integer
-    type: object
-  OfferIDResponse:
-    properties:
-      offer_id:
-        type: integer
-    type: object
-  SkillResponse:
-    properties:
-      name:
-        type: string
-      color:
-        type: string
-    type: object
-  SkillsResponse:
-    properties:
-      skills:
-        items:
-          $ref: '#/definitions/SkillResponse'
-        type: array
-    type: object
-  UserStatusResponse:
-    properties:
-      is_mentor:
-        type: boolean
-    type: object
-  UserWithSkillResponse:
-    properties:
-      user:
-        type: object
-        $ref: '#/definitions/User'
-      skills:
-        type: array
-        items:
+    OkResponse:
+      type: object
+      properties:
+        OK:
           type: string
-        example: ['frontend', "backend"]
-    type: object
-  UsersWithSkillResponse:
-    properties:
-      users:
-        items:
-          $ref: '#/definitions/UserWithSkillResponse'
-        type: array
-    type: object
-  UsersResponse:
-    properties:
-      users:
-        items:
-          $ref: '#/definitions/User'
-        type: array
-    type: object
-  RequestUserUpdate:
-    properties:
-      first_name:
-        type: string
-      last_name:
-        type: string
-      about:
-        type: string
-  RequestOffer:
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+    UserAuthRequest:
+      type: object
+      properties:
+        token:
+          type: string
+        id:
+          type: integer
+          format: int64
+        auth_date:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        username:
+          type: string
+        photo_url:
+          type: string
+        hash:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        about:
+          type: string
+        avatar:
+          type: string
+        is_mentor:
+          type: boolean
+    PlanMentor:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        about:
+          type: string
+        mentee_id:
+          type: integer
+    PlanMentee:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        about:
+          type: string
+        mentor_id:
+          type: integer
+    RequestLogin:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+    RequestRegistration:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+    RequestAcceptOffer:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        skills:
+          type: array
+          example:
+            - backend
+            - frontend
+          items:
+            type: string
+    IdResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+    OfferIDResponse:
+      type: object
+      properties:
+        offer_id:
+          type: integer
+    SkillResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+    SkillsResponse:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillResponse'
+    UserStatusResponse:
+      type: object
+      properties:
+        is_mentor:
+          type: boolean
+    UserWithSkillResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        skills:
+          type: array
+          example:
+            - frontend
+            - backend
+          items:
+            type: string
+    UsersWithSkillResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserWithSkillResponse'
+    MentorPlanWithSkillResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/PlanMentor'
+        skills:
+          type: array
+          example:
+            - frontend
+            - backend
+          items:
+            type: string
+    MentorsPlansWithSkillResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/MentorPlanWithSkillResponse'
+    MenteePlanWithSkillResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/PlanMentee'
+        skills:
+          type: array
+          example:
+            - frontend
+            - backend
+          items:
+            type: string
+    MenteePlansWithSkillResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenteePlanWithSkillResponse'
+    UsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    RequestUserUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        about:
+          type: string
+    RequestOffer:
+      type: object
       properties:
         skill_name:
           type: string
         mentor_id:
           type: integer
-
-
-
-

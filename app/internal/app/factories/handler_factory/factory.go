@@ -12,6 +12,7 @@ import (
 	"getme-backend/internal/app/auth/delivery/http/handlers/register/telegram_register_handler"
 	"getme-backend/internal/app/offer/delivery/http/offer_handler"
 	offer_id_accept_handler "getme-backend/internal/app/offer/delivery/http/offer_id_handler/accept_handler"
+	"getme-backend/internal/app/plans/delivery/http/plans_handler"
 	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
 	skills_user_handler "getme-backend/internal/app/skill/delivery/http/skills/user_handler"
 	"getme-backend/internal/app/token/delivery/http/handlers/token_handler"
@@ -35,6 +36,7 @@ const (
 	OFFERS
 	USER_STATUS
 	OFFER_ACCEPT
+	PLANS
 )
 
 type HandlerFactory struct {
@@ -58,6 +60,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 	authUsecase := f.usecaseFactory.GetAuthUsecase()
 	skillUsecase := f.usecaseFactory.GetSkillUsecase()
 	offersUsecase := f.usecaseFactory.GetOfferUsecase()
+	plansUsecase := f.usecaseFactory.GetPlansUsecase()
 
 	sClient := client.NewSessionClient(f.sessionClientConn)
 	return map[int]app.Handler{
@@ -74,6 +77,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		OFFERS:          offer_handler.NewOfferHandler(f.logger, sClient, offersUsecase),
 		USER_STATUS:     user_status_handler.NewStatusHandler(f.logger, sClient, ucUsecase),
 		OFFER_ACCEPT:    offer_id_accept_handler.NewAcceptHandler(f.logger, sClient, offersUsecase),
+		PLANS:           plans_handler.NewPlanHandler(f.logger, sClient, offersUsecase, plansUsecase),
 	}
 }
 
@@ -101,6 +105,8 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		//=============offers=============//
 		"/offers":           hs[OFFERS],
 		"/offer/:id/accept": hs[OFFER_ACCEPT],
+		//=============plans=============//
+		"/plans": hs[PLANS],
 	}
 	return f.urlHandler
 }

@@ -8,7 +8,7 @@ import (
 
 	"getme-backend/internal/app/offer/dto"
 	offer_usecase "getme-backend/internal/app/offer/usecase"
-	plan_dto "getme-backend/internal/app/plan/dto"
+	plan_dto "getme-backend/internal/app/plans/dto"
 	session_client "getme-backend/internal/microservices/auth/delivery/grpc/client"
 	middleware2 "getme-backend/internal/microservices/auth/sessions/middleware"
 	"getme-backend/internal/pkg/adapter/echo_adapter"
@@ -66,7 +66,12 @@ func (h *AcceptHandler) POST(ctx echo.Context) error {
 		h.UsecaseError(ctx, err, codeByErrPOST)
 		return handler_errors.InvalidParameters
 	}
-	h.Respond(ctx, http.StatusCreated, plan_dto.ToResponseAcceptPlan(res, req.Skills))
+	resModel := &plan_dto.PlanWithSkillsResponseMentor{
+		PlanResponseMentor: *res.ToPlanResponseMentor(),
+		Skills:             req.Skills,
+	}
+
+	h.Respond(ctx, http.StatusCreated, resModel)
 	return nil
 }
 

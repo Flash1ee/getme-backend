@@ -9,6 +9,8 @@ import (
 	"getme-backend/internal/app/auth/usecase/auth_usecase"
 	offerUs "getme-backend/internal/app/offer/usecase"
 	offer_usecase "getme-backend/internal/app/offer/usecase/usecase"
+	plansUs "getme-backend/internal/app/plans/usecase"
+	plans_usecase "getme-backend/internal/app/plans/usecase/usecase"
 	skillUs "getme-backend/internal/app/skill/usecase"
 	"getme-backend/internal/app/skill/usecase/skill_usecase"
 	tokenUs "getme-backend/internal/app/token/usecase"
@@ -26,6 +28,7 @@ type UsecaseFactory struct {
 	authUsecase       authUs.Usecase
 	skillUsecase      skillUs.Usecase
 	offersUsecase     offerUs.Usecase
+	plansUsecase      plansUs.Usecase
 
 	authChecker *telegram_checker.TelegramChecker
 }
@@ -62,7 +65,6 @@ func (f *UsecaseFactory) GetSkillUsecase() skillUs.Usecase {
 	if f.skillUsecase == nil {
 		f.skillUsecase = skill_usecase.NewSkillUsecase(f.repositoryFactory.GetSkillRepository(), f.repositoryFactory.GetUserRepository())
 	}
-
 	return f.skillUsecase
 }
 func (f *UsecaseFactory) GetOfferUsecase() offerUs.Usecase {
@@ -70,6 +72,13 @@ func (f *UsecaseFactory) GetOfferUsecase() offerUs.Usecase {
 		f.offersUsecase = offer_usecase.NewOfferUsecase(f.repositoryFactory.GetOfferRepository(), f.repositoryFactory.GetUserRepository(), f.repositoryFactory.GetSkillRepository(), f.repositoryFactory.GetPlanRepository())
 
 	}
-
 	return f.offersUsecase
+}
+
+func (f *UsecaseFactory) GetPlansUsecase() plansUs.Usecase {
+	if f.plansUsecase == nil {
+		f.plansUsecase = plans_usecase.NewPlanUsecase(f.repositoryFactory.GetPlanRepository())
+
+	}
+	return f.plansUsecase
 }

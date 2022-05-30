@@ -7,9 +7,9 @@ import (
 	"getme-backend/internal/app/offer/dto"
 	offer_repository "getme-backend/internal/app/offer/repository"
 	offer_usecase "getme-backend/internal/app/offer/usecase"
-	plan_dto "getme-backend/internal/app/plan/dto"
-	"getme-backend/internal/app/plan/entities"
-	plan_repository "getme-backend/internal/app/plan/repository"
+	plan_dto "getme-backend/internal/app/plans/dto"
+	"getme-backend/internal/app/plans/entities"
+	plan_repository "getme-backend/internal/app/plans/repository"
 	entities2 "getme-backend/internal/app/skill/entities"
 	skill_repository "getme-backend/internal/app/skill/repository"
 	user_dto "getme-backend/internal/app/user/dto"
@@ -90,7 +90,7 @@ func (u *OfferUsecase) Get(mentorID int64) ([]user_dto.UserWithOfferIDUsecase, e
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (u *OfferUsecase) Accept(userID int64, data *dto.OfferAcceptUsecaseDTO) (*plan_dto.PlanCreateUsecaseDTO, error) {
+func (u *OfferUsecase) Accept(userID int64, data *dto.OfferAcceptUsecaseDTO) (*plan_dto.PlansCreateUsecaseDTO, error) {
 	res, err := u.offerRepository.GetByID(data.OfferID)
 	if err != nil {
 		return nil, err

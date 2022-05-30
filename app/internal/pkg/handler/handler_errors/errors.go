@@ -8,6 +8,7 @@ import (
 var (
 	UserNotFound  = errors.New("user not found")
 	OfferNotFound = errors.New("offer not found")
+	UnknownRole   = errors.New("unknown role, only mentor/mentee supported")
 
 	UserWithNicknameNotFound = errors.New("user with this nickname not found")
 )
