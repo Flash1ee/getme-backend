@@ -33,7 +33,7 @@ type Repository interface {
 	// UpdateUser Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	UpdateUser(user *entities_user.User) (*entities_user.User, error)
+	UpdateUser(user *entities_user.UserWithSkills) (*entities_user.UserWithSkills, error)
 	//	GetUsersBySkills with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB

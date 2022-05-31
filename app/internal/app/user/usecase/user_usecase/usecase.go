@@ -53,13 +53,13 @@ func (u *UserUsecase) FindByID(id int64) (*dto.UserWithSkillsUsecase, error) {
 	return dto.ToUserWithSkillUsecase(res), nil
 }
 
-func (u *UserUsecase) UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error) {
-	userDTO := user.ToUserEntity()
+func (u *UserUsecase) UpdateUser(user *dto.UserWithSkillsUsecase) (*dto.UserWithSkillsUsecase, error) {
+	userDTO := user.ToUserWithSkillEntity()
 	res, err := u.userRepository.UpdateUser(userDTO)
 	if err != nil {
 		return nil, err
 	}
-	return dto.ToUserUsecase(res), nil
+	return dto.ToUserWithSkillsUsecase(res), nil
 }
 
 //GetMentorStatus with Errors:

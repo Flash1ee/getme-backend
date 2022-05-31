@@ -15,7 +15,7 @@ type Usecase interface {
 	FindByNickname(nickname string) (*entities_user.User, error)
 	CreateBaseUser(nickname string) (int64, error)
 	CreateFilledUser(data *dto.UserUsecase) (int64, error)
-	UpdateUser(user *dto.UserUsecase) (*dto.UserUsecase, error)
+	UpdateUser(user *dto.UserWithSkillsUsecase) (*dto.UserWithSkillsUsecase, error)
 	//	GetMentorStatus with Errors:
 	//		postgresql_utilits.NotFound
 	//		app.GeneralError with Errors

@@ -40,6 +40,13 @@ func (m *UserStatusUsecase) ToResponseStatus() UserStatusResponse {
 	}
 }
 
+func (m *UserWithSkillsUsecase) ToUserWithSkillEntity() *entities_user.UserWithSkills {
+	return &entities_user.UserWithSkills{
+		User:   *m.UserUsecase.ToUserEntity(),
+		Skills: m.Skills,
+	}
+}
+
 func (m *UserUsecase) ToUserEntity() *entities_user.User {
 	return &entities_user.User{
 		ID: m.ID,
@@ -64,6 +71,7 @@ func ToUserWithOfferIDUsecases(data []entities_user.UserWithOfferID) []UserWithO
 	}
 	return res
 }
+
 func ToUserUsecase(data *entities_user.User) *UserUsecase {
 	return &UserUsecase{
 		ID:           data.ID,
@@ -77,6 +85,13 @@ func ToUserUsecase(data *entities_user.User) *UserUsecase {
 		IsSearchable: data.IsSearchable,
 		CreatedAt:    data.CreatedAt,
 		UpdatedAt:    data.UpdatedAt,
+	}
+}
+
+func ToUserWithSkillsUsecase(data *entities_user.UserWithSkills) *UserWithSkillsUsecase {
+	return &UserWithSkillsUsecase{
+		UserUsecase: *ToUserUsecase(&data.User),
+		Skills:      data.Skills,
 	}
 }
 func ToUserWithOfferIDUsecase(data *entities_user.UserWithOfferID) *UserWithOfferIDUsecase {
@@ -95,7 +110,8 @@ func ToUsersWithSkillUsecase(data []entities_user.UserWithSkills) []UserWithSkil
 
 	return res
 }
-func ToUserWithSkillsUsecase(data []entities_user.UserWithSkills) []UserWithSkillsUsecase {
+
+func ToUsersWithSkillsUsecase(data []entities_user.UserWithSkills) []UserWithSkillsUsecase {
 	res := make([]UserWithSkillsUsecase, 0, len(data))
 	for _, val := range data {
 		res = append(res, *ToUserWithSkillUsecase(&val))

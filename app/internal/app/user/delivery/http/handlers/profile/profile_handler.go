@@ -68,7 +68,7 @@ func (h *ProfileHandler) PUT(ctx echo.Context) error {
 		h.Error(ctx, http.StatusUnprocessableEntity, handler_errors.InvalidBody)
 		return handler_errors.InvalidBody
 	}
-	dtoModel := req.ToUserUsecase()
+	dtoModel := req.ToUserWithSkillsUsecase()
 	dtoModel.ID = userID
 	res, err := h.userUsecase.UpdateUser(dtoModel)
 	if err != nil {

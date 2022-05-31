@@ -20,12 +20,13 @@ type UpdateResponse struct {
 	FirstName    string `json:"first_name,omitempty"`
 	LastName     string `json:"last_name,omitempty"`
 	Nickname     string `json:"nickname"`
+	TgTag        string `json:"tg_tag"`
 	About        string `json:"about,omitempty"`
 	Avatar       string `json:"avatar,omitempty"`
 	IsSearchable bool   `json:"is_searchable"`
 }
 
-func ToUpdateResponseFromUsecase(usr *dto.UserUsecase) *UpdateResponse {
+func ToUpdateResponseFromUsecase(usr *dto.UserWithSkillsUsecase) *UpdateResponse {
 	return &UpdateResponse{
 		FirstName:    usr.FirstName,
 		LastName:     usr.LastName,
@@ -33,6 +34,7 @@ func ToUpdateResponseFromUsecase(usr *dto.UserUsecase) *UpdateResponse {
 		Avatar:       usr.Avatar,
 		About:        usr.About,
 		IsSearchable: usr.IsSearchable,
+		TgTag:        usr.TgTag,
 	}
 }
 func ToUserResponseFromUsecase(data *AuthUsecase) *dto.UserResponse {
