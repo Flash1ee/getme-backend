@@ -10,7 +10,7 @@ type User struct {
 	FirstName    sql.NullString `db:"first_name"`
 	LastName     sql.NullString `db:"last_name"`
 	Nickname     string         `db:"nickname"`
-	TgTag        string         `db:"tg_tag"`
+	TgTag        sql.NullString `db:"tg_tag"`
 	About        sql.NullString `db:"about"`
 	Avatar       sql.NullString `db:"avatar"`
 	Email        sql.NullString `db:"email"`

@@ -88,7 +88,7 @@ func (repo *AuthRepository) CreateTelegramAuthRecord(auth *entities.TelegramAuth
 	return user, nil
 }
 
-const createSimpleQuery = `INSERT INTO users_simple_auth (login, encrypted_password, user_id) VALUES (?, ?, ?) RETURNING id`
+const createSimpleQuery = `INSERT INTO users_simple_auth (login, encrypted_password, user_id) VALUES (?, ?, ?) RETURNING user_id`
 
 // CreateSimple Errors:
 // 		auth_repository.EmailAlreadyExist
