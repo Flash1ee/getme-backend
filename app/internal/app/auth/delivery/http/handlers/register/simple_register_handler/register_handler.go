@@ -1,7 +1,10 @@
 package simple_register_handler
 
 import (
+	"context"
+	"getme-backend/internal/microservices/auth/sessions/usecase"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -83,6 +86,21 @@ func (h *RegisterHandler) POST(ctx echo.Context) error {
 	if err != nil {
 		h.UsecaseError(ctx, err, codeByError)
 		return err
+	}
+
+	res, err := h.sessionClient.Create(context.Background(), id)
+	if err != nil || res.UserID != id {
+		h.Log(ctx.Request()).Errorf("Error create session %s", err)
+	} else {
+		cookie := &http.Cookie{
+			Name:     "session_id",
+			Value:    res.UniqID,
+			Path:     "/",
+			Expires:  time.Now().Add(usecase.ExpiredCookiesTime),
+			HttpOnly: true,
+		}
+
+		http.SetCookie(ctx.Response(), cookie)
 	}
 
 	h.Respond(ctx, http.StatusCreated, dto.IDResponse{ID: id})
