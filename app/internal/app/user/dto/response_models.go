@@ -9,6 +9,7 @@ type UserResponse struct {
 	LastName     string `json:"last_name,omitempty"`
 	About        string `json:"about,omitempty"`
 	Avatar       string `json:"avatar,omitempty"`
+	TgTag        string `json:"tg_tag"`
 	IsSearchable bool   `json:"is_mentor"`
 }
 
@@ -62,6 +63,7 @@ func ToUserWithSkillsResponse(user *UserWithSkillsUsecase) UserWithSkillsRespons
 			LastName:     user.LastName,
 			About:        user.About,
 			Avatar:       user.Avatar,
+			TgTag:        user.TgTag,
 			IsSearchable: user.IsSearchable,
 		},
 		Skills: user.Skills,
@@ -74,6 +76,7 @@ func ToUserResponse(user UserUsecase) UserResponse {
 		FirstName:    user.FirstName,
 		LastName:     user.LastName,
 		About:        user.About,
+		TgTag:        user.TgTag,
 		Avatar:       user.Avatar,
 		IsSearchable: user.IsSearchable,
 	}

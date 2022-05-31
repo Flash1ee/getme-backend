@@ -4,9 +4,11 @@ package dto
 
 //easyjson:json
 type RequestUserUpdate struct {
-	FirstName string `json:"first_name,omitempty" validate:"alpha,min=3"`
-	LastName  string `json:"last_name,omitempty" validate:"alpha,min=3"`
-	About     string `json:"about,omitempty" validate:"min=10,max=100"`
+	FirstName string   `json:"first_name,omitempty" validate:"alpha,min=3"`
+	LastName  string   `json:"last_name,omitempty" validate:"alpha,min=3"`
+	About     string   `json:"about,omitempty" validate:"min=10,max=100"`
+	TgTag     string   `json:"tg_tag,omitempty" validate:"min=0,max=100"`
+	Skills    []string `json:"skills,omitempty" validate:"max=100"`
 }
 
 //easyjson:json
@@ -19,6 +21,18 @@ func (req *RequestUserUpdate) ToUserUsecase() *UserUsecase {
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		About:     req.About,
+	}
+}
+
+func (req *RequestUserUpdate) ToUserWithSkillsUsecase() *UserWithSkillsUsecase {
+	return &UserWithSkillsUsecase{
+		UserUsecase: UserUsecase{
+			FirstName: req.FirstName,
+			LastName:  req.LastName,
+			About:     req.About,
+			TgTag:     req.TgTag,
+		},
+		Skills: req.Skills,
 	}
 }
 func (req *RequestUpdateStatus) ToStatusUpdateUsecase() *UserStatusUsecase {

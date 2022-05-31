@@ -52,6 +52,7 @@ func (h *StatusHandler) GET(ctx echo.Context) error {
 	h.Respond(ctx, http.StatusOK, res.ToResponseStatus())
 	return nil
 }
+
 func (h *StatusHandler) PUT(ctx echo.Context) error {
 	userID, ok := ctx.Request().Context().Value("user_id").(int64)
 	if !ok {

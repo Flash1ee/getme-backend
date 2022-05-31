@@ -14,6 +14,7 @@ type UserUsecase struct {
 	Nickname     string    `db:"nickname"`
 	About        string    `db:"about"`
 	Avatar       string    `db:"avatar"`
+	TgTag        string    `db:"tg_tag"`
 	Email        string    `db:"email"`
 	IsSearchable bool      `db:"is_searchable"`
 	CreatedAt    time.Time `db:"created_at"`
@@ -52,6 +53,7 @@ func (m *UserUsecase) ToUserEntity() *entities_user.User {
 		Avatar: sql.NullString{
 			String: m.Avatar,
 		},
+		TgTag: m.TgTag,
 	}
 }
 
@@ -69,6 +71,7 @@ func ToUserUsecase(data *entities_user.User) *UserUsecase {
 		LastName:     data.LastName.String,
 		Nickname:     data.Nickname,
 		About:        data.About.String,
+		TgTag:        data.TgTag,
 		Avatar:       data.Avatar.String,
 		Email:        data.Email.String,
 		IsSearchable: data.IsSearchable,
@@ -102,18 +105,7 @@ func ToUserWithSkillsUsecase(data []entities_user.UserWithSkills) []UserWithSkil
 }
 func ToUserWithSkillUsecase(data *entities_user.UserWithSkills) *UserWithSkillsUsecase {
 	return &UserWithSkillsUsecase{
-		UserUsecase: UserUsecase{
-			ID:           data.ID,
-			FirstName:    data.FirstName.String,
-			LastName:     data.LastName.String,
-			Nickname:     data.Nickname,
-			About:        data.About.String,
-			Avatar:       data.Avatar.String,
-			Email:        data.Email.String,
-			IsSearchable: data.IsSearchable,
-			CreatedAt:    data.CreatedAt,
-			UpdatedAt:    data.UpdatedAt,
-		},
-		Skills: data.Skills,
+		UserUsecase: *ToUserUsecase(&data.User),
+		Skills:      data.Skills,
 	}
 }
