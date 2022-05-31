@@ -1,5 +1,0 @@
-{"level":"info","msg":"Session-service new redis pool create","time":"2022-05-12T11:58:32Z"}
-{"level":"info","msg":"Session-service new redis pool success check","time":"2022-05-12T11:58:32Z"}
-{"level":"info","msg":"Session-service create repository","time":"2022-05-12T11:58:32Z"}
-{"level":"info","msg":"my listen url session-service:5001 \n","time":"2022-05-12T11:58:32Z"}
-{"level":"info","msg":"Start session service\n","time":"2022-05-12T11:58:32Z"}
