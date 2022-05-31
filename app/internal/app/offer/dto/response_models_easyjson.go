@@ -118,6 +118,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppOfferDto1(in *jlexer.Lexer, ou
 			out.About = string(in.String())
 		case "avatar":
 			out.Avatar = string(in.String())
+		case "tg_tag":
+			out.TgTag = string(in.String())
 		case "is_mentor":
 			out.IsSearchable = bool(in.Bool())
 		default:
@@ -167,6 +169,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppOfferDto1(out *jwriter.Writer,
 		const prefix string = ",\"avatar\":"
 		out.RawString(prefix)
 		out.String(string(in.Avatar))
+	}
+	{
+		const prefix string = ",\"tg_tag\":"
+		out.RawString(prefix)
+		out.String(string(in.TgTag))
 	}
 	{
 		const prefix string = ",\"is_mentor\":"

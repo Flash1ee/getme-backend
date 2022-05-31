@@ -375,6 +375,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto3(in *jlexer.Lexer, out
 			out.About = string(in.String())
 		case "avatar":
 			out.Avatar = string(in.String())
+		case "tg_tag":
+			out.TgTag = string(in.String())
 		case "is_mentor":
 			out.IsSearchable = bool(in.Bool())
 		default:
@@ -435,6 +437,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto3(out *jwriter.Writer, 
 		const prefix string = ",\"avatar\":"
 		out.RawString(prefix)
 		out.String(string(in.Avatar))
+	}
+	{
+		const prefix string = ",\"tg_tag\":"
+		out.RawString(prefix)
+		out.String(string(in.TgTag))
 	}
 	{
 		const prefix string = ",\"is_mentor\":"
@@ -498,6 +505,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto4(in *jlexer.Lexer, out
 			out.About = string(in.String())
 		case "avatar":
 			out.Avatar = string(in.String())
+		case "tg_tag":
+			out.TgTag = string(in.String())
 		case "is_mentor":
 			out.IsSearchable = bool(in.Bool())
 		default:
@@ -547,6 +556,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto4(out *jwriter.Writer, 
 		const prefix string = ",\"avatar\":"
 		out.RawString(prefix)
 		out.String(string(in.Avatar))
+	}
+	{
+		const prefix string = ",\"tg_tag\":"
+		out.RawString(prefix)
+		out.String(string(in.TgTag))
 	}
 	{
 		const prefix string = ",\"is_mentor\":"
@@ -678,6 +692,8 @@ func easyjson316682a0DecodeGetmeBackendInternalAppUserDto6(in *jlexer.Lexer, out
 			out.About = string(in.String())
 		case "avatar":
 			out.Avatar = string(in.String())
+		case "tg_tag":
+			out.TgTag = string(in.String())
 		case "is_mentor":
 			out.IsSearchable = bool(in.Bool())
 		default:
@@ -722,6 +738,11 @@ func easyjson316682a0EncodeGetmeBackendInternalAppUserDto6(out *jwriter.Writer, 
 		const prefix string = ",\"avatar\":"
 		out.RawString(prefix)
 		out.String(string(in.Avatar))
+	}
+	{
+		const prefix string = ",\"tg_tag\":"
+		out.RawString(prefix)
+		out.String(string(in.TgTag))
 	}
 	{
 		const prefix string = ",\"is_mentor\":"

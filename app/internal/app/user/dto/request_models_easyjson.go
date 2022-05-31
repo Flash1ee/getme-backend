@@ -42,6 +42,31 @@ func easyjson7df0efccDecodeGetmeBackendInternalAppUserDto(in *jlexer.Lexer, out 
 			out.LastName = string(in.String())
 		case "about":
 			out.About = string(in.String())
+		case "tg_tag":
+			out.TgTag = string(in.String())
+		case "skills":
+			if in.IsNull() {
+				in.Skip()
+				out.Skills = nil
+			} else {
+				in.Delim('[')
+				if out.Skills == nil {
+					if !in.IsDelim(']') {
+						out.Skills = make([]string, 0, 4)
+					} else {
+						out.Skills = []string{}
+					}
+				} else {
+					out.Skills = (out.Skills)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v1 string
+					v1 = string(in.String())
+					out.Skills = append(out.Skills, v1)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
 		default:
 			in.AddError(&jlexer.LexerError{
 				Offset: in.GetPos(),
@@ -85,6 +110,35 @@ func easyjson7df0efccEncodeGetmeBackendInternalAppUserDto(out *jwriter.Writer, i
 			out.RawString(prefix)
 		}
 		out.String(string(in.About))
+	}
+	if in.TgTag != "" {
+		const prefix string = ",\"tg_tag\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.TgTag))
+	}
+	if len(in.Skills) != 0 {
+		const prefix string = ",\"skills\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v2, v3 := range in.Skills {
+				if v2 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v3))
+			}
+			out.RawByte(']')
+		}
 	}
 	out.RawByte('}')
 }
