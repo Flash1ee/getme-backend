@@ -39,8 +39,8 @@ func (m *UserStatusUsecase) ToResponseStatus() UserStatusResponse {
 	}
 }
 
-func (m *UserUsecase) ToUserEntity() *entities.User {
-	return &entities.User{
+func (m *UserUsecase) ToUserEntity() *entities_user.User {
+	return &entities_user.User{
 		ID: m.ID,
 		FirstName: sql.NullString{
 			String: m.FirstName,
@@ -55,14 +55,14 @@ func (m *UserUsecase) ToUserEntity() *entities.User {
 	}
 }
 
-func ToUserWithOfferIDUsecases(data []entities.UserWithOfferID) []UserWithOfferIDUsecase {
+func ToUserWithOfferIDUsecases(data []entities_user.UserWithOfferID) []UserWithOfferIDUsecase {
 	res := make([]UserWithOfferIDUsecase, 0, len(data))
 	for _, val := range data {
 		res = append(res, *ToUserWithOfferIDUsecase(&val))
 	}
 	return res
 }
-func ToUserUsecase(data *entities.User) *UserUsecase {
+func ToUserUsecase(data *entities_user.User) *UserUsecase {
 	return &UserUsecase{
 		ID:           data.ID,
 		FirstName:    data.FirstName.String,
@@ -76,7 +76,7 @@ func ToUserUsecase(data *entities.User) *UserUsecase {
 		UpdatedAt:    data.UpdatedAt,
 	}
 }
-func ToUserWithOfferIDUsecase(data *entities.UserWithOfferID) *UserWithOfferIDUsecase {
+func ToUserWithOfferIDUsecase(data *entities_user.UserWithOfferID) *UserWithOfferIDUsecase {
 	u := ToUserUsecase(&data.User)
 	return &UserWithOfferIDUsecase{
 		UserUsecase: *u,
@@ -84,7 +84,7 @@ func ToUserWithOfferIDUsecase(data *entities.UserWithOfferID) *UserWithOfferIDUs
 	}
 }
 
-func ToUsersWithSkillUsecase(data []entities.UserWithSkills) []UserWithSkillsUsecase {
+func ToUsersWithSkillUsecase(data []entities_user.UserWithSkills) []UserWithSkillsUsecase {
 	res := make([]UserWithSkillsUsecase, 0, len(data))
 	for _, val := range data {
 		res = append(res, *ToUserWithSkillUsecase(&val))
@@ -92,7 +92,7 @@ func ToUsersWithSkillUsecase(data []entities.UserWithSkills) []UserWithSkillsUse
 
 	return res
 }
-func ToUserWithSkillsUsecase(data []entities.UserWithSkills) []UserWithSkillsUsecase {
+func ToUserWithSkillsUsecase(data []entities_user.UserWithSkills) []UserWithSkillsUsecase {
 	res := make([]UserWithSkillsUsecase, 0, len(data))
 	for _, val := range data {
 		res = append(res, *ToUserWithSkillUsecase(&val))
@@ -100,7 +100,7 @@ func ToUserWithSkillsUsecase(data []entities.UserWithSkills) []UserWithSkillsUse
 
 	return res
 }
-func ToUserWithSkillUsecase(data *entities.UserWithSkills) *UserWithSkillsUsecase {
+func ToUserWithSkillUsecase(data *entities_user.UserWithSkills) *UserWithSkillsUsecase {
 	return &UserWithSkillsUsecase{
 		UserUsecase: UserUsecase{
 			ID:           data.ID,

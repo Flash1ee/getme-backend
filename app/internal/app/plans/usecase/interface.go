@@ -5,10 +5,17 @@ import (
 )
 
 type Usecase interface {
-	//	GetPlansByRole with Errors:
+	//GetPlansByRole with Errors:
 	//	postgresql_utilits.NotFound
 	// 	plans_usecase.UnknownRole
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	GetPlansByRole(userID int64, role string) ([]dto.PlansWithSkillsDTO, error)
+
+	//GetPlanWithTasks with Errors:
+	//	postgresql_utilits.NotFound
+	// 	plans_usecase.UnknownRole
+	// 		app.GeneralError with Errors
+	// 			postgresql_utilits.DefaultErrDB
+	GetPlanWithTasks(userID int64, taskID int64) (dto.PlanWithTasksUsecaseDTO, error)
 }

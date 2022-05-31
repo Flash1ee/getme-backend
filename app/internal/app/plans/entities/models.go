@@ -5,6 +5,8 @@ import (
 	"time"
 
 	skill_entities "getme-backend/internal/app/skill/entities"
+	entities_task "getme-backend/internal/app/task/entities"
+	entities_user "getme-backend/internal/app/user/entities"
 )
 
 type Plan struct {
@@ -43,4 +45,16 @@ func ToPlansSkills(planID int64, skills []skill_entities.Skill) []PlansSkills {
 		})
 	}
 	return res
+}
+
+type PlanWithUserAndTask struct {
+	Plan
+	entities_user.User
+	entities_task.Task
+}
+
+type PlanWithMentorAndTasks struct {
+	Plan
+	entities_user.User
+	Tasks []entities_task.Task
 }

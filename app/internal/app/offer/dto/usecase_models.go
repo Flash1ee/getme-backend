@@ -1,6 +1,8 @@
 package dto
 
-import "getme-backend/internal/app/offer/entities"
+import (
+	"getme-backend/internal/app/offer/entities"
+)
 
 type OfferUserUsecaseDTO struct {
 }

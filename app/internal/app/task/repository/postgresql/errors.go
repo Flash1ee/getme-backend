@@ -1,1 +1,1 @@
-package task_postgresql
+package task_repository_postgresql

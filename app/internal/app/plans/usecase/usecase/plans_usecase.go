@@ -1,11 +1,14 @@
 package plans_usecase
 
 import (
+	"github.com/pkg/errors"
+
 	"getme-backend/internal/app/plans/dto"
 	"getme-backend/internal/app/plans/entities"
 	plans_repository "getme-backend/internal/app/plans/repository"
 	plans_usecase "getme-backend/internal/app/plans/usecase"
 	"getme-backend/internal/pkg/usecase"
+	postgresql_utilits "getme-backend/internal/pkg/utilits/postgresql"
 )
 
 const (
@@ -46,4 +49,28 @@ func (u *PlanUsecase) GetPlansByRole(userID int64, role string) ([]dto.PlansWith
 	res := filterPlansData(plans)
 
 	return dto.ToPlansWithSkillsUsecase(res), nil
+}
+
+func (u *PlanUsecase) GetPlanWithTasks(userID int64, taskID int64) ([]dto.PlanWithTasksUsecaseDTO, error) {
+	var err error
+
+	entitiesRes := make([]entities.PlanWithUserAndTask, 0)
+	plan, err := u.planRepository.GetPlanByTaskID(taskID)
+	if err != nil {
+		if errors.Is(err, postgresql_utilits.NotFound) {
+			return nil, plans_usecase.PlanNotFound
+		}
+		return nil, err
+	}
+	if userID == plan.MentorID {
+		entitiesRes, err = u.planRepository.GetPlanWithMentorAndTasks(userID, taskID)
+	} else if userID == plan.MenteeID {
+		entitiesRes, err = u.planRepository.GetPlanWithMenteeAndTasks(userID, taskID)
+	} else {
+		return nil, plans_usecase.InvalidTaskID
+	}
+
+	res := filterPlansByTasks(entitiesRes)
+	// @TODO конвертнуть в []dto.PlanWithTasksUsecaseDTO
+	return res, nil
 }

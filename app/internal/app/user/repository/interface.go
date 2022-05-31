@@ -12,36 +12,36 @@ type Repository interface {
 	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	FindByIDWithSkill(id int64) (*[]entities.UserWithSkill, error)
-	FindMentorByID(id int64) (*[]entities.UserWithSkill, error)
+	FindByIDWithSkill(id int64) (*[]entities_user.UserWithSkill, error)
+	FindMentorByID(id int64) (*[]entities_user.UserWithSkill, error)
 	//	FindByNickname with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	FindByNickname(nickname string) (*entities.User, error)
+	FindByNickname(nickname string) (*entities_user.User, error)
 	//	FindByID with Errors:
 	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	FindByID(id int64) (*entities.User, error)
+	FindByID(id int64) (*entities_user.User, error)
 	// CreateBaseUser Errors:
 	// 		user_repository.EmailAlreadyExist
 	// 		user_repository.NicknameAlreadyExist
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
 	CreateBaseUser(nickname string) (int64, error)
-	CreateFilledUser(data *entities.User) (int64, error)
+	CreateFilledUser(data *entities_user.User) (int64, error)
 	// UpdateUser Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	UpdateUser(user *entities.User) (*entities.User, error)
+	UpdateUser(user *entities_user.User) (*entities_user.User, error)
 	//	GetUsersBySkills with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error)
+	GetUsersBySkills(data []skill_entities.Skill) ([]entities_user.UserWithSkill, error)
 	//	GetMenteeByMentorWithOfferID with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	GetMenteeByMentorWithOfferID(mentorID int64) ([]entities.UserWithOfferID, error)
+	GetMenteeByMentorWithOfferID(mentorID int64) ([]entities_user.UserWithOfferID, error)
 	//UpdateMentorStatus with Errors:
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB

@@ -152,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserWithSkillResponse'
+                $ref: '#/components/schemas/PlanWithSkillsResponseMentor'
         400:
           description: Ошибка offer_id - у текущего пользователя нет заявки с таким
             id
@@ -855,4 +855,24 @@ components:
             type: string
         is_mentor:
             type: boolean
-
+    PlanWithSkillsResponseMentor:
+      type: object
+      properties:
+        skills:
+          type: array
+          example:
+            - frontend
+            - backend
+          items:
+            type: string
+        id:
+          type: integer
+          required: true
+        name:
+          type: string
+        progress:
+          type: number
+        mentee_id:
+          type: string
+        about:
+          type: string

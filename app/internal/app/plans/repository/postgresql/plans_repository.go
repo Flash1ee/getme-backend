@@ -1,6 +1,8 @@
 package plans_repository_postgresql
 
 import (
+	"database/sql"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 
@@ -111,4 +113,98 @@ func (repo *PlanRepository) GetByMentee(menteeID int64) ([]entities.PlanWithSkil
 	//}
 
 	return *plans, nil
+}
+
+const queryGetByID = `SELECT * from plans where id = ?`
+
+//GetByID with Errors:
+//		postgresql_utilits.NotFound
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *PlanRepository) GetByID(id int64) (*entities.Plan, error) {
+	res := &entities.Plan{}
+	query := repo.store.Rebind(queryGetByID)
+	// @TODO проверить на sql.ErrNoRows
+	if err := repo.store.Get(res, query, id); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, postgresql_utilits.NotFound
+		}
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	return res, nil
+
+}
+
+const queryGetPlanByTaskID = `
+SELECT * from plans where id = ?;`
+
+//GetPlanByTaskID with Errors:
+// 		postgresql_utilits.NotFound
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *PlanRepository) GetPlanByTaskID(taskID int64) (*entities.Plan, error) {
+	res := &entities.Plan{}
+
+	query := repo.store.Rebind(queryGetPlanByTaskID)
+	if err := repo.store.Get(res, query, taskID); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, postgresql_utilits.NotFound
+		}
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	return res, nil
+}
+
+const queryGetPlanWithMentorAndTasks = `
+select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentee_id,
+       u.id, u.first_name, u.last_name, u.nickname, u.about, u.avatar,
+       t.id, t.name, t.description, t.deadline, t.status from plans p
+           join users u on p.mentor_id = u.id
+            left join task t on p.id = t.plan_id where t.id = ? and u.id = ?;
+`
+
+//GetPlanWithMentorAndTasks with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *PlanRepository) GetPlanWithMentorAndTasks(mentorID int64, taskID int64) ([]entities.PlanWithUserAndTask, error) {
+	res := []entities.PlanWithUserAndTask{}
+
+	query := repo.store.Rebind(queryGetPlanWithMentorAndTasks)
+
+	err := repo.store.Select(&res, query, taskID, mentorID)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	//if len(*plans) == 0 {
+	//	return nil, postgresql_utilits.NotFound
+	//}
+
+	return res, nil
+}
+
+const queryGetPlanWithMenteeAndTasks = `
+select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentee_id,
+       u.id, u.first_name, u.last_name, u.nickname, u.about, u.avatar,
+       t.id, t.name, t.description, t.deadline, t.status from plans p
+           join users u on p.mentee_id = u.id
+            left join task t on p.id = t.plan_id where t.id = ? and u.id = ?;
+`
+
+//GetPlanWithMenteeAndTasks with Errors:
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (repo *PlanRepository) GetPlanWithMenteeAndTasks(menteeID int64, taskID int64) ([]entities.PlanWithUserAndTask, error) {
+	res := []entities.PlanWithUserAndTask{}
+
+	query := repo.store.Rebind(queryGetPlanWithMenteeAndTasks)
+
+	err := repo.store.Select(&res, query, taskID, menteeID)
+	if err != nil {
+		return nil, postgresql_utilits.NewDBError(err)
+	}
+	//if len(*plans) == 0 {
+	//	return nil, postgresql_utilits.NotFound
+	//}
+
+	return res, nil
 }

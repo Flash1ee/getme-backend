@@ -46,11 +46,11 @@ func (u *SkillUsecase) GetMentorsBySkills(data *dto.SkillsUsecase) ([]dto2.UserW
 	return dto2.ToUsersWithSkillUsecase(resFinal), nil
 }
 
-func filterUsersData(users []entities.UserWithSkill) []entities.UserWithSkills {
+func filterUsersData(users []entities_user.UserWithSkill) []entities_user.UserWithSkills {
 	ids := map[int64]struct{}{}
 	skills := map[int64][]string{}
-	res := make([]entities.User, 0)
-	resFinal := make([]entities.UserWithSkills, 0)
+	res := make([]entities_user.User, 0)
+	resFinal := make([]entities_user.UserWithSkills, 0)
 	for _, val := range users {
 		if val.Skill.Valid {
 			skills[val.ID] = append(skills[val.ID], val.Skill.String)
@@ -61,7 +61,7 @@ func filterUsersData(users []entities.UserWithSkill) []entities.UserWithSkills {
 		}
 	}
 	for _, val := range res {
-		resFinal = append(resFinal, entities.UserWithSkills{
+		resFinal = append(resFinal, entities_user.UserWithSkills{
 			User:   val,
 			Skills: skills[val.ID],
 		})

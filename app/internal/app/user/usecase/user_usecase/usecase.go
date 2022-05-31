@@ -22,7 +22,7 @@ func NewUserUsecase(repo user_repository.Repository, authCheck authChecker) *Use
 	}
 }
 
-func (u *UserUsecase) FindByNickname(nickname string) (*entities.User, error) {
+func (u *UserUsecase) FindByNickname(nickname string) (*entities_user.User, error) {
 	res, err := u.userRepository.FindByNickname(nickname)
 	if err == postgresql_utilits.NotFound {
 		return nil, user_usecase.UserNotFound

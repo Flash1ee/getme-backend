@@ -56,10 +56,10 @@ const queryGetUserByNickname = `
 SELECT id, first_name, last_name, nickname, about, avatar, 
        is_searchable, created_at, updated_at from users where nickname = ?;`
 
-func (repo *UserRepository) FindByNickname(nickname string) (*entities.User, error) {
+func (repo *UserRepository) FindByNickname(nickname string) (*entities_user.User, error) {
 	query := repo.store.Rebind(queryGetUserByNickname)
 
-	user := &entities.User{}
+	user := &entities_user.User{}
 	if err := repo.store.QueryRow(query, nickname).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Nickname,
 		&user.About, &user.Avatar, &user.IsSearchable, &user.CreatedAt, &user.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
@@ -97,7 +97,7 @@ func (repo *UserRepository) CreateBaseUser(nickname string) (int64, error) {
 const createFilledUserQuery = `INSERT INTO users (first_name, last_name, nickname, avatar)
 VALUES (?, ?, ?, ?) RETURNING id;`
 
-func (repo *UserRepository) CreateFilledUser(data *entities.User) (int64, error) {
+func (repo *UserRepository) CreateFilledUser(data *entities_user.User) (int64, error) {
 	query := repo.store.Rebind(createFilledUserQuery)
 	ID := int64(-1)
 	if err := repo.store.QueryRow(query, data.FirstName.String, data.LastName.String, data.Nickname, data.Avatar.String).
@@ -125,9 +125,9 @@ const queryFindByIDWithSkill = `SELECT users.id, first_name, last_name, about, a
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) FindByIDWithSkill(id int64) (*[]entities.UserWithSkill, error) {
+func (repo *UserRepository) FindByIDWithSkill(id int64) (*[]entities_user.UserWithSkill, error) {
 	query := repo.store.Rebind(queryFindByIDWithSkill)
-	user := &[]entities.UserWithSkill{}
+	user := &[]entities_user.UserWithSkill{}
 
 	err := repo.store.Select(user, query, id)
 	if err != nil {
@@ -148,9 +148,9 @@ const queryFindByID = `SELECT users.id, first_name, last_name, about, avatar, is
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) FindByID(id int64) (*entities.User, error) {
+func (repo *UserRepository) FindByID(id int64) (*entities_user.User, error) {
 	query := repo.store.Rebind(queryFindByID)
-	user := &entities.User{}
+	user := &entities_user.User{}
 
 	err := repo.store.Get(user, query, id)
 	if err != nil {
@@ -169,10 +169,10 @@ const queryIsMentor = ` and is_searchable = true;`
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) FindMentorByID(id int64) (*[]entities.UserWithSkill, error) {
+func (repo *UserRepository) FindMentorByID(id int64) (*[]entities_user.UserWithSkill, error) {
 	query := repo.store.Rebind(queryFindByID + queryIsMentor)
 
-	usersWithSkills := &[]entities.UserWithSkill{}
+	usersWithSkills := &[]entities_user.UserWithSkill{}
 	err := repo.store.Select(usersWithSkills, query, id)
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
@@ -190,9 +190,9 @@ const queryUpdateUser = `update users set
     about = COALESCE(NULLIF(TRIM(?), ''), about)
 WHERE id = ? returning first_name, last_name, nickname, about, avatar, is_searchable;`
 
-func (repo *UserRepository) UpdateUser(user *entities.User) (*entities.User, error) {
+func (repo *UserRepository) UpdateUser(user *entities_user.User) (*entities_user.User, error) {
 	query := repo.store.Rebind(queryUpdateUser)
-	userFromDB := &entities.User{}
+	userFromDB := &entities_user.User{}
 
 	err := repo.store.QueryRowx(query, user.FirstName.String, user.LastName.String, user.About.String, user.ID).
 		Scan(&userFromDB.FirstName, &userFromDB.LastName, &userFromDB.Nickname, &userFromDB.About, &userFromDB.Avatar, &userFromDB.IsSearchable)
@@ -213,9 +213,9 @@ const queryConditionIsMentor = ` and is_searchable = true`
 //	GetUsersBySkills with Errors:
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]entities.UserWithSkill, error) {
+func (repo *UserRepository) GetUsersBySkills(data []skill_entities.Skill) ([]entities_user.UserWithSkill, error) {
 	skills := getSkillNameFromSkills(data)
-	usersWithSkills := &[]entities.UserWithSkill{}
+	usersWithSkills := &[]entities_user.UserWithSkill{}
 	if len(skills) == 0 {
 		query := repo.store.Rebind(queryGetUsersBySkillsAll + queryConditionIsMentor)
 		if err := repo.store.Select(usersWithSkills, query); err != nil {
@@ -248,8 +248,8 @@ SELECT offers.id as offer_id, users.id as id, first_name, last_name, about, avat
 //	GetMenteeByMentorWithOfferID with Errors:
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
-func (r *UserRepository) GetMenteeByMentorWithOfferID(mentorID int64) ([]entities.UserWithOfferID, error) {
-	users := &[]entities.UserWithOfferID{}
+func (r *UserRepository) GetMenteeByMentorWithOfferID(mentorID int64) ([]entities_user.UserWithOfferID, error) {
+	users := &[]entities_user.UserWithOfferID{}
 
 	query := r.store.Rebind(queryGetMenteeByOffers)
 

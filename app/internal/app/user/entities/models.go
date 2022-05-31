@@ -1,4 +1,4 @@
-package entities
+package entities_user
 
 import (
 	"database/sql"

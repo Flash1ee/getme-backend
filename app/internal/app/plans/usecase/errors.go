@@ -10,4 +10,6 @@ var (
 	LogicError     = errors.New("mentor = mentee - logic error")
 	InvalidOfferID = errors.New("this user have not offer with this id")
 	UnknownRole    = errors.New("unknown user role")
+	PlanNotFound   = errors.New("plan with this id not found")
+	InvalidTaskID  = errors.New("this user have not task with this id")
 )

@@ -10,7 +10,7 @@ var (
 	OfferNotFound = errors.New("offer not found")
 	UnknownRole   = errors.New("unknown role, only mentor/mentee supported")
 
-	UserWithNicknameNotFound = errors.New("user with this nickname not found")
+	MentorHaveNotThisPlan = errors.New("user with this nickname not found")
 )
 
 /// Fields Incorrect
@@ -53,5 +53,6 @@ var NoModify = errors.New("content not modify")
 
 // Logic Error
 var (
-	LogicError = errors.New("logic error in workking of service")
+	LogicError          = errors.New("logic error in workking of service")
+	UserHaveNotThisPlan = errors.New("this user have not plan with this id")
 )

@@ -28,7 +28,7 @@ func init() {
 func main() {
 	flag.Parse()
 	logrus.Info(os.Args[:])
-
+	//sqlDB = "mysql"
 	config := internal.Config{}
 
 	_, err := toml.DecodeFile(configPath, &config)

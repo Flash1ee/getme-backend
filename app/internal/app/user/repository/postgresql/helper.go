@@ -9,10 +9,10 @@ import (
 	"getme-backend/internal/app/user/entities"
 )
 
-func getRepositoryData(t *testing.T) *entities.User {
+func getRepositoryData(t *testing.T) *entities_user.User {
 	t.Helper()
 
-	return &entities.User{
+	return &entities_user.User{
 		ID: 1,
 		FirstName: sql.NullString{
 			String: "Vasiliy",
