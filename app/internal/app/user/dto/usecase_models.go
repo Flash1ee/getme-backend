@@ -60,7 +60,9 @@ func (m *UserUsecase) ToUserEntity() *entities_user.User {
 		Avatar: sql.NullString{
 			String: m.Avatar,
 		},
-		TgTag: m.TgTag,
+		TgTag: sql.NullString{
+			String: m.TgTag,
+		},
 	}
 }
 
@@ -79,7 +81,7 @@ func ToUserUsecase(data *entities_user.User) *UserUsecase {
 		LastName:     data.LastName.String,
 		Nickname:     data.Nickname,
 		About:        data.About.String,
-		TgTag:        data.TgTag,
+		TgTag:        data.TgTag.String,
 		Avatar:       data.Avatar.String,
 		Email:        data.Email.String,
 		IsSearchable: data.IsSearchable,
