@@ -63,6 +63,6 @@ func (h *TaskIdHandler) PUT(ctx echo.Context) error {
 		return err
 	}
 
-	h.Respond(ctx, http.StatusCreated, dto.TaskIDResponse{ID: taskId})
+	h.Respond(ctx, http.StatusOK, dto.TaskIDResponse{ID: taskId})
 	return nil
 }
