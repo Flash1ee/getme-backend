@@ -61,7 +61,7 @@ type PlanWithTaskResponseMentor struct {
 	Title            string  `json:"title"`
 	Description      string  `json:"description"`
 	Progress         float64 `json:"progress"`
-	dto.UserResponse `json:"mentor"`
+	dto.UserResponse `json:"user"`
 	Tasks            []dto2.ResponseTask `json:"tasks,omitempty"`
 }
 
@@ -70,7 +70,7 @@ type PlanWithTaskResponseMentee struct {
 	Title            string  `json:"title"`
 	Description      string  `json:"description"`
 	Progress         float64 `json:"progress"`
-	dto.UserResponse `json:"mentee"`
+	dto.UserResponse `json:"user"`
 	Tasks            []dto2.ResponseTask `json:"tasks,omitempty"`
 }
 
