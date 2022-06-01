@@ -9,7 +9,7 @@ type RequestCreateTask struct {
 	Name        string    `json:"name" validate:"required"`
 	Description string    `json:"description" validate:"required"`
 	Deadline    time.Time `json:"deadline" validate:"required,datetime"`
-	PlanID      int64     `json:"plan_id" validate:"required,gte=1"`
+	PlanID      int64     `json:"plan_id,omitempty" validate:"required,gte=1"`
 }
 
 func (req *RequestCreateTask) ToRequestCreateTaskDTO() *CreateTaskUsecasDTO {

@@ -1,6 +1,8 @@
 package usecase_factory
 
 import (
+	taskUs "getme-backend/internal/app/task/usecase"
+	"getme-backend/internal/app/task/usecase/usecase"
 	"github.com/sirupsen/logrus"
 
 	"getme-backend/internal"
@@ -29,6 +31,7 @@ type UsecaseFactory struct {
 	skillUsecase      skillUs.Usecase
 	offersUsecase     offerUs.Usecase
 	plansUsecase      plansUs.Usecase
+	tasksUsecase      taskUs.Usecase
 
 	authChecker *telegram_checker.TelegramChecker
 }
@@ -81,4 +84,15 @@ func (f *UsecaseFactory) GetPlansUsecase() plansUs.Usecase {
 
 	}
 	return f.plansUsecase
+}
+
+func (f *UsecaseFactory) GetTaskUsecase() taskUs.Usecase {
+	if f.tasksUsecase == nil {
+		f.tasksUsecase = task_usecase.NewTaskUsecase(
+			f.repositoryFactory.GetTaskRepository(),
+			f.repositoryFactory.GetPlanRepository(),
+		)
+
+	}
+	return f.tasksUsecase
 }

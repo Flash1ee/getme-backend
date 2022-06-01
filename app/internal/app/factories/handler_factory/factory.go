@@ -1,6 +1,8 @@
 package handler_factory
 
 import (
+	"getme-backend/internal/app/task/delivery/http/task_handler"
+	"getme-backend/internal/app/task/delivery/http/task_id_handler"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
@@ -36,6 +38,8 @@ const (
 	OFFERS
 	USER_STATUS
 	OFFER_ACCEPT
+	TASK_CREATE
+	TASK_APPLY
 	PLANS
 )
 
@@ -61,6 +65,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 	skillUsecase := f.usecaseFactory.GetSkillUsecase()
 	offersUsecase := f.usecaseFactory.GetOfferUsecase()
 	plansUsecase := f.usecaseFactory.GetPlansUsecase()
+	tasksUsecase := f.usecaseFactory.GetTaskUsecase()
 
 	sClient := client.NewSessionClient(f.sessionClientConn)
 	return map[int]app.Handler{
@@ -78,6 +83,8 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		USER_STATUS:     user_status_handler.NewStatusHandler(f.logger, sClient, ucUsecase),
 		OFFER_ACCEPT:    offer_id_accept_handler.NewAcceptHandler(f.logger, sClient, offersUsecase),
 		PLANS:           plans_handler.NewPlanHandler(f.logger, sClient, offersUsecase, plansUsecase),
+		TASK_CREATE:     task_handler.NewTaskHandler(f.logger, sClient, tasksUsecase),
+		TASK_APPLY:      task_id_handler.NewTaskIdHandler(f.logger, sClient, tasksUsecase),
 	}
 }
 
@@ -106,7 +113,10 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/offers":           hs[OFFERS],
 		"/offer/:id/accept": hs[OFFER_ACCEPT],
 		//=============plans=============//
-		"/plans": hs[PLANS],
+		"/plans":          hs[PLANS],
+		"/plans/:id/task": hs[TASK_CREATE],
+		//=============tasks=============//
+		"/tasks/:id/apply": hs[TASK_APPLY],
 	}
 	return f.urlHandler
 }

@@ -10,7 +10,8 @@ var (
 	OfferNotFound = errors.New("offer not found")
 	UnknownRole   = errors.New("unknown role, only mentor/mentee supported")
 
-	MentorHaveNotThisPlan = errors.New("user with this nickname not found")
+	MentorHaveNotThisPlan = errors.New("user with can not work with this plan")
+	MentorHaveNotThisTask = errors.New("user with can not work with this task")
 )
 
 /// Fields Incorrect

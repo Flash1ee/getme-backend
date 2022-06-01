@@ -1,6 +1,8 @@
 package repository_factory
 
 import (
+	taskRepo "getme-backend/internal/app/task/repository"
+	taskPostgresRepo "getme-backend/internal/app/task/repository/postgresql"
 	"github.com/sirupsen/logrus"
 
 	authRepo "getme-backend/internal/app/auth/repository"
@@ -31,6 +33,7 @@ type RepositoryFactory struct {
 	skillRepository     skillRepo.Repository
 	offerRepository     offerRepo.Repository
 	planRepository      planRepo.Repository
+	taskRepository      taskRepo.Repository
 }
 
 func NewRepositoryFactory(logger *logrus.Logger, expectedConnections utilits.ExpectedConnections) *RepositoryFactory {
@@ -84,4 +87,11 @@ func (f *RepositoryFactory) GetPlanRepository() planRepo.Repository {
 		f.planRepository = planPostgresRepo.NewPlanRepository(f.expectedConnections.SqlConnection)
 	}
 	return f.planRepository
+}
+
+func (f *RepositoryFactory) GetTaskRepository() taskRepo.Repository {
+	if f.taskRepository == nil {
+		f.taskRepository = taskPostgresRepo.NewTaskRepository(f.expectedConnections.SqlConnection)
+	}
+	return f.taskRepository
 }
