@@ -184,13 +184,14 @@ func (repo *PlanRepository) GetPlanWithMentorAndTasks(mentorID int64, planID int
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
+
 	for rows.Next() {
 		tmp := entities.PlanWithUserAndTask{}
-		err := rows.Scan(&tmp.Plan.ID, &tmp.Plan.Name, &tmp.Plan.About, &tmp.IsActive, &tmp.Progress, &tmp.MentorID, &tmp.MenteeID, &tmp.User.ID,
+		err = rows.Scan(&tmp.Plan.ID, &tmp.Plan.Name, &tmp.Plan.About, &tmp.IsActive, &tmp.Progress, &tmp.MentorID, &tmp.MenteeID, &tmp.User.ID,
 			&tmp.User.FirstName, &tmp.User.LastName, &tmp.User.Nickname, &tmp.User.About, &tmp.User.Avatar,
 			&tmp.Task.ID, &tmp.Task.Name, &tmp.Task.Description, &tmp.Task.Deadline, &tmp.Task.Status)
 		if err != nil {
-			rows.Close()
+			_ = rows.Close()
 			return nil, postgresql_utilits.NewDBError(err)
 		}
 		res = append(res, tmp)
@@ -219,10 +220,23 @@ func (repo *PlanRepository) GetPlanWithMenteeAndTasks(menteeID int64, planID int
 
 	query := repo.store.Rebind(queryGetPlanWithMenteeAndTasks)
 
-	err := repo.store.Select(&res, query, planID, menteeID)
+	rows, err := repo.store.Queryx(query, planID, menteeID)
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
 	}
+
+	for rows.Next() {
+		tmp := entities.PlanWithUserAndTask{}
+		err = rows.Scan(&tmp.Plan.ID, &tmp.Plan.Name, &tmp.Plan.About, &tmp.IsActive, &tmp.Progress, &tmp.MentorID, &tmp.MenteeID, &tmp.User.ID,
+			&tmp.User.FirstName, &tmp.User.LastName, &tmp.User.Nickname, &tmp.User.About, &tmp.User.Avatar,
+			&tmp.Task.ID, &tmp.Task.Name, &tmp.Task.Description, &tmp.Task.Deadline, &tmp.Task.Status)
+		if err != nil {
+			_ = rows.Close()
+			return nil, postgresql_utilits.NewDBError(err)
+		}
+		res = append(res, tmp)
+	}
+
 	//if len(*plans) == 0 {
 	//	return nil, postgresql_utilits.NotFound
 	//}

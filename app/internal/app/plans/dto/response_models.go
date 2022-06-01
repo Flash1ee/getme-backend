@@ -62,7 +62,7 @@ type PlanWithTaskResponseMentor struct {
 	Description      string  `json:"description"`
 	Progress         float64 `json:"progress"`
 	dto.UserResponse `json:"mentor"`
-	Tasks            []dto2.ResponseTask `json:"tasks"`
+	Tasks            []dto2.ResponseTask `json:"tasks,omitempty"`
 }
 
 //easyjson:json
@@ -71,7 +71,7 @@ type PlanWithTaskResponseMentee struct {
 	Description      string  `json:"description"`
 	Progress         float64 `json:"progress"`
 	dto.UserResponse `json:"mentee"`
-	Tasks            []dto2.ResponseTask `json:"tasks"`
+	Tasks            []dto2.ResponseTask `json:"tasks,omitempty"`
 }
 
 func ToPlanWithTaskResponseMentor(data PlanWithTasksUsecaseDTO) PlanWithTaskResponseMentor {
