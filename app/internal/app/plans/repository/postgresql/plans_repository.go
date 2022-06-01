@@ -156,7 +156,7 @@ func (repo *PlanRepository) GetPlanByTaskID(taskID int64) (*entities.Plan, error
 }
 
 const queryGetPlanWithMentorAndTasks = `
-select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentee_id,
+select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentor_id,
        u.id, u.first_name, u.last_name, u.nickname, u.about, u.avatar,
        t.id, t.name, t.description, t.deadline, t.status from plans p
            join users u on p.mentor_id = u.id
@@ -207,7 +207,7 @@ const queryGetPlanWithMenteeAndTasks = `
 select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentee_id,
        u.id, u.first_name, u.last_name, u.nickname, u.about, u.avatar,
        t.id, t.name, t.description, t.deadline, t.status from plans p
-           join users u on p.mentee_id = u.id
+           join users u on p.mentor_id = u.id
             left join task t on p.id = t.plan_id
 			left join status s on t.status = s.name where p.id = ? and u.id = ?;
 `

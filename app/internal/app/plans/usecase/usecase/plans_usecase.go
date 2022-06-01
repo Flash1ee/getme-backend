@@ -71,10 +71,10 @@ func (u *PlanUsecase) GetPlanWithTasks(userID int64, planID int64) (dto.PlanWith
 		return res, err
 	}
 	if userID == plan.MentorID {
-		entitiesRes, err = u.planRepository.GetPlanWithMenteeAndTasks(userID, planID)
+		entitiesRes, err = u.planRepository.GetPlanWithMentorAndTasks(userID, planID)
 	} else if userID == plan.MenteeID {
 		isMentor = false
-		entitiesRes, err = u.planRepository.GetPlanWithMentorAndTasks(userID, planID)
+		entitiesRes, err = u.planRepository.GetPlanWithMenteeAndTasks(userID, planID)
 	} else {
 		return res, plans_usecase.InvalidTaskID
 	}
