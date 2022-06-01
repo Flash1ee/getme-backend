@@ -13,10 +13,10 @@ import (
 	"getme-backend/internal/app/offer/delivery/http/offer_handler"
 	offer_id_accept_handler "getme-backend/internal/app/offer/delivery/http/offer_id_handler/accept_handler"
 	"getme-backend/internal/app/plans/delivery/http/plans_handler"
-	plans_task_handler "getme-backend/internal/app/plans/delivery/http/task_handler"
 	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
 	skills_user_handler "getme-backend/internal/app/skill/delivery/http/skills/user_handler"
 	"getme-backend/internal/app/task/delivery/http/task_handler"
+	"getme-backend/internal/app/task/delivery/http/task_id_handler"
 	"getme-backend/internal/app/token/delivery/http/handlers/token_handler"
 	user_profile_handler "getme-backend/internal/app/user/delivery/http/handlers/profile"
 	user_status_handler "getme-backend/internal/app/user/delivery/http/handlers/status"
@@ -38,6 +38,8 @@ const (
 	OFFERS
 	USER_STATUS
 	OFFER_ACCEPT
+	TASK_CREATE
+	TASK_APPLY
 	PLANS
 	TASK
 	PLAN_ID
@@ -83,8 +85,8 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		USER_STATUS:     user_status_handler.NewStatusHandler(f.logger, sClient, ucUsecase),
 		OFFER_ACCEPT:    offer_id_accept_handler.NewAcceptHandler(f.logger, sClient, offersUsecase),
 		PLANS:           plans_handler.NewPlanHandler(f.logger, sClient, offersUsecase, plansUsecase),
-		PLAN_ID:         plans_task_handler.NewPlanIDTaskHandler(f.logger, sClient, plansUsecase),
-		TASK:            task_handler.NewTaskHandler(f.logger, sClient, taskUsecase),
+		TASK_CREATE:     task_handler.NewTaskHandler(f.logger, sClient, taskUsecase),
+		TASK_APPLY:      task_id_handler.NewTaskIdHandler(f.logger, sClient, taskUsecase),
 	}
 }
 
@@ -113,10 +115,10 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/offers":           hs[OFFERS],
 		"/offer/:id/accept": hs[OFFER_ACCEPT],
 		//=============plans=============//
-		"/plans":           hs[PLANS],
-		"/plans/:id/tasks": hs[PLAN_ID],
-		//=============task=============//
-		"/task": hs[TASK],
+		"/plans":          hs[PLANS],
+		"/plans/:id/task": hs[TASK_CREATE],
+		//=============tasks=============//
+		"/tasks/:id/apply": hs[TASK_APPLY],
 	}
 	return f.urlHandler
 }

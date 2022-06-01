@@ -29,6 +29,7 @@ func NewTaskHandler(log *logrus.Logger, sClient session_client.AuthCheckerClient
 	}
 
 	h.AddMethod(http.MethodPost, h.POST, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(sClient, log).CheckFunc))
+	//h.AddMethod(http.MethodGet, h.GET, echo_adapter.WrapMiddlewareToFunc(middleware2.NewSessionMiddleware(sClient, log).CheckFunc))
 
 	return h
 }
@@ -40,14 +41,29 @@ func (h *TaskHandler) POST(ctx echo.Context) error {
 		h.Error(ctx, http.StatusInternalServerError, handler_errors.InternalError)
 		return handler_errors.InternalError
 	}
-	req := &dto.RequestCreateTask{}
-	_, status := h.GetParamToStruct(ctx, req)
-	if status != bh.OK {
-		h.Log(ctx.Request()).Warnf("can not parse query param")
-		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidQueries)
-		return handler_errors.InvalidQueries
+
+	planID, status, err := h.GetInt64FromParam(ctx, "id")
+	if err != nil {
+		h.Error(ctx, status, err)
+		return err
 	}
-	if err := h.Validator.Struct(req); err != nil {
+
+	if len(ctx.ParamValues()) > 1 {
+		h.Log(ctx.Request()).Warnf("Too many parametres %v", ctx.ParamValues())
+		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidParameters)
+		return handler_errors.InvalidParameters
+	}
+
+	req := &dto.RequestCreateTask{}
+	err = h.GetRequestBody(ctx, req)
+	if err != nil {
+		h.Log(ctx.Request()).Warnf("can not parse request %s", err)
+		h.Error(ctx, http.StatusUnprocessableEntity, handler_errors.InvalidBody)
+		return handler_errors.InvalidBody
+	}
+
+	req.PlanID = planID
+	if err = h.Validator.Struct(req); err != nil {
 		h.Log(ctx.Request()).Warnf("can not validate body param, err = %v", err)
 		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidQueries)
 		return handler_errors.InvalidQueries

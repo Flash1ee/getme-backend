@@ -115,6 +115,21 @@ func (mr *MockSessionUsecaseMockRecorder) Check(uniqID interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockSessionUsecase)(nil).Check), uniqID)
 }
 
+// CheckWithDelete mocks base method.
+func (m *MockSessionUsecase) CheckWithDelete(tokenID string) (models.ResultByToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckWithDelete", tokenID)
+	ret0, _ := ret[0].(models.ResultByToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckWithDelete indicates an expected call of CheckWithDelete.
+func (mr *MockSessionUsecaseMockRecorder) CheckWithDelete(tokenID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckWithDelete", reflect.TypeOf((*MockSessionUsecase)(nil).CheckWithDelete), tokenID)
+}
+
 // Create mocks base method.
 func (m *MockSessionUsecase) Create(userID int64) (models.Result, error) {
 	m.ctrl.T.Helper()
@@ -128,6 +143,21 @@ func (m *MockSessionUsecase) Create(userID int64) (models.Result, error) {
 func (mr *MockSessionUsecaseMockRecorder) Create(userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockSessionUsecase)(nil).Create), userID)
+}
+
+// CreateByTokenID mocks base method.
+func (m *MockSessionUsecase) CreateByTokenID(tokenID string, userID int64) (models.ResultByToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateByTokenID", tokenID, userID)
+	ret0, _ := ret[0].(models.ResultByToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateByTokenID indicates an expected call of CreateByTokenID.
+func (mr *MockSessionUsecaseMockRecorder) CreateByTokenID(tokenID, userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateByTokenID", reflect.TypeOf((*MockSessionUsecase)(nil).CreateByTokenID), tokenID, userID)
 }
 
 // Delete mocks base method.

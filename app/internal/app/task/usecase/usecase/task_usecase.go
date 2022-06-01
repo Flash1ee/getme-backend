@@ -31,13 +31,14 @@ func NewTaskUsecase(repoTask task_repository.Repository, repoPlan plan_repositor
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
 func (u *TaskUsecase) Create(mentorID int64, data dto.CreateTaskUsecasDTO) (int64, error) {
-	plan, err := u.planRepository.GetByID(mentorID)
+	plan, err := u.planRepository.GetByID(data.PlanID)
 	if err != nil {
 		if err == postgresql_utilits.NotFound {
 			return app.InvalidInt, task_usecase.UserHaveNotThisPlan
 		}
 		return app.InvalidInt, err
 	}
+
 	if plan.MentorID != mentorID {
 		return app.InvalidInt, task_usecase.UserHaveNotThisPlan
 	}
@@ -54,11 +55,42 @@ func (u *TaskUsecase) Create(mentorID int64, data dto.CreateTaskUsecasDTO) (int6
 			Int64: data.PlanID,
 		},
 	})
+
 	if err != nil {
 		return app.InvalidInt, err
 	}
 
 	return res, nil
+}
+
+//ApplyTask with Errors:
+//		task_usecase.UserHaveNotThisTask
+// 		app.GeneralError with Errors
+// 			postgresql_utilits.DefaultErrDB
+func (u *TaskUsecase) ApplyTask(mentorID int64, data dto.TaskUsecaseDTO) error {
+	mentorId, err := u.taskRepository.GetMentorId(data.ID)
+	if err != nil {
+		if err == postgresql_utilits.NotFound {
+			return task_usecase.UserHaveNotThisTask
+		}
+		return err
+	}
+
+	if mentorId != mentorID {
+		return task_usecase.UserHaveNotThisTask
+	}
+
+	err = u.taskRepository.ApplyTask(entities.Task{
+		ID: sql.NullInt64{
+			Int64: data.ID,
+		},
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 ////	GetPlansByRole with Errors:

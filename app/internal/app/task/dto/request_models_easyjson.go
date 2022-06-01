@@ -79,7 +79,7 @@ func easyjson7df0efccEncodeGetmeBackendInternalAppTaskDto(out *jwriter.Writer, i
 		out.RawString(prefix)
 		out.Raw((in.Deadline).MarshalJSON())
 	}
-	{
+	if in.PlanID != 0 {
 		const prefix string = ",\"plan_id\":"
 		out.RawString(prefix)
 		out.Int64(int64(in.PlanID))

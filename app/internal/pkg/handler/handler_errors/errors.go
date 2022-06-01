@@ -12,6 +12,7 @@ var (
 	PlanNotFound          = errors.New("plan with this id not found")
 	InvalidTaskID         = errors.New("this user have not task with this id")
 	MentorHaveNotThisPlan = errors.New("user with this nickname not found")
+	MentorHaveNotThisTask = errors.New("mentor have not task with this id")
 )
 
 /// Fields Incorrect

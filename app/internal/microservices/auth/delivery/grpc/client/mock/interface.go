@@ -38,7 +38,7 @@ func (m *MockAuthCheckerClient) EXPECT() *MockAuthCheckerClientMockRecorder {
 // Check mocks base method.
 func (m *MockAuthCheckerClient) Check(ctx context.Context, sessionID string) (models.Result, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AuthSimple", ctx, sessionID)
+	ret := m.ctrl.Call(m, "Check", ctx, sessionID)
 	ret0, _ := ret[0].(models.Result)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
@@ -47,7 +47,7 @@ func (m *MockAuthCheckerClient) Check(ctx context.Context, sessionID string) (mo
 // Check indicates an expected call of Check.
 func (mr *MockAuthCheckerClientMockRecorder) Check(ctx, sessionID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthSimple", reflect.TypeOf((*MockAuthCheckerClient)(nil).Check), ctx, sessionID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockAuthCheckerClient)(nil).Check), ctx, sessionID)
 }
 
 // CheckWithDelete mocks base method.
@@ -68,7 +68,7 @@ func (mr *MockAuthCheckerClientMockRecorder) CheckWithDelete(ctx, tokenID interf
 // Create mocks base method.
 func (m *MockAuthCheckerClient) Create(ctx context.Context, userID int64) (models.Result, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateSimple", ctx, userID)
+	ret := m.ctrl.Call(m, "Create", ctx, userID)
 	ret0, _ := ret[0].(models.Result)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
@@ -77,7 +77,7 @@ func (m *MockAuthCheckerClient) Create(ctx context.Context, userID int64) (model
 // Create indicates an expected call of Create.
 func (mr *MockAuthCheckerClientMockRecorder) Create(ctx, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSimple", reflect.TypeOf((*MockAuthCheckerClient)(nil).Create), ctx, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAuthCheckerClient)(nil).Create), ctx, userID)
 }
 
 // CreateByToken mocks base method.
