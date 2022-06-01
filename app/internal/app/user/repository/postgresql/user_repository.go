@@ -206,7 +206,7 @@ func (repo *UserRepository) UpdateUser(user *entities_user.UserWithSkills) (*ent
 		return nil, postgresql_utilits.NewDBError(err)
 	}
 
-	err = tx.QueryRowx(query, user.FirstName.String, user.LastName.String, user.About.String, user.TgTag, user.ID).
+	err = tx.QueryRowx(query, user.FirstName.String, user.LastName.String, user.About.String, user.TgTag.String, user.ID.Int64).
 		Scan(&userFromDB.FirstName, &userFromDB.LastName, &userFromDB.Nickname, &userFromDB.About, &userFromDB.TgTag, &userFromDB.Avatar, &userFromDB.IsSearchable)
 	if err != nil {
 		_ = tx.Rollback()
