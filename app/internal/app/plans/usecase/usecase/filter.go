@@ -45,9 +45,7 @@ func filterPlansByTasks(plans []entities.PlanWithUserAndTask) []entities.PlanWit
 				Tasks: make([]entities2.Task, 0),
 			}
 		}
-		if val.Task.ID.Valid {
-			planTasks[val.Plan.ID].Tasks = append(planTasks[val.Plan.ID].Tasks, val.Task)
-		}
+		planTasks[val.Plan.ID].Tasks = append(planTasks[val.Plan.ID].Tasks, val.Task)
 	}
 
 	var res []entities.PlanWithMentorAndTasks
