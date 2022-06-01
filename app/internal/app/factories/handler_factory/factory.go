@@ -13,6 +13,7 @@ import (
 	"getme-backend/internal/app/offer/delivery/http/offer_handler"
 	offer_id_accept_handler "getme-backend/internal/app/offer/delivery/http/offer_id_handler/accept_handler"
 	"getme-backend/internal/app/plans/delivery/http/plans_handler"
+	plans_task_handler "getme-backend/internal/app/plans/delivery/http/task_handler"
 	skills_info_handler "getme-backend/internal/app/skill/delivery/http/skills/info_handler"
 	skills_user_handler "getme-backend/internal/app/skill/delivery/http/skills/user_handler"
 	"getme-backend/internal/app/task/delivery/http/task_handler"
@@ -41,8 +42,7 @@ const (
 	TASK_CREATE
 	TASK_APPLY
 	PLANS
-	TASK
-	PLAN_ID
+	TASK_GET
 )
 
 type HandlerFactory struct {
@@ -87,6 +87,7 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		PLANS:           plans_handler.NewPlanHandler(f.logger, sClient, offersUsecase, plansUsecase),
 		TASK_CREATE:     task_handler.NewTaskHandler(f.logger, sClient, taskUsecase),
 		TASK_APPLY:      task_id_handler.NewTaskIdHandler(f.logger, sClient, taskUsecase),
+		TASK_GET:        plans_task_handler.NewPlanIDTaskHandler(f.logger, sClient, plansUsecase),
 	}
 }
 
@@ -115,8 +116,9 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/offers":           hs[OFFERS],
 		"/offer/:id/accept": hs[OFFER_ACCEPT],
 		//=============plans=============//
-		"/plans":          hs[PLANS],
-		"/plans/:id/task": hs[TASK_CREATE],
+		"/plans":           hs[PLANS],
+		"/plans/:id/task":  hs[TASK_CREATE],
+		"/plans/:id/tasks": hs[TASK_GET],
 		//=============tasks=============//
 		"/tasks/:id/apply": hs[TASK_APPLY],
 	}

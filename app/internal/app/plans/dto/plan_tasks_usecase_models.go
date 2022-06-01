@@ -30,7 +30,7 @@ func ToTaskUsecaseDTO(task entities2.Task) dto.TaskUsecaseDTO {
 		ID:          task.ID.Int64,
 		Name:        task.Name.String,
 		Description: task.Description.String,
-		Deadline:    task.Deadline,
+		Deadline:    task.Deadline.Time,
 		Status:      task.Status.String,
 	}
 }

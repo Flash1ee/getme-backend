@@ -50,7 +50,9 @@ func (u *TaskUsecase) Create(mentorID int64, data dto.CreateTaskUsecasDTO) (int6
 		Description: sql.NullString{
 			String: data.Description,
 		},
-		Deadline: data.Deadline,
+		Deadline: sql.NullTime{
+			Time: data.Deadline,
+		},
 		PlanID: sql.NullInt64{
 			Int64: data.PlanID,
 		},

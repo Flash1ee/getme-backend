@@ -160,20 +160,40 @@ select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentee_id,
        u.id, u.first_name, u.last_name, u.nickname, u.about, u.avatar,
        t.id, t.name, t.description, t.deadline, t.status from plans p
            join users u on p.mentor_id = u.id
-            left join task t on p.id = t.plan_id where p.id = ? and u.id = ?;
+            left join task t on p.id = t.plan_id
+			left join status s on t.status = s.name where p.id = ? and u.id = ?;
 `
 
 //GetPlanWithMentorAndTasks with Errors:
 // 		app.GeneralError with Errors
 // 			postgresql_utilits.DefaultErrDB
 func (repo *PlanRepository) GetPlanWithMentorAndTasks(mentorID int64, planID int64) ([]entities.PlanWithUserAndTask, error) {
+	//res := make([]entities.PlanWithUserAndTask, 0)
+	//
+	//query := repo.store.Rebind(queryGetPlanWithMentorAndTasks)
+	//
+	//err := repo.store.Select(&res, query, planID, mentorID)
+	//if err != nil {
+	//	return nil, postgresql_utilits.NewDBError(err)
+	//}
 	res := make([]entities.PlanWithUserAndTask, 0)
 
 	query := repo.store.Rebind(queryGetPlanWithMentorAndTasks)
 
-	err := repo.store.Select(&res, query, planID, mentorID)
+	rows, err := repo.store.Queryx(query, planID, mentorID)
 	if err != nil {
 		return nil, postgresql_utilits.NewDBError(err)
+	}
+	for rows.Next() {
+		tmp := entities.PlanWithUserAndTask{}
+		err := rows.Scan(&tmp.Plan.ID, &tmp.Plan.Name, &tmp.Plan.About, &tmp.IsActive, &tmp.Progress, &tmp.MentorID, &tmp.MenteeID, &tmp.User.ID,
+			&tmp.User.FirstName, &tmp.User.LastName, &tmp.User.Nickname, &tmp.User.About, &tmp.User.Avatar,
+			&tmp.Task.ID, &tmp.Task.Name, &tmp.Task.Description, &tmp.Task.Deadline, &tmp.Task.Status)
+		if err != nil {
+			rows.Close()
+			return nil, postgresql_utilits.NewDBError(err)
+		}
+		res = append(res, tmp)
 	}
 	//if len(*plans) == 0 {
 	//	return nil, postgresql_utilits.NotFound
@@ -187,7 +207,8 @@ select p.id, p.name, p.about, p.is_active, p.progress, p.mentor_id, p.mentee_id,
        u.id, u.first_name, u.last_name, u.nickname, u.about, u.avatar,
        t.id, t.name, t.description, t.deadline, t.status from plans p
            join users u on p.mentee_id = u.id
-            left join task t on p.id = t.plan_id where p.id = ? and u.id = ?;
+            left join task t on p.id = t.plan_id
+			left join status s on t.status = s.name where p.id = ? and u.id = ?;
 `
 
 //GetPlanWithMenteeAndTasks with Errors:
