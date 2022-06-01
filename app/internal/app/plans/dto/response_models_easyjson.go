@@ -247,7 +247,7 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto2(in *jlexer.Lexer, ou
 			out.Description = string(in.String())
 		case "progress":
 			out.Progress = float64(in.Float64())
-		case "mentor":
+		case "user":
 			(out.UserResponse).UnmarshalEasyJSON(in)
 		case "tasks":
 			if in.IsNull() {
@@ -266,7 +266,7 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto2(in *jlexer.Lexer, ou
 				}
 				for !in.IsDelim(']') {
 					var v7 dto.ResponseTask
-					easyjson316682a0DecodeGetmeBackendInternalAppTaskDto(in, &v7)
+					(v7).UnmarshalEasyJSON(in)
 					out.Tasks = append(out.Tasks, v7)
 					in.WantComma()
 				}
@@ -306,22 +306,20 @@ func easyjson316682a0EncodeGetmeBackendInternalAppPlansDto2(out *jwriter.Writer,
 		out.Float64(float64(in.Progress))
 	}
 	{
-		const prefix string = ",\"mentor\":"
+		const prefix string = ",\"user\":"
 		out.RawString(prefix)
 		(in.UserResponse).MarshalEasyJSON(out)
 	}
-	{
+	if len(in.Tasks) != 0 {
 		const prefix string = ",\"tasks\":"
 		out.RawString(prefix)
-		if in.Tasks == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-			out.RawString("null")
-		} else {
+		{
 			out.RawByte('[')
 			for v8, v9 := range in.Tasks {
 				if v8 > 0 {
 					out.RawByte(',')
 				}
-				easyjson316682a0EncodeGetmeBackendInternalAppTaskDto(out, v9)
+				(v9).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
@@ -352,82 +350,6 @@ func (v *PlanWithTaskResponseMentor) UnmarshalJSON(data []byte) error {
 func (v *PlanWithTaskResponseMentor) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson316682a0DecodeGetmeBackendInternalAppPlansDto2(l, v)
 }
-func easyjson316682a0DecodeGetmeBackendInternalAppTaskDto(in *jlexer.Lexer, out *dto.ResponseTask) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeFieldName(false)
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "id":
-			out.ID = int64(in.Int64())
-		case "title":
-			out.Name = string(in.String())
-		case "description":
-			out.Description = string(in.String())
-		case "deadline":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Deadline).UnmarshalJSON(data))
-			}
-		case "status":
-			out.Status = string(in.String())
-		default:
-			in.AddError(&jlexer.LexerError{
-				Offset: in.GetPos(),
-				Reason: "unknown field",
-				Data:   key,
-			})
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson316682a0EncodeGetmeBackendInternalAppTaskDto(out *jwriter.Writer, in dto.ResponseTask) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"id\":"
-		out.RawString(prefix[1:])
-		out.Int64(int64(in.ID))
-	}
-	{
-		const prefix string = ",\"title\":"
-		out.RawString(prefix)
-		out.String(string(in.Name))
-	}
-	{
-		const prefix string = ",\"description\":"
-		out.RawString(prefix)
-		out.String(string(in.Description))
-	}
-	{
-		const prefix string = ",\"deadline\":"
-		out.RawString(prefix)
-		out.Raw((in.Deadline).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"status\":"
-		out.RawString(prefix)
-		out.String(string(in.Status))
-	}
-	out.RawByte('}')
-}
 func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto3(in *jlexer.Lexer, out *PlanWithTaskResponseMentee) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
@@ -453,7 +375,7 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto3(in *jlexer.Lexer, ou
 			out.Description = string(in.String())
 		case "progress":
 			out.Progress = float64(in.Float64())
-		case "mentee":
+		case "user":
 			(out.UserResponse).UnmarshalEasyJSON(in)
 		case "tasks":
 			if in.IsNull() {
@@ -472,7 +394,7 @@ func easyjson316682a0DecodeGetmeBackendInternalAppPlansDto3(in *jlexer.Lexer, ou
 				}
 				for !in.IsDelim(']') {
 					var v10 dto.ResponseTask
-					easyjson316682a0DecodeGetmeBackendInternalAppTaskDto(in, &v10)
+					(v10).UnmarshalEasyJSON(in)
 					out.Tasks = append(out.Tasks, v10)
 					in.WantComma()
 				}
@@ -512,22 +434,20 @@ func easyjson316682a0EncodeGetmeBackendInternalAppPlansDto3(out *jwriter.Writer,
 		out.Float64(float64(in.Progress))
 	}
 	{
-		const prefix string = ",\"mentee\":"
+		const prefix string = ",\"user\":"
 		out.RawString(prefix)
 		(in.UserResponse).MarshalEasyJSON(out)
 	}
-	{
+	if len(in.Tasks) != 0 {
 		const prefix string = ",\"tasks\":"
 		out.RawString(prefix)
-		if in.Tasks == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-			out.RawString("null")
-		} else {
+		{
 			out.RawByte('[')
 			for v11, v12 := range in.Tasks {
 				if v11 > 0 {
 					out.RawByte(',')
 				}
-				easyjson316682a0EncodeGetmeBackendInternalAppTaskDto(out, v12)
+				(v12).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
