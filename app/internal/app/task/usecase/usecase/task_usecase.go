@@ -46,15 +46,19 @@ func (u *TaskUsecase) Create(mentorID int64, data dto.CreateTaskUsecasDTO) (int6
 	res, err := u.taskRepository.Create(entities.Task{
 		Name: sql.NullString{
 			String: data.Name,
+			Valid:  true,
 		},
 		Description: sql.NullString{
 			String: data.Description,
+			Valid:  true,
 		},
 		Deadline: sql.NullTime{
-			Time: data.Deadline,
+			Time:  data.Deadline,
+			Valid: true,
 		},
 		PlanID: sql.NullInt64{
 			Int64: data.PlanID,
+			Valid: true,
 		},
 	})
 

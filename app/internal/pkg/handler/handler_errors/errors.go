@@ -11,7 +11,7 @@ var (
 	UnknownRole           = errors.New("unknown role, only mentor/mentee supported")
 	PlanNotFound          = errors.New("plan with this id not found")
 	InvalidTaskID         = errors.New("this user have not task with this id")
-	MentorHaveNotThisPlan = errors.New("user with this nickname not found")
+	MentorHaveNotThisPlan = errors.New("mentor have not plan with this id")
 	MentorHaveNotThisTask = errors.New("mentor have not task with this id")
 )
 

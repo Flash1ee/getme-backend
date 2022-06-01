@@ -28,7 +28,8 @@ INSERT INTO task(name, description, deadline, plan_id) VALUES (?, ?, ?, ?) RETUR
 func (repo *TaskRepository) Create(task entities.Task) (int64, error) {
 	query := repo.store.Rebind(queryCreateTask)
 	res := int64(-1)
-	if err := repo.store.QueryRow(query, task.Name, task.Description, task.Deadline, task.PlanID).Scan(&res); err != nil {
+	if err := repo.store.QueryRow(query, task.Name.String,
+		task.Description.String, task.Deadline.Time, task.PlanID.Int64).Scan(&res); err != nil {
 		return res, postgresql_utilits.NewDBError(err)
 	}
 
