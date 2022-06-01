@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 
+	"getme-backend/internal/app/plans/dto"
 	plans_usecase "getme-backend/internal/app/plans/usecase"
 	session_client "getme-backend/internal/microservices/auth/delivery/grpc/client"
 	middleware2 "getme-backend/internal/microservices/auth/sessions/middleware"
@@ -20,7 +21,7 @@ type PlanIDTaskHandler struct {
 	bh.BaseHandler
 }
 
-func NewPlanTaskHandler(log *logrus.Logger, sClient session_client.AuthCheckerClient, plansUs plans_usecase.Usecase) *PlanIDTaskHandler {
+func NewPlanIDTaskHandler(log *logrus.Logger, sClient session_client.AuthCheckerClient, plansUs plans_usecase.Usecase) *PlanIDTaskHandler {
 	h := &PlanIDTaskHandler{
 		BaseHandler:   *bh.NewBaseHandler(log),
 		sessionClient: sClient,
@@ -39,36 +40,27 @@ func (h *PlanIDTaskHandler) GET(ctx echo.Context) error {
 		h.Error(ctx, http.StatusInternalServerError, handler_errors.InternalError)
 		return handler_errors.InternalError
 	}
-	//req := &dto.RequestPlan{}
-	//_, status := h.GetParamToStruct(ctx, req)
-	//if status != bh.OK {
-	//	h.Log(ctx.Request()).Warnf("can not parse query param")
-	//	h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidQueries)
-	//	return handler_errors.InvalidQueries
-	//}
-	//if err := h.Validator.Struct(req); err != nil {
-	//	h.Log(ctx.Request()).Warnf("can not validate query param, err = %v", err)
-	//	h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidQueries)
-	//	return handler_errors.InvalidQueries
-	//}
 	planID, _, err := h.GetInt64FromParam(ctx, "id")
 	if err != nil {
 		h.Log(ctx.Request()).Warnf("PlanIDTaskHandler: can not parse path param ID %s", err)
 		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidParameters)
 		return handler_errors.InvalidParameters
 	}
-
+	if planID < 1 {
+		h.Log(ctx.Request()).Warnf("PlanIDTaskHandler: invalid param_id must be > 0%s", err)
+		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidParameters)
+		return handler_errors.InvalidParameters
+	}
 	res, err := h.plansUsecase.GetPlanWithTasks(userID, planID)
 	if err != nil {
 		h.UsecaseError(ctx, err, codeByErrGET)
 		return err
 	}
-	//@TODO если ментор, один response/ менти - другой
-	//if req.Role == dto.MentorAlias {
-	//	h.Respond(ctx, http.StatusOK, dto.ToPlanWithSkillResponseByMentor(res))
-	//} else {
-	//	h.Respond(ctx, http.StatusOK, dto.ToPlanWithSkillsResponseByMentee(res))
-	//}
+	if res.IsMentor {
+		h.Respond(ctx, http.StatusOK, dto.ToPlanWithTaskResponseMentor(res))
+	} else {
+		h.Respond(ctx, http.StatusOK, dto.ToPlanWithTaskResponseMentee(res))
+	}
 
 	return nil
 }

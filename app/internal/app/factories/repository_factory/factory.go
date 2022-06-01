@@ -9,6 +9,8 @@ import (
 	planRepo "getme-backend/internal/app/plans/repository"
 	planPostgresRepo "getme-backend/internal/app/plans/repository/postgresql"
 	skillRepo "getme-backend/internal/app/skill/repository"
+	taskRepo "getme-backend/internal/app/task/repository"
+	taskPostgresRepo "getme-backend/internal/app/task/repository/postgresql"
 
 	skillPostgresRepo "getme-backend/internal/app/skill/repository/postgresql"
 
@@ -31,6 +33,7 @@ type RepositoryFactory struct {
 	skillRepository     skillRepo.Repository
 	offerRepository     offerRepo.Repository
 	planRepository      planRepo.Repository
+	taskRepository      taskRepo.Repository
 }
 
 func NewRepositoryFactory(logger *logrus.Logger, expectedConnections utilits.ExpectedConnections) *RepositoryFactory {
@@ -84,4 +87,10 @@ func (f *RepositoryFactory) GetPlanRepository() planRepo.Repository {
 		f.planRepository = planPostgresRepo.NewPlanRepository(f.expectedConnections.SqlConnection)
 	}
 	return f.planRepository
+}
+func (f *RepositoryFactory) GetTaskRepository() taskRepo.Repository {
+	if f.taskRepository == nil {
+		f.taskRepository = taskPostgresRepo.NewTaskRepository(f.expectedConnections.SqlConnection)
+	}
+	return f.taskRepository
 }

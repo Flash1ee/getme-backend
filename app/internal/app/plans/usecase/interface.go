@@ -14,8 +14,9 @@ type Usecase interface {
 
 	//GetPlanWithTasks with Errors:
 	//	postgresql_utilits.NotFound
-	// 	plans_usecase.UnknownRole
+	//	plans_usecase.PlanNotFound
+	//	plans_usecase.InvalidTaskID
 	// 		app.GeneralError with Errors
 	// 			postgresql_utilits.DefaultErrDB
-	GetPlanWithTasks(userID int64, taskID int64) (*dto.PlanWithTasksUsecaseDTO, error)
+	GetPlanWithTasks(userID int64, taskID int64) (dto.PlanWithTasksUsecaseDTO, error)
 }

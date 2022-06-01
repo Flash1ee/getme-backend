@@ -6,7 +6,7 @@ package mock
 
 import (
 	entities "getme-backend/internal/app/skill/entities"
-	entities0 "getme-backend/internal/app/user/entities"
+	entities_user "getme-backend/internal/app/user/entities"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -51,7 +51,7 @@ func (mr *MockRepositoryMockRecorder) CreateBaseUser(nickname interface{}) *gomo
 }
 
 // CreateFilledUser mocks base method.
-func (m *MockRepository) CreateFilledUser(data *entities0.User) (int64, error) {
+func (m *MockRepository) CreateFilledUser(data *entities_user.User) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateFilledUser", data)
 	ret0, _ := ret[0].(int64)
@@ -66,10 +66,10 @@ func (mr *MockRepositoryMockRecorder) CreateFilledUser(data interface{}) *gomock
 }
 
 // FindByID mocks base method.
-func (m *MockRepository) FindByID(id int64) (*[]entities0.UserWithSkill, error) {
+func (m *MockRepository) FindByID(id int64) (*entities_user.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByIDWithSkill", id)
-	ret0, _ := ret[0].(*[]entities0.UserWithSkill)
+	ret := m.ctrl.Call(m, "FindByID", id)
+	ret0, _ := ret[0].(*entities_user.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -77,14 +77,29 @@ func (m *MockRepository) FindByID(id int64) (*[]entities0.UserWithSkill, error) 
 // FindByID indicates an expected call of FindByID.
 func (mr *MockRepositoryMockRecorder) FindByID(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByIDWithSkill", reflect.TypeOf((*MockRepository)(nil).FindByID), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockRepository)(nil).FindByID), id)
+}
+
+// FindByIDWithSkill mocks base method.
+func (m *MockRepository) FindByIDWithSkill(id int64) (*[]entities_user.UserWithSkill, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByIDWithSkill", id)
+	ret0, _ := ret[0].(*[]entities_user.UserWithSkill)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByIDWithSkill indicates an expected call of FindByIDWithSkill.
+func (mr *MockRepositoryMockRecorder) FindByIDWithSkill(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByIDWithSkill", reflect.TypeOf((*MockRepository)(nil).FindByIDWithSkill), id)
 }
 
 // FindByNickname mocks base method.
-func (m *MockRepository) FindByNickname(nickname string) (*entities0.User, error) {
+func (m *MockRepository) FindByNickname(nickname string) (*entities_user.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByNickname", nickname)
-	ret0, _ := ret[0].(*entities0.User)
+	ret0, _ := ret[0].(*entities_user.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -96,10 +111,10 @@ func (mr *MockRepositoryMockRecorder) FindByNickname(nickname interface{}) *gomo
 }
 
 // FindMentorByID mocks base method.
-func (m *MockRepository) FindMentorByID(id int64) (*[]entities0.UserWithSkill, error) {
+func (m *MockRepository) FindMentorByID(id int64) (*[]entities_user.UserWithSkill, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindMentorByID", id)
-	ret0, _ := ret[0].(*[]entities0.UserWithSkill)
+	ret0, _ := ret[0].(*[]entities_user.UserWithSkill)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -110,26 +125,26 @@ func (mr *MockRepositoryMockRecorder) FindMentorByID(id interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindMentorByID", reflect.TypeOf((*MockRepository)(nil).FindMentorByID), id)
 }
 
-// GetMenteeByMentor mocks base method.
-func (m *MockRepository) GetMenteeByMentor(mentorID int64) ([]entities0.User, error) {
+// GetMenteeByMentorWithOfferID mocks base method.
+func (m *MockRepository) GetMenteeByMentorWithOfferID(mentorID int64) ([]entities_user.UserWithOfferID, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMenteeByMentorWithOfferID", mentorID)
-	ret0, _ := ret[0].([]entities0.User)
+	ret0, _ := ret[0].([]entities_user.UserWithOfferID)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetMenteeByMentor indicates an expected call of GetMenteeByMentor.
-func (mr *MockRepositoryMockRecorder) GetMenteeByMentor(mentorID interface{}) *gomock.Call {
+// GetMenteeByMentorWithOfferID indicates an expected call of GetMenteeByMentorWithOfferID.
+func (mr *MockRepositoryMockRecorder) GetMenteeByMentorWithOfferID(mentorID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenteeByMentorWithOfferID", reflect.TypeOf((*MockRepository)(nil).GetMenteeByMentor), mentorID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMenteeByMentorWithOfferID", reflect.TypeOf((*MockRepository)(nil).GetMenteeByMentorWithOfferID), mentorID)
 }
 
 // GetUsersBySkills mocks base method.
-func (m *MockRepository) GetUsersBySkills(data []entities.Skill) ([]entities0.UserWithSkill, error) {
+func (m *MockRepository) GetUsersBySkills(data []entities.Skill) ([]entities_user.UserWithSkill, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMentorsBySkills", data)
-	ret0, _ := ret[0].([]entities0.UserWithSkill)
+	ret := m.ctrl.Call(m, "GetUsersBySkills", data)
+	ret0, _ := ret[0].([]entities_user.UserWithSkill)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -137,14 +152,44 @@ func (m *MockRepository) GetUsersBySkills(data []entities.Skill) ([]entities0.Us
 // GetUsersBySkills indicates an expected call of GetUsersBySkills.
 func (mr *MockRepositoryMockRecorder) GetUsersBySkills(data interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMentorsBySkills", reflect.TypeOf((*MockRepository)(nil).GetUsersBySkills), data)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUsersBySkills", reflect.TypeOf((*MockRepository)(nil).GetUsersBySkills), data)
+}
+
+// SetMentorStatus mocks base method.
+func (m *MockRepository) SetMentorStatus(mentorID int64, status bool) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetMentorStatus", mentorID, status)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SetMentorStatus indicates an expected call of SetMentorStatus.
+func (mr *MockRepositoryMockRecorder) SetMentorStatus(mentorID, status interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetMentorStatus", reflect.TypeOf((*MockRepository)(nil).SetMentorStatus), mentorID, status)
+}
+
+// UpdateMentorStatus mocks base method.
+func (m *MockRepository) UpdateMentorStatus(mentorID int64) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMentorStatus", mentorID)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMentorStatus indicates an expected call of UpdateMentorStatus.
+func (mr *MockRepositoryMockRecorder) UpdateMentorStatus(mentorID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMentorStatus", reflect.TypeOf((*MockRepository)(nil).UpdateMentorStatus), mentorID)
 }
 
 // UpdateUser mocks base method.
-func (m *MockRepository) UpdateUser(user *entities0.User) (*entities0.User, error) {
+func (m *MockRepository) UpdateUser(user *entities_user.UserWithSkills) (*entities_user.UserWithSkills, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUser", user)
-	ret0, _ := ret[0].(*entities0.User)
+	ret0, _ := ret[0].(*entities_user.UserWithSkills)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

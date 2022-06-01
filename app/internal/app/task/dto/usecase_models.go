@@ -1,6 +1,8 @@
 package dto
 
-import "time"
+import (
+	"time"
+)
 
 type CreateTaskUsecasDTO struct {
 	Name        string
@@ -15,4 +17,14 @@ type TaskUsecaseDTO struct {
 	Description string
 	Deadline    time.Time
 	Status      string
+}
+
+func (model *TaskUsecaseDTO) ToTasksResponse() *ResponseTask {
+	return &ResponseTask{
+		ID:          model.ID,
+		Name:        model.Name,
+		Description: model.Description,
+		Deadline:    model.Deadline,
+		Status:      model.Status,
+	}
 }

@@ -64,7 +64,7 @@ func (h *RegisterHandler) GET(ctx echo.Context) error {
 			return handler_errors.InternalError
 		}
 	} else {
-		userID = id.ID
+		userID = id.ID.Int64
 	}
 
 	usecaseDTO := req.ToAuthUsecase()

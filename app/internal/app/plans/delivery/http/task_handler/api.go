@@ -12,8 +12,10 @@ import (
 )
 
 var codeByErrGET = delivery.CodeMap{
-	plans_usecase.UnknownRole: {
-		http.StatusBadRequest, handler_errors.UnknownRole, logrus.WarnLevel},
+	plans_usecase.InvalidTaskID: {
+		http.StatusBadRequest, handler_errors.InvalidTaskID, logrus.WarnLevel},
+	plans_usecase.PlanNotFound: {
+		http.StatusBadRequest, handler_errors.PlanNotFound, logrus.WarnLevel},
 	postgresql_utilits.NotFound: {
 		http.StatusNotFound, handler_errors.UserNotFound, logrus.WarnLevel},
 	postgresql_utilits.DefaultErrDB: {

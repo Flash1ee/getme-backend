@@ -37,7 +37,7 @@ func (m *MockUsecase) EXPECT() *MockUsecaseMockRecorder {
 // Check mocks base method.
 func (m *MockUsecase) Check(identifierData dto.TokenSourcesUsecase, token dto.TokenUsecase) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AuthSimple", identifierData, token)
+	ret := m.ctrl.Call(m, "Check", identifierData, token)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
@@ -45,7 +45,7 @@ func (m *MockUsecase) Check(identifierData dto.TokenSourcesUsecase, token dto.To
 // Check indicates an expected call of Check.
 func (mr *MockUsecaseMockRecorder) Check(identifierData, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AuthSimple", reflect.TypeOf((*MockUsecase)(nil).Check), identifierData, token)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockUsecase)(nil).Check), identifierData, token)
 }
 
 // CheckToken mocks base method.

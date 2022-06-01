@@ -18,7 +18,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjsonB6915918DecodePatreonCmdUtilitsModels(in *jlexer.Lexer, out *Log) {
+func easyjsonB6915918DecodeGetmeBackendCmdUtilitsModels(in *jlexer.Lexer, out *Log) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -65,7 +65,7 @@ func easyjsonB6915918DecodePatreonCmdUtilitsModels(in *jlexer.Lexer, out *Log) {
 		in.Consumed()
 	}
 }
-func easyjsonB6915918EncodePatreonCmdUtilitsModels(out *jwriter.Writer, in Log) {
+func easyjsonB6915918EncodeGetmeBackendCmdUtilitsModels(out *jwriter.Writer, in Log) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -151,25 +151,25 @@ func easyjsonB6915918EncodePatreonCmdUtilitsModels(out *jwriter.Writer, in Log) 
 // MarshalJSON supports json.Marshaler interface
 func (v Log) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonB6915918EncodePatreonCmdUtilitsModels(&w, v)
+	easyjsonB6915918EncodeGetmeBackendCmdUtilitsModels(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Log) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonB6915918EncodePatreonCmdUtilitsModels(w, v)
+	easyjsonB6915918EncodeGetmeBackendCmdUtilitsModels(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Log) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonB6915918DecodePatreonCmdUtilitsModels(&r, v)
+	easyjsonB6915918DecodeGetmeBackendCmdUtilitsModels(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Log) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonB6915918DecodePatreonCmdUtilitsModels(l, v)
+	easyjsonB6915918DecodeGetmeBackendCmdUtilitsModels(l, v)
 }
 func easyjsonB6915918DecodeNetUrl(in *jlexer.Lexer, out *url.URL) {
 	isTopLevel := in.IsStart()

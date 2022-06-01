@@ -12,6 +12,8 @@ import (
 )
 
 var codeByErrPOST = delivery.CodeMap{
+	offer_usecase.AlreadyAccepted: {
+		http.StatusBadRequest, handler_errors.OfferAlreadyAccepted, logrus.ErrorLevel},
 	offer_usecase.InvalidOfferID: {
 		http.StatusBadRequest, handler_errors.LogicError, logrus.ErrorLevel},
 	postgresql_utilits.NotFound: {

@@ -62,7 +62,7 @@ func (h *AcceptHandler) POST(ctx echo.Context) error {
 
 	res, err := h.offerUsecase.Accept(userID, usecaseDTO)
 	if err != nil {
-		h.Log(ctx.Request()).Warnf("OfferIDAcceptHandler: can not parse path param ID %s", err)
+		h.Log(ctx.Request()).Warnf("OfferIDAcceptHandler: offerUsecase: Accept() error - %s", err)
 		h.UsecaseError(ctx, err, codeByErrPOST)
 		return handler_errors.InvalidParameters
 	}

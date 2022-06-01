@@ -20,6 +20,7 @@ type Usecase interface {
 	// 			postgresql_utilits.DefaultErrDB
 	Get(mentorID int64) ([]dto2.UserWithOfferIDUsecase, error)
 	//Accept with Errors:
+	//		AlreadyAccepted
 	//		InvalidOfferID
 	//		postgresql_utilits.NotFound
 	// 		app.GeneralError with Errors

@@ -2,9 +2,10 @@ package simple_register_handler
 
 import (
 	"context"
-	"getme-backend/internal/microservices/auth/sessions/usecase"
 	"net/http"
 	"time"
+
+	"getme-backend/internal/microservices/auth/sessions/usecase"
 
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -76,7 +77,7 @@ func (h *RegisterHandler) POST(ctx echo.Context) error {
 		}
 
 	} else {
-		userID = u.ID
+		userID = u.ID.Int64
 	}
 
 	usecaseDTO := req.ToSimpleRegistrationUsecase()

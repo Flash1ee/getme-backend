@@ -86,6 +86,7 @@ func (u *OfferUsecase) Get(mentorID int64) ([]user_dto.UserWithOfferIDUsecase, e
 }
 
 //Accept with Errors:
+// 		AlreadyAccepted
 //		InvalidOfferID
 //		postgresql_utilits.NotFound
 // 		app.GeneralError with Errors
@@ -97,6 +98,9 @@ func (u *OfferUsecase) Accept(userID int64, data *dto.OfferAcceptUsecaseDTO) (*p
 	}
 	if res.MentorID != userID {
 		return nil, offer_usecase.InvalidOfferID
+	}
+	if !res.Status {
+		return nil, offer_usecase.AlreadyAccepted
 	}
 	createdPlan, err := u.planRepository.Create(data.OfferID, entities2.GetSkills(data.Skills), entities.Plan{
 		Name:     data.Title,

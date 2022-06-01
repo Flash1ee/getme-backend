@@ -1,6 +1,8 @@
 package task_usecase
 
 import (
+	"database/sql"
+
 	"getme-backend/internal/app"
 	plan_repository "getme-backend/internal/app/plans/repository"
 	"getme-backend/internal/app/task/dto"
@@ -41,10 +43,16 @@ func (u *TaskUsecase) Create(mentorID int64, data dto.CreateTaskUsecasDTO) (int6
 	}
 
 	res, err := u.taskRepository.Create(entities.Task{
-		Name:        data.Name,
-		Description: data.Description,
-		Deadline:    data.Deadline,
-		PlanID:      data.PlanID,
+		Name: sql.NullString{
+			String: data.Name,
+		},
+		Description: sql.NullString{
+			String: data.Description,
+		},
+		Deadline: data.Deadline,
+		PlanID: sql.NullInt64{
+			Int64: data.PlanID,
+		},
 	})
 	if err != nil {
 		return app.InvalidInt, err

@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson7e1c2d3cDecodeTechDbForumInternalPkgUtilitsDelivery(in *jlexer.Lexer, out *ErrResponse) {
+func easyjson7e1c2d3cDecodeGetmeBackendInternalPkgUtilitsDelivery(in *jlexer.Lexer, out *ErrResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -52,7 +52,7 @@ func easyjson7e1c2d3cDecodeTechDbForumInternalPkgUtilitsDelivery(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjson7e1c2d3cEncodeTechDbForumInternalPkgUtilitsDelivery(out *jwriter.Writer, in ErrResponse) {
+func easyjson7e1c2d3cEncodeGetmeBackendInternalPkgUtilitsDelivery(out *jwriter.Writer, in ErrResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -67,23 +67,23 @@ func easyjson7e1c2d3cEncodeTechDbForumInternalPkgUtilitsDelivery(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v ErrResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson7e1c2d3cEncodeTechDbForumInternalPkgUtilitsDelivery(&w, v)
+	easyjson7e1c2d3cEncodeGetmeBackendInternalPkgUtilitsDelivery(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ErrResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson7e1c2d3cEncodeTechDbForumInternalPkgUtilitsDelivery(w, v)
+	easyjson7e1c2d3cEncodeGetmeBackendInternalPkgUtilitsDelivery(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ErrResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson7e1c2d3cDecodeTechDbForumInternalPkgUtilitsDelivery(&r, v)
+	easyjson7e1c2d3cDecodeGetmeBackendInternalPkgUtilitsDelivery(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ErrResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson7e1c2d3cDecodeTechDbForumInternalPkgUtilitsDelivery(l, v)
+	easyjson7e1c2d3cDecodeGetmeBackendInternalPkgUtilitsDelivery(l, v)
 }

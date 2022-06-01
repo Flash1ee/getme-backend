@@ -5,6 +5,7 @@ import (
 	offer_usecase "getme-backend/internal/app/offer/usecase"
 	plans_usecase "getme-backend/internal/app/plans/usecase"
 	skill_usecase "getme-backend/internal/app/skill/usecase"
+	task_usecase "getme-backend/internal/app/task/usecase"
 	token_usecase "getme-backend/internal/app/token/usecase"
 	user_usecase "getme-backend/internal/app/user/usecase"
 )
@@ -18,4 +19,5 @@ type UsecaseFactory interface {
 	GetSkillUsecase() skill_usecase.Usecase
 	GetOfferUsecase() offer_usecase.Usecase
 	GetPlansUsecase() plans_usecase.Usecase
+	GetTaskUsecase() task_usecase.Usecase
 }

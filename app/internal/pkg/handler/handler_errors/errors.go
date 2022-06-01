@@ -6,10 +6,11 @@ import (
 
 /// NOT FOUND
 var (
-	UserNotFound  = errors.New("user not found")
-	OfferNotFound = errors.New("offer not found")
-	UnknownRole   = errors.New("unknown role, only mentor/mentee supported")
-
+	UserNotFound          = errors.New("user not found")
+	OfferNotFound         = errors.New("offer not found")
+	UnknownRole           = errors.New("unknown role, only mentor/mentee supported")
+	PlanNotFound          = errors.New("plan with this id not found")
+	InvalidTaskID         = errors.New("this user have not task with this id")
 	MentorHaveNotThisPlan = errors.New("user with this nickname not found")
 )
 
@@ -53,6 +54,7 @@ var NoModify = errors.New("content not modify")
 
 // Logic Error
 var (
-	LogicError          = errors.New("logic error in workking of service")
-	UserHaveNotThisPlan = errors.New("this user have not plan with this id")
+	LogicError           = errors.New("logic error in workking of service")
+	UserHaveNotThisPlan  = errors.New("this user have not plan with this id")
+	OfferAlreadyAccepted = errors.New("offer already accepted")
 )

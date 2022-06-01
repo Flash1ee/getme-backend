@@ -53,17 +53,19 @@ func filterUsersData(users []entities_user.UserWithSkill) []entities_user.UserWi
 	resFinal := make([]entities_user.UserWithSkills, 0)
 	for _, val := range users {
 		if val.Skill.Valid {
-			skills[val.ID] = append(skills[val.ID], val.Skill.String)
+			if val.User.ID.Valid {
+				skills[val.ID.Int64] = append(skills[val.ID.Int64], val.Skill.String)
+			}
 		}
-		if _, ok := ids[val.ID]; !ok {
-			ids[val.ID] = struct{}{}
+		if _, ok := ids[val.ID.Int64]; !ok {
+			ids[val.ID.Int64] = struct{}{}
 			res = append(res, val.User)
 		}
 	}
 	for _, val := range res {
 		resFinal = append(resFinal, entities_user.UserWithSkills{
 			User:   val,
-			Skills: skills[val.ID],
+			Skills: skills[val.ID.Int64],
 		})
 	}
 	return resFinal

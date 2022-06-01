@@ -12,7 +12,9 @@ func getRepositoryData(t *testing.T) *entities_user.User {
 	t.Helper()
 
 	return &entities_user.User{
-		ID: 1,
+		ID: sql.NullInt64{
+			Int64: 1,
+		},
 		FirstName: sql.NullString{
 			String: "Vasiliy",
 		},

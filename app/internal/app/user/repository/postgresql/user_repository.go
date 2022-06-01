@@ -3,6 +3,7 @@ package repository_postgresql
 import (
 	"database/sql"
 	"fmt"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 	"github.com/pkg/errors"
@@ -218,7 +219,7 @@ func (repo *UserRepository) UpdateUser(user *entities_user.UserWithSkills) (*ent
 			return nil, postgresql_utilits.NewDBError(err)
 		}
 
-		args := entities_user.ToUsersSkills(user.ID, user.Skills)
+		args := entities_user.ToUsersSkills(user.ID.Int64, user.Skills)
 		if _, err = tx.NamedExec(queryUpdateUserAddSkills, args); err != nil {
 			_ = tx.Rollback()
 			return nil, postgresql_utilits.NewDBError(err)

@@ -49,7 +49,9 @@ func (m *UserWithSkillsUsecase) ToUserWithSkillEntity() *entities_user.UserWithS
 
 func (m *UserUsecase) ToUserEntity() *entities_user.User {
 	return &entities_user.User{
-		ID: m.ID,
+		ID: sql.NullInt64{
+			Int64: m.ID,
+		},
 		FirstName: sql.NullString{
 			String: m.FirstName,
 		},
@@ -76,7 +78,7 @@ func ToUserWithOfferIDUsecases(data []entities_user.UserWithOfferID) []UserWithO
 
 func ToUserUsecase(data *entities_user.User) *UserUsecase {
 	return &UserUsecase{
-		ID:           data.ID,
+		ID:           data.ID.Int64,
 		FirstName:    data.FirstName.String,
 		LastName:     data.LastName.String,
 		Nickname:     data.Nickname,

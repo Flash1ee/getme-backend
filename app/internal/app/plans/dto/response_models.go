@@ -1,5 +1,10 @@
 package dto
 
+import (
+	dto2 "getme-backend/internal/app/task/dto"
+	"getme-backend/internal/app/user/dto"
+)
+
 //go:generate easyjson -all -disallow_unknown_fields response_models.go
 
 //easyjson:json
@@ -51,6 +56,50 @@ type PlansWithSkillsResponseMentee struct {
 	Plans []PlanWithSkillsResponseMentee `json:"plans"`
 }
 
+//easyjson:json
+type PlanWithTaskResponseMentor struct {
+	Title            string  `json:"title"`
+	Description      string  `json:"description"`
+	Progress         float64 `json:"progress"`
+	dto.UserResponse `json:"mentor"`
+	Tasks            []dto2.ResponseTask `json:"tasks"`
+}
+
+//easyjson:json
+type PlanWithTaskResponseMentee struct {
+	Title            string  `json:"title"`
+	Description      string  `json:"description"`
+	Progress         float64 `json:"progress"`
+	dto.UserResponse `json:"mentee"`
+	Tasks            []dto2.ResponseTask `json:"tasks"`
+}
+
+func ToPlanWithTaskResponseMentor(data PlanWithTasksUsecaseDTO) PlanWithTaskResponseMentor {
+	res := PlanWithTaskResponseMentor{
+		Title:        data.PlansUsecaseDTO.Name,
+		Description:  data.PlansUsecaseDTO.About,
+		Progress:     data.PlansUsecaseDTO.Progress,
+		UserResponse: dto.ToUserResponse(data.UserUsecase),
+		Tasks:        make([]dto2.ResponseTask, 0),
+	}
+	for _, val := range data.Tasks {
+		res.Tasks = append(res.Tasks, *val.ToTasksResponse())
+	}
+	return res
+}
+func ToPlanWithTaskResponseMentee(data PlanWithTasksUsecaseDTO) PlanWithTaskResponseMentee {
+	res := PlanWithTaskResponseMentee{
+		Title:        data.PlansUsecaseDTO.Name,
+		Description:  data.PlansUsecaseDTO.About,
+		Progress:     data.PlansUsecaseDTO.Progress,
+		UserResponse: dto.ToUserResponse(data.UserUsecase),
+		Tasks:        make([]dto2.ResponseTask, 0),
+	}
+	for _, val := range data.Tasks {
+		res.Tasks = append(res.Tasks, *val.ToTasksResponse())
+	}
+	return res
+}
 func ToPlanWithSkillResponseByMentor(data []PlansWithSkillsDTO) PlansWithSkillsResponseMentor {
 	res := &PlansWithSkillsResponseMentor{
 		Plans: make([]PlanWithSkillsResponseMentor, 0),
