@@ -57,6 +57,103 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrResponse'
+  /plans/{plan_id}/task:
+    post:
+      tags:
+        - plan
+      summary: Создание задачи плана
+      description: Создание задачи у конктретного плана
+      parameters:
+        - name: plan_id
+          in: path
+          description: ID палана
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Тело запроса с данными о задаче
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdResponse'
+        required: true
+      responses:
+        201:
+          description: Айди созданной задачи
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MentorsPlansWithSkillResponse'
+        400:
+          description: Ошибка в теле запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: План не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        409:
+          description: У данного пользователя нет прав на изменение плана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+  /tasks/{task_id}/status:
+    post:
+      tags:
+        - plan
+      summary: Изменение статуса задачи
+      description: Изменение статуса задачи на выполенную
+      parameters:
+        - name: task_id
+          in: path
+          description: ID задачи
+          required: true
+          schema:
+            type: integer
+      responses:
+        201:
+          description: Айди созданной задачи
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MentorsPlansWithSkillResponse'
+        400:
+          description: Ошибка в теле запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        404:
+          description: Задача не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        409:
+          description: У данного пользователя нет прав на изменение этой задачи
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrResponse'
   /offers:
     get:
       tags:
@@ -233,7 +330,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrResponse'
-    post:
+    put:
       tags:
         - user
       summary: Обновление даных пользователя
@@ -665,6 +762,8 @@ components:
           type: string
         avatar:
           type: string
+        tg_tag:
+          type: string
         is_mentor:
           type: boolean
     PlanMentor:
@@ -821,7 +920,25 @@ components:
           type: string
         last_name:
           type: string
+        tg_tag:
+          type: string
+        skills:
+          type: array
+          example:
+            - frontend
+            - backend
+          items:
+            type: string
         about:
+          type: string
+    RequestTaskCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        about:
+          type: string
+        deadline:
           type: string
     RequestOffer:
       type: object
@@ -848,13 +965,15 @@ components:
         id:
           type: integer
         first_name:
-            type: string
+          type: string
+        tg_tag:
+          type: string
         last_name:
-            type: string
+          type: string
         about:
-            type: string
+          type: string
         is_mentor:
-            type: boolean
+          type: boolean
     PlanWithSkillsResponseMentor:
       type: object
       properties:
