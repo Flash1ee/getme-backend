@@ -66,7 +66,7 @@ func (mw *UtilitiesMiddleware) UpgradeLogger(handler http.Handler) http.Handler 
 			"req_id":      uuid.NewV4(),
 		})
 
-		r = r.WithContext(context.WithValue(r.Context(), "logger", upgradeLogger))
+		r = r.WithContext(context.WithValue(r.Context(), loggerConst, upgradeLogger))
 		upgradeLogger.Info("Log was upgraded")
 
 		handler.ServeHTTP(w, r)

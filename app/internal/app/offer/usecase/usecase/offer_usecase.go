@@ -54,9 +54,9 @@ func (u *OfferUsecase) Create(data *dto.OfferUsecaseDTO) (int64, error) {
 			return app.InvalidInt, offer_usecase.MentorNotExist
 		}
 	}
-	if err := u.skillRepository.CheckExists(data.SkillName); err != postgresql_utilits.Exists {
-		//return app.InvalidInt, skill_usecase.SkillNotExists
-	}
+	//if err := u.skillRepository.CheckExists(data.SkillName); err != postgresql_utilits.Exists {
+	//	//return app.InvalidInt, skill_usecase.SkillNotExists
+	//}
 	if err := u.offerRepository.CheckExists(data.MenteeID, data.MentorID); err != postgresql_utilits.NotFound {
 		return app.InvalidInt, offer_usecase.AlreadyExists
 	}
@@ -129,7 +129,7 @@ func (u *OfferUsecase) Delete(userID int64, offerID int64) error {
 	if res.MentorID != userID {
 		return offer_usecase.InvalidOfferID
 	}
-	if res.Status == false {
+	if !res.Status {
 		return postgresql_utilits.NotFound
 	}
 

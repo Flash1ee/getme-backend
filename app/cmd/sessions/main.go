@@ -40,7 +40,13 @@ func main() {
 		logrus.Fatal(err)
 	}
 	logger, CloseLogger := utilits.NewLogger(config, true, "session_microservice")
-	defer CloseLogger()
+
+	defer func() {
+		if err := CloseLogger(); err != nil {
+			logrus.Fatal(err)
+		}
+	}()
+
 	level, err := logrus.ParseLevel(config.LogLevel)
 	if err != nil {
 		os.Exit(1)

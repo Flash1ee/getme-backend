@@ -63,7 +63,7 @@ func (h *AuthHandler) getQueryParams(ctx echo.Context) (*dto.AuthRequest, int, e
 
 func (h *AuthHandler) GET(ctx echo.Context) error {
 	req, errsCount, err := h.getQueryParams(ctx)
-	if errsCount != 0 {
+	if errsCount != 0 || err != nil {
 		h.Log(ctx.Request()).Errorf("AUTH HANDLER - Telegram: Error validation request params %v\n", req)
 		h.Error(ctx, http.StatusBadRequest, handler_errors.InvalidQueries)
 		return handler_errors.InvalidQueries

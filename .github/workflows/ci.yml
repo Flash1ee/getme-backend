@@ -19,9 +19,9 @@ jobs:
         with:
           go-version: '1.17.1'
 
-      - name: Lint project
-        uses: golangci/golangci-lint-action@v2
-        run: cd ./app && golangci-lint run
+#      - name: Lint project
+#        uses: golangci/golangci-lint-action@v2
+#        run: cd ./app && golangci-lint run
 
       - name: Run build
         run: cd ./app && make build

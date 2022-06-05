@@ -8,6 +8,13 @@ type SkillResponse struct {
 	Color string `json:"color,omitempty"`
 }
 
+func ToSkillResponse(data SkillUsecase) *SkillResponse {
+	return &SkillResponse{
+		Name:  data.Name,
+		Color: data.Color,
+	}
+}
+
 //json:easyjson
 type SkillsResponse struct {
 	Skills []SkillResponse `json:"skills"`
@@ -18,10 +25,7 @@ func ToSkillsResponseFromUsecase(usr *SkillsUsecase) SkillsResponse {
 		Skills: make([]SkillResponse, 0, len(usr.Skills)),
 	}
 	for _, val := range usr.Skills {
-		res.Skills = append(res.Skills, SkillResponse{
-			Name:  val.Name,
-			Color: val.Color,
-		})
+		res.Skills = append(res.Skills, *ToSkillResponse(val))
 	}
 	return res
 }

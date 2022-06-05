@@ -25,7 +25,6 @@ import (
 )
 
 type UsecaseFactory struct {
-	log               logrus.Logger
 	repositoryFactory RepositoryFactory
 	userUsecase       userUs.Usecase
 	tokenUsecase      tokenUs.Usecase

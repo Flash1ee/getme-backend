@@ -62,7 +62,7 @@ func (u *PlanUsecase) GetPlanWithTasks(userID int64, planID int64) (dto.PlanWith
 	var isMentor = true
 	res := dto.PlanWithTasksUsecaseDTO{}
 
-	entitiesRes := make([]entities.PlanWithUserAndTask, 0)
+	var entitiesRes []entities.PlanWithUserAndTask
 	plan, err := u.planRepository.GetPlanByTaskID(planID)
 	if err != nil {
 		if errors.Is(err, postgresql_utilits.NotFound) {
@@ -79,6 +79,9 @@ func (u *PlanUsecase) GetPlanWithTasks(userID int64, planID int64) (dto.PlanWith
 		return res, plans_usecase.InvalidTaskID
 	}
 
+	if err != nil {
+		return res, err
+	}
 	filtered := filterPlansByTasks(entitiesRes)
 	res = dto.ToPlanWithTasksUsecaseDTO(filtered)[0]
 	res.IsMentor = isMentor

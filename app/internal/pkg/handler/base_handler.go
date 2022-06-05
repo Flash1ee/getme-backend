@@ -84,19 +84,14 @@ func (h *BaseHandler) add(path string, echoHandlerFunc echo.HandlerFunc, route *
 		switch key {
 		case GET:
 			route.GET(path, wrapped)
-			break
 		case POST:
 			route.POST(path, wrapped)
-			break
 		case PUT:
 			route.PUT(path, wrapped)
-			break
 		case DELETE:
 			route.DELETE(path, wrapped)
-			break
 		case OPTIONS:
 			route.OPTIONS(path, wrapped)
-			break
 		}
 	}
 }
@@ -107,7 +102,7 @@ func (h *BaseHandler) Connect(route *echo.Group, path string) {
 
 func (h *BaseHandler) ServeHTTP(ctx echo.Context) error {
 	h.PrintRequest(ctx.Request())
-	ok := true
+	var ok bool
 	var handler hf.HandlerFunc
 	handler, ok = h.handlerMethods[ctx.Request().Method]
 	if ok {

@@ -9,7 +9,6 @@ import (
 	"getme-backend/internal/app/auth/dto"
 	"getme-backend/internal/app/auth/usecase"
 	"getme-backend/internal/app/middleware"
-	token_usecase "getme-backend/internal/app/token/usecase"
 	user_usecase "getme-backend/internal/app/user/usecase"
 	"getme-backend/internal/microservices/auth/delivery/grpc/client"
 	middleware2 "getme-backend/internal/microservices/auth/sessions/middleware"
@@ -22,7 +21,6 @@ type RegisterHandler struct {
 	authUsecase auth_usecase.Usecase
 	userUsecase user_usecase.Usecase
 
-	tokenUsecase  token_usecase.Usecase
 	sessionClient client.AuthCheckerClient
 	bh.BaseHandler
 }
@@ -49,7 +47,7 @@ func (h *RegisterHandler) GET(ctx echo.Context) error {
 		ctx.Response().WriteHeader(http.StatusBadRequest)
 		return nil
 	}
-	userID := int64(-1)
+	var userID int64
 	id, err := h.userUsecase.FindByNickname(req.Username)
 	if err != nil {
 		if err != user_usecase.UserNotFound {

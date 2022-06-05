@@ -13,13 +13,13 @@ import (
 
 var codeByErrPOST = delivery.CodeMap{
 	offer_usecase.AlreadyAccepted: {
-		http.StatusBadRequest, handler_errors.OfferAlreadyAccepted, logrus.ErrorLevel},
+		Code: http.StatusBadRequest, Error: handler_errors.OfferAlreadyAccepted, Level: logrus.ErrorLevel},
 	offer_usecase.InvalidOfferID: {
-		http.StatusBadRequest, handler_errors.LogicError, logrus.ErrorLevel},
+		Code: http.StatusBadRequest, Error: handler_errors.LogicError, Level: logrus.ErrorLevel},
 	postgresql_utilits.NotFound: {
-		http.StatusNotFound, handler_errors.OfferNotFound, logrus.WarnLevel},
+		Code: http.StatusNotFound, Error: handler_errors.OfferNotFound, Level: logrus.WarnLevel},
 	postgresql_utilits.DefaultErrDB: {
-		http.StatusInternalServerError, handler_errors.BDError, logrus.ErrorLevel},
+		Code: http.StatusInternalServerError, Error: handler_errors.BDError, Level: logrus.ErrorLevel},
 }
 
 var codeByErrDELETE = delivery.CodeMap{
