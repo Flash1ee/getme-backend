@@ -3,21 +3,42 @@ version: "3"
 volumes:
   dbbackups:
   postgis-data:
+  session-redis:
+  mysql-data:
 services:
   main:
-    image: getme
+    image: getme-main
     expose:
-      - "8080"
+      - "80"
     ports:
-      - "8080:8080"
+      - "80:80"
     networks:
       - default
     volumes:
+      - ./api:/app/api
       - ./logs:/app/logs
       - ./media:/app/media
       - ${CONFIG_DIR}:/app/configs
     depends_on:
       - getme-db
+      - session-service
+      - db-mysql
+    environment:
+      WAIT_HOSTS: getme-db:5432, db-mysql:3306
+
+  session-service:
+    image: session-service
+    expose:
+      - "5001"
+    ports:
+      - "5001:5001"
+    networks:
+      - default
+    volumes:
+      - ./logs-sessions:/app/logs
+      - ${CONFIG_DIR}:/app/configs
+    depends_on:
+      - session-redis
     environment:
       WAIT_HOSTS: getme-db:5432
   getme-db:
@@ -41,6 +62,28 @@ services:
         limits:
           cpus: '2'
           memory: 4G
+  session-redis:
+    image: "redis:alpine"
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    volumes:
+      - session-redis:/data
+    restart: always
+  db-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: ${MS_BD_PASSWORD}
+      MYSQL_USER: ${MS_BD_USERNAME}
+      MYSQL_DATABASE: ${MS_BD_NAME}
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
 networks:
   default:
     driver: bridge

@@ -5,7 +5,7 @@
 package mock
 
 import (
-	dto "getme-backend/internal/app/user/dto"
+	dto "getme-backend/internal/app/auth/dto"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -35,7 +35,7 @@ func (m *MockauthChecker) EXPECT() *MockauthCheckerMockRecorder {
 }
 
 // Check mocks base method.
-func (m *MockauthChecker) Check(data *dto.UserAuthUsecase) bool {
+func (m *MockauthChecker) Check(data *dto.AuthUsecase) bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Check", data)
 	ret0, _ := ret[0].(bool)

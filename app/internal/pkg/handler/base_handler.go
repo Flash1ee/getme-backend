@@ -4,8 +4,10 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 
+	validator2 "getme-backend/internal/app/validator"
 	hf "getme-backend/internal/pkg/handler/handler_interfaces"
 	"getme-backend/internal/pkg/utilits"
 	"getme-backend/internal/pkg/utilits/delivery"
@@ -24,6 +26,7 @@ const (
 type BaseHandler struct {
 	handlerMethods map[string]hf.HandlerFunc
 	middlewares    []hf.HMiddlewareFunc
+	Validator      *validator.Validate
 	HelpHandlers
 }
 
@@ -36,6 +39,7 @@ func NewBaseHandler(log *logrus.Logger) *BaseHandler {
 				},
 			},
 		},
+		Validator: validator2.NewValidator(),
 	}
 	return h
 }
@@ -80,19 +84,14 @@ func (h *BaseHandler) add(path string, echoHandlerFunc echo.HandlerFunc, route *
 		switch key {
 		case GET:
 			route.GET(path, wrapped)
-			break
 		case POST:
 			route.POST(path, wrapped)
-			break
 		case PUT:
 			route.PUT(path, wrapped)
-			break
 		case DELETE:
 			route.DELETE(path, wrapped)
-			break
 		case OPTIONS:
 			route.OPTIONS(path, wrapped)
-			break
 		}
 	}
 }
@@ -103,7 +102,7 @@ func (h *BaseHandler) Connect(route *echo.Group, path string) {
 
 func (h *BaseHandler) ServeHTTP(ctx echo.Context) error {
 	h.PrintRequest(ctx.Request())
-	ok := true
+	var ok bool
 	var handler hf.HandlerFunc
 	handler, ok = h.handlerMethods[ctx.Request().Method]
 	if ok {

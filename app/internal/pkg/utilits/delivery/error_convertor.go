@@ -26,6 +26,7 @@ func (h *ErrorConvertor) UsecaseError(ctx echo.Context, usecaseErr error, codeBy
 	var generalError *app.GeneralError
 	//orginalError := usecaseErr
 	if errors.As(usecaseErr, &generalError) {
+		h.Log(ctx.Request()).Warnf("external error =  %v", errors.Cause(usecaseErr).(*app.GeneralError).ExternalErr)
 		usecaseErr = errors.Cause(usecaseErr).(*app.GeneralError).Err
 	}
 
@@ -39,12 +40,12 @@ func (h *ErrorConvertor) UsecaseError(ctx echo.Context, usecaseErr error, codeBy
 		}
 	}
 
-	//h.Log(ctx).Logf(respond.Level, "Gotted error: %v", orginalError)
+	h.Log(ctx.Request()).Logf(respond.Level, "Gotted error: %v", usecaseErr)
 	h.Error(ctx, respond.Code, respond.Error)
 }
 
 func (h *ErrorConvertor) HandlerError(ctx echo.Context, code int, err error) {
-	//h.Log(ctx).Errorf("Gotted error: %v", err)
+	h.Log(ctx.Request()).Errorf("Gotted error: %v", err)
 
 	var generalError *app.GeneralError
 	if errors.As(err, &generalError) {

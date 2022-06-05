@@ -9,7 +9,9 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -39,7 +41,6 @@ func NewLogger(config *internal.Config, isService bool, serviceName string) (log
 	}
 
 	logger.SetOutput(f)
-	//logger.SetOutput(os.Stdout)
 
 	logger.Writer()
 	logger.SetLevel(level)
@@ -47,11 +48,33 @@ func NewLogger(config *internal.Config, isService bool, serviceName string) (log
 	return logger, f.Close
 }
 
-func NewPostgresConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error) {
-	db, err := sqlx.Open("postgres", databaseUrl)
+func GetSQLConnection(repository internal.RepositoryConnections, database string, localMode bool) (db *sqlx.DB, closeResource func() error, err error) {
+	var dbURL string
+	switch database {
+	case "my-sql":
+		dbURL = repository.MySQLDatabaseUrl
+		return NewMySQLConnection(dbURL)
+	default:
+		dbURL = repository.DataBaseUrl
+		if localMode {
+			dbURL = repository.DataBaseUrlLocal
+		}
+		return NewPostgresConnection(dbURL)
+	}
+}
+func NewPostgresConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error, err error) {
+	db, err = sqlx.Open("postgres", databaseUrl)
 	if err != nil {
-		logrus.Fatal(err)
+		return nil, nil, err
 	}
 
-	return db, db.Close
+	return db, db.Close, nil
+}
+func NewMySQLConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error, err error) {
+	db, err = sqlx.Open("mysql", databaseUrl)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return db, db.Close, nil
 }

@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package auth;
+option go_package = ".;auth";
+
+// go:generate protoc --go-grpc_out=plugins=grpc:. *.proto
+
+message UserID {
+  int64 ID = 1;
+}
+
+message SessionID {
+  string ID = 1;
+}
+
+message TokenID {
+  string ID = 1;
+}
+
+message Result {
+  int64 UserID = 1;
+  string SessionID = 2;
+}
+
+message ResultByToken {
+  string Token = 1;
+  string UserID = 2;
+}
+
+message TokenUserData {
+  TokenID Token = 1;
+  UserID User = 2;
+}
+
+message Nothing {
+  bool dummy = 1;
+}
+
+service AuthChecker {
+  rpc Check(SessionID) returns (Result);
+  rpc Create(UserID) returns (Result);
+  rpc Delete(SessionID) returns (Nothing);
+  rpc CreateByToken(TokenUserData) returns (ResultByToken);
+  rpc CheckWithDelete(TokenID) returns (ResultByToken);
+}

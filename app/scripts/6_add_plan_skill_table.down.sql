@@ -1,0 +1,1 @@
+drop table plans_skills;

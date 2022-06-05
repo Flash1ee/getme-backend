@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup actions
+        uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.1'
+
+#      - name: Lint project
+#        uses: golangci/golangci-lint-action@v2
+#        run: cd ./app && golangci-lint run
+
+      - name: Run build
+        run: cd ./app && make build
+
+      - name: Run testing
+        run: cd ./app && make run-coverage

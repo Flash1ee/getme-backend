@@ -6,6 +6,7 @@ package mock
 
 import (
 	dto "getme-backend/internal/app/user/dto"
+	entities_user "getme-backend/internal/app/user/entities"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -34,17 +35,107 @@ func (m *MockUsecase) EXPECT() *MockUsecaseMockRecorder {
 	return m.recorder
 }
 
-// Auth mocks base method.
-func (m *MockUsecase) Auth(user *dto.UserAuthUsecase) (*dto.UserResponse, error) {
+// CreateBaseUser mocks base method.
+func (m *MockUsecase) CreateBaseUser(nickname string) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Auth", user)
-	ret0, _ := ret[0].(*dto.UserResponse)
+	ret := m.ctrl.Call(m, "CreateBaseUser", nickname)
+	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Auth indicates an expected call of Auth.
-func (mr *MockUsecaseMockRecorder) Auth(user interface{}) *gomock.Call {
+// CreateBaseUser indicates an expected call of CreateBaseUser.
+func (mr *MockUsecaseMockRecorder) CreateBaseUser(nickname interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auth", reflect.TypeOf((*MockUsecase)(nil).Auth), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBaseUser", reflect.TypeOf((*MockUsecase)(nil).CreateBaseUser), nickname)
+}
+
+// CreateFilledUser mocks base method.
+func (m *MockUsecase) CreateFilledUser(data *dto.UserUsecase) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateFilledUser", data)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateFilledUser indicates an expected call of CreateFilledUser.
+func (mr *MockUsecaseMockRecorder) CreateFilledUser(data interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFilledUser", reflect.TypeOf((*MockUsecase)(nil).CreateFilledUser), data)
+}
+
+// FindByID mocks base method.
+func (m *MockUsecase) FindByID(id int64) (*dto.UserWithSkillsUsecase, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByID", id)
+	ret0, _ := ret[0].(*dto.UserWithSkillsUsecase)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByID indicates an expected call of FindByID.
+func (mr *MockUsecaseMockRecorder) FindByID(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockUsecase)(nil).FindByID), id)
+}
+
+// FindByNickname mocks base method.
+func (m *MockUsecase) FindByNickname(nickname string) (*entities_user.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByNickname", nickname)
+	ret0, _ := ret[0].(*entities_user.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByNickname indicates an expected call of FindByNickname.
+func (mr *MockUsecaseMockRecorder) FindByNickname(nickname interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByNickname", reflect.TypeOf((*MockUsecase)(nil).FindByNickname), nickname)
+}
+
+// GetMentorStatus mocks base method.
+func (m *MockUsecase) GetMentorStatus(id int64) (*dto.UserStatusUsecase, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMentorStatus", id)
+	ret0, _ := ret[0].(*dto.UserStatusUsecase)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMentorStatus indicates an expected call of GetMentorStatus.
+func (mr *MockUsecaseMockRecorder) GetMentorStatus(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMentorStatus", reflect.TypeOf((*MockUsecase)(nil).GetMentorStatus), id)
+}
+
+// UpdateMentorStatus mocks base method.
+func (m *MockUsecase) UpdateMentorStatus(user *dto.UserStatusUsecase) (*dto.UserStatusUsecase, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateMentorStatus", user)
+	ret0, _ := ret[0].(*dto.UserStatusUsecase)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateMentorStatus indicates an expected call of UpdateMentorStatus.
+func (mr *MockUsecaseMockRecorder) UpdateMentorStatus(user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMentorStatus", reflect.TypeOf((*MockUsecase)(nil).UpdateMentorStatus), user)
+}
+
+// UpdateUser mocks base method.
+func (m *MockUsecase) UpdateUser(user *dto.UserWithSkillsUsecase) (*dto.UserWithSkillsUsecase, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateUser", user)
+	ret0, _ := ret[0].(*dto.UserWithSkillsUsecase)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateUser indicates an expected call of UpdateUser.
+func (mr *MockUsecaseMockRecorder) UpdateUser(user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockUsecase)(nil).UpdateUser), user)
 }

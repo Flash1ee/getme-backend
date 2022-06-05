@@ -29,7 +29,7 @@ func (t *Renderer) ReloadTemplates() {
 	t.templates = template.Must(template.ParseGlob(t.location))
 }
 
-func (t *Renderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+func (t *Renderer) Render(w io.Writer, name string, data interface{}, _ echo.Context) error {
 	if t.debug {
 		t.ReloadTemplates()
 	}
@@ -46,5 +46,17 @@ func WrapMiddleware(m func(http.Handler) http.Handler) hf.HMiddlewareFunc {
 			})).ServeHTTP(c.Response(), c.Request())
 			return
 		})
+	}
+}
+func WrapMiddlewareToFunc(m func(http.Handler) http.Handler) hf.HFMiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) (err error) {
+			m(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				c.SetRequest(r)
+				c.SetResponse(echo.NewResponse(w, c.Echo()))
+				err = next(c)
+			})).ServeHTTP(c.Response(), c.Request())
+			return
+		}
 	}
 }

@@ -1,0 +1,1 @@
+DELETE FROM getme_db.public.status where true;

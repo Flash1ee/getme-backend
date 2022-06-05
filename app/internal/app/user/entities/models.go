@@ -1,17 +1,52 @@
-package entities
+package entities_user
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type User struct {
-	ID           int64     `json:"id"`
-	TelegramID   int64     `json:"tg_id"`
-	FirstName    string    `json:"first_name"`
-	LastName     string    `json:"last_name"`
-	Nickname     string    `json:"nickname"`
-	About        string    `json:"about"`
-	Avatar       string    `json:"avatar"`
-	Email        string    `json:"email"`
-	IsSearchable bool      `json:"is_searchable"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	ID           sql.NullInt64  `db:"id"`
+	FirstName    sql.NullString `db:"first_name"`
+	LastName     sql.NullString `db:"last_name"`
+	Nickname     string         `db:"nickname"`
+	TgTag        sql.NullString `db:"tg_tag"`
+	About        sql.NullString `db:"about"`
+	Avatar       sql.NullString `db:"avatar"`
+	Email        sql.NullString `db:"email"`
+	IsSearchable bool           `db:"is_searchable"`
+	CreatedAt    time.Time      `db:"created_at"`
+	UpdatedAt    time.Time      `db:"updated_at"`
+}
+
+type UserWithSkill struct {
+	User
+	Skill sql.NullString `db:"skill_name"`
+}
+
+type UserWithSkills struct {
+	User
+	Skills []string `db:"skill_name"`
+}
+
+type UserWithOfferID struct {
+	User
+	OfferID int64 `db:"offer_id"`
+}
+
+type UserSkills struct {
+	ID        int64  `db:"id"`
+	UserId    int64  `db:"user_id"`
+	SkillName string `db:"skill_name"`
+}
+
+func ToUsersSkills(userId int64, skills []string) []UserSkills {
+	res := make([]UserSkills, 0, len(skills))
+	for _, val := range skills {
+		res = append(res, UserSkills{
+			UserId:    userId,
+			SkillName: val,
+		})
+	}
+	return res
 }

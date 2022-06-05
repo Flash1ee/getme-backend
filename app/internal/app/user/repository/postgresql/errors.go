@@ -2,6 +2,7 @@ package repository_postgresql
 
 import (
 	"github.com/lib/pq"
+	"github.com/pkg/errors"
 
 	"getme-backend/internal/app/user/repository"
 	"getme-backend/internal/pkg/utilits/postgresql"
@@ -23,3 +24,8 @@ func parsePQError(err *pq.Error) error {
 		return postgresql_utilits.NewDBError(err)
 	}
 }
+
+var (
+	CreateError = errors.New("can not create user, internal error")
+	GetError    = errors.New("can not get user from db, internal error")
+)

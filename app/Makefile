@@ -5,6 +5,7 @@ CHECK_DIR=go list ./... | grep -v /cmd/utilits
 SQL_DIR=./scripts
 MICROSERVICE_DIR=$(PWD)/internal/microservices
 
+
 stop-redis:
 	systemctl stop redis
 
@@ -16,11 +17,11 @@ run-postgres-redis:
 	systemctl start postgresql
 
 
-build:
+build: build-swagger
 	mkdir -p ./getme-secrt
 	go build -o server.out -v ./cmd/server
 
-build-docker: build-docker-server build-docker-pg
+build-docker: build-docker-server build-docker-pg build-docker-sessions
 
 run-init:
 	#sudo chown -R 5050:5050 ./pgadmin
@@ -29,15 +30,15 @@ run-init:
 run: run-init # запустить http сервер
 	docker-compose -f docker-compose.yml --env-file ./configs/run-http.env up --build --no-deps
 
-run-with-build: build-docker-server build-docker-pg run
+run-with-build: build-docker run
 
 stop:  # остановить сервер
 	docker-compose stop
 
 build-docker-server: # запуск обычного http servera
-	docker build --no-cache --network host -f ./docker/builder.Dockerfile . --tag getme
+	docker build --network host -f ./docker/builder.Dockerfile . --tag getme-main
 build-docker-pg: # сборка образа базы
-	docker build --no-cache --network host -f ./docker/postgresql.Dockerfile . --tag pg-14
+	docker build  --network host -f ./docker/postgresql.Dockerfile . --tag pg-14
 
 open-last-log:
 	cat $(LOG_DIR)/`ls -t $(LOG_DIR) | head -1 `
@@ -61,8 +62,18 @@ test:
 	go test -v -race ./internal/...
 
 DATABASE_URL:=$(shell cat ./configs/migrate.config | jq '.database_server')
+DATABASE_URL_MS:=$(shell cat ./configs/migrate.config | jq '.database_server_mysql')
+
 DATABASE_URL_LOCAL:=$(shell cat ./configs/migrate.config | jq '.database_local')
 
+migrate-up-ms:
+	migrate -source file://${SQL_DIR} -database ${DATABASE_URL_MS} up
+
+migrate-down-ms:
+	migrate -source file://${SQL_DIR} -database ${DATABASE_URL_MS} down
+
+migrate-up-ms-force:
+	migrate -source file://${SQL_DIR} -database ${DATABASE_URL_MS} force $(version)
 migrate-up:
 	migrate -source file://${SQL_DIR} -database ${DATABASE_URL} up
 
@@ -102,8 +113,33 @@ local-force-migrate:
 generate:
 	go generate -n $$(go list ./internal/...)
 
+gen-proto-sessions:
+	#protoc --proto_path=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf session.proto --go-grpc_out=plugins=grpc:${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf
+	protoc -I=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go_out=:${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go_opt=paths=source_relative \
+    --go-grpc_out=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go-grpc_opt=require_unimplemented_servers=false ${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf/session.proto
+	#protoc -I=${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf --go_out=paths=source_relative:${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf \
+#	${MICROSERVICE_DIR}/auth/delivery/grpc/protobuf/session.proto  --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative
 
 run-coverage:
 	go test -covermode=atomic -coverprofile=cover ./...
 	cat cover | fgrep -v "easyjson" | fgrep -v "mock" | fgrep -v "testing.go" | fgrep -v "docs" | fgrep -v ".pb.go" | fgrep -v "config" > cover2
 	go tool cover -func=cover2
+
+build-swagger:
+	go run ./tools/swagger/prepare.go
+	cp -rf ./api/swagger.json ./swagger/swagger-ui/.
+	cp -rf ./api/swagger.json ./swagger/swagger-editor/.
+	go get github.com/rakyll/statik
+	rm -rf ./statik/
+	statik -src=$(CURDIR)/swagger
+
+build-editor-swagger:
+	cp -r ./api/swagger.json ./swagger-editor/node_modules/swagger-editor-dist/.
+
+## Microservices
+
+build-sessions:
+	go build -o sessions.out -v ./cmd/sessions
+
+build-docker-sessions: # сборка образа сервиса авторизаций
+	docker build  --network host -f ./docker/services/session-service.Dockerfile . --tag session-service

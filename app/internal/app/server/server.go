@@ -2,10 +2,14 @@ package server
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
-
+	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
+
+	"getme-backend/internal/app/auth/dto"
+	_ "getme-backend/statik"
 
 	"getme-backend/internal"
 	"getme-backend/internal/app/factories/handler_factory"
@@ -32,17 +36,21 @@ func (s *Server) Start(config *internal.Config) error {
 		return err
 	}
 
+	pwd, err := os.Getwd()
+	if err != nil {
+		s.Logger.Fatal(err)
+	}
+
 	router := echo.New()
-	router.Renderer = echo_adapter.NewRenderer("/Users/dvvarin/TP/getme-backend/app/template/*", false)
+	//router.Use(echoMW.CSRFWithConfig(echoMW.CSRFConfig{}))
+	router.Renderer = echo_adapter.NewRenderer(pwd+"/template/*", false)
 	utilityMiddleware := middleware.NewUtilitiesMiddleware(s.Logger)
 
-	//router.Get("/debug/pprof/<profile>", handler_interfaces.FastHTTPFunc(pprofhandler.PprofHandler).ServeHTTP)
-
-	routerApi := router.Group("/api")
+	routerApi := router.Group("/api/v1")
 
 	repositoryFactory := repository_factory.NewRepositoryFactory(s.Logger, s.Connections)
 	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, repositoryFactory, config.TgAuth)
-	factory := handler_factory.NewFactory(s.Logger, usecaseFactory)
+	factory := handler_factory.NewFactory(s.Logger, s.Connections.SessionGrpcConnection, usecaseFactory)
 
 	hs := factory.GetHandleUrls()
 
@@ -54,11 +62,45 @@ func (s *Server) Start(config *internal.Config) error {
 		h.Connect(routerApi, apiUrl)
 	}
 
+	swaggerFS, err := fs.New()
+	if err != nil {
+		panic(err)
+	}
+
+	staticServer := http.FileServer(swaggerFS)
+	routerApi.GET("/swagger/editor", func(c echo.Context) error {
+		return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-editor/")
+	})
+
+	routerApi.GET("/swagger/ui", func(c echo.Context) error {
+		return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-ui/")
+	})
+
+	routerApi.GET("/editor/swagger-editor/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
+	routerApi.GET("/editor/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
+
 	s.Logger.Info("start http server")
 
 	router.GET(
-		"/login", func(c echo.Context) error {
-			c.Render(http.StatusOK, "login.tmpl", map[string]interface{}{})
+		"/login", func(ctx echo.Context) error {
+			req := &dto.AuthRequest{}
+			binder := echo.QueryParamsBinder(ctx)
+
+			errs := binder.String("token", &req.Token).
+				BindErrors()
+			if errs != nil || req.Token == "" {
+				for _, err := range errs {
+					bErr := err.(*echo.BindingError)
+					s.Logger.Errorf("/login error parse query params:field = %v value = %v\n", bErr.Field, bErr.Values)
+					return err
+				}
+				ctx.Response().WriteHeader(http.StatusBadRequest)
+			}
+
+			err = ctx.Render(http.StatusOK, "login.tmpl", req)
+			if err != nil {
+				return err
+			}
 			return nil
 		})
 

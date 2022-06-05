@@ -3,24 +3,41 @@ package dto
 //go:generate easyjson -all -disallow_unknown_fields request_models.go
 
 //easyjson:json
-type UserAuthRequest struct {
-	ID        int64  `query:"id" json:"id"`
-	AuthDate  int64  `query:"auth_date" json:"auth_date"`
-	FirstName string `query:"first_name" json:"first_name"`
-	LastName  string `query:"last_name" json:"last_name"`
-	Username  string `query:"username" json:"username"`
-	Avatar    string `query:"photo_url" json:"photo_url"`
-	Hash      string `query:"hash" json:"hash"`
+type RequestUserUpdate struct {
+	FirstName string   `json:"first_name,omitempty" validate:"alpha,min=3"`
+	LastName  string   `json:"last_name,omitempty" validate:"alpha,min=3"`
+	About     string   `json:"about,omitempty" validate:"min=10,max=100"`
+	TgTag     string   `json:"tg_tag,omitempty" validate:"min=0,max=100"`
+	Skills    []string `json:"skills,omitempty" validate:"max=100"`
 }
 
-func (req *UserAuthRequest) ToUserAuthUsecase() *UserAuthUsecase {
-	return &UserAuthUsecase{
-		ID:        req.ID,
-		AuthDate:  req.AuthDate,
+//easyjson:json
+type RequestUpdateStatus struct {
+	IsMentor bool `query:"mentor" validate:"required"`
+}
+
+func (req *RequestUserUpdate) ToUserUsecase() *UserUsecase {
+	return &UserUsecase{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
-		Username:  req.Username,
-		Avatar:    req.Avatar,
-		Hash:      req.Hash,
+		About:     req.About,
 	}
+}
+
+func (req *RequestUserUpdate) ToUserWithSkillsUsecase() *UserWithSkillsUsecase {
+	return &UserWithSkillsUsecase{
+		UserUsecase: UserUsecase{
+			FirstName: req.FirstName,
+			LastName:  req.LastName,
+			About:     req.About,
+			TgTag:     req.TgTag,
+		},
+		Skills: req.Skills,
+	}
+}
+func (req *RequestUpdateStatus) ToStatusUpdateUsecase() *UserStatusUsecase {
+	return &UserStatusUsecase{
+		IsMentor: req.IsMentor,
+	}
+
 }
