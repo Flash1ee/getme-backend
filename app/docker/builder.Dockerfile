@@ -1,46 +1,21 @@
-FROM golang:1.17.1
+FROM golang:1.17.1 as builder
 
 WORKDIR /app
 
-COPY . .
-
-RUN apt-get clean
-RUN apt-get update
-RUN apt-get install jq -y
-
 EXPOSE 80
 
-RUN make build
+COPY . .
 
-RUN chmod +x ./wait
+RUN apt-get update && apt-get install jq -y && chmod +x ./wait
+# Если что-то не собирается из-за CGO, может быть, при проверке сертификатов из гошки.
+# Убрать CGO_ENABLED
+# Итоговый image взять с gcc, например ubuntu
+RUN CGO_ENABLED=0 make build
 
-CMD ./wait && ./server.out
+FROM alpine
 
-#
-#FROM golang:1.17.1 as builder
-#
-#WORKDIR /app
-#
-#COPY . .
-#
-#RUN apt-get clean
-#RUN apt-get update
-#RUN apt-get install jq -y
-#
-#EXPOSE 80
-#
-#RUN make build
-#
-#FROM alpine
-#
-#COPY --from=builder /app .
-#
-#RUN ls -la
-#
-#RUN chmod +x ./wait
-#
-#RUN chmod +x ./server.out
-#
-#CMD ./wait && ./server.out
-#
-# Почему-то main_1             | /bin/sh: ./server.out: not found
+COPY --from=builder /app /app
+
+WORKDIR /app
+
+CMD ls && ./wait && ./server.out
