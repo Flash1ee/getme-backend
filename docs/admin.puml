@@ -1,0 +1,101 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class menu {
+   parent_id: integer
+   type: integer
+   order: integer
+   title: varchar(50)
+   header: varchar(100)
+   plugin_name: varchar(100)
+   icon: varchar(50)
+   uri: varchar(3000)
+   uuid: varchar(100)
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+class operation_log {
+   user_id: integer
+   path: varchar(255)
+   method: varchar(10)
+   ip: varchar(15)
+   input: text
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+class permissions {
+   name: varchar(50)
+   slug: varchar(50)
+   http_method: varchar(255)
+   http_path: text
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+class role_menu {
+   role_id: integer
+   menu_id: integer
+   created_at: timestamp
+   updated_at: timestamp
+}
+class role_permissions {
+   role_id: integer
+   permission_id: integer
+   created_at: timestamp
+   updated_at: timestamp
+}
+class role_users {
+   role_id: integer
+   user_id: integer
+   created_at: timestamp
+   updated_at: timestamp
+}
+class roles {
+   name: varchar
+   slug: varchar
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+class session {
+   sid: varchar(50)
+   values: varchar(3000)
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+class site {
+   key: varchar(100)
+   value: text
+   type: integer
+   description: varchar(3000)
+   state: integer
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+class user_permissions {
+   user_id: integer
+   permission_id: integer
+   created_at: timestamp
+   updated_at: timestamp
+}
+class users {
+   username: varchar(100)
+   password: varchar(100)
+   name: varchar(100)
+   avatar: varchar(255)
+   remember_token: varchar(100)
+   created_at: timestamp
+   updated_at: timestamp
+   id: integer
+}
+
+operation_log     -[#595959,plain]-^  users                    : "user_id:id"
+role_users        -[#595959,plain]-^  users                    : "user_id:id"
+user_permissions  -[#595959,plain]-^  users                    : "user_id:id"
+@enduml
