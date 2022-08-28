@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 
 	_ "github.com/GoAdminGroup/go-admin/adapter/echo"
 	"github.com/GoAdminGroup/go-admin/engine"
@@ -113,27 +114,7 @@ func (s *Server) Start(config *internal.Config) error {
 			return nil
 		})
 	eng := engine.Default()
-	cfg := adm_conf.Config{
-		Env: adm_conf.EnvLocal,
-		//host=localhost port=5432 user=dvvarin password=project dbname=getme_db sslmode=disable
-		Databases: adm_conf.DatabaseList{
-			"default": {
-				Host:       "localhost",
-				Port:       "5432",
-				User:       "dvvarin",
-				Pwd:        "project",
-				Name:       "getme_db",
-				MaxIdleCon: 50,
-				MaxOpenCon: 150,
-				Driver:     adm_conf.DriverPostgresql,
-			},
-		},
-		Theme:     "sword",
-		UrlPrefix: "admin",
-		IndexUrl:  "/",
-		Debug:     true,
-		Language:  language.EN,
-	}
+	cfg := getAdminPanelConfig(config)
 
 	//template.AddComp(chartjs.NewChart())
 
@@ -154,7 +135,7 @@ func (s *Server) Start(config *internal.Config) error {
 	//
 	// eng.AddConfigFromJSON("../datamodel/config.json")
 
-	if err := eng.AddConfig(&cfg).Use(router); err != nil {
+	if err := eng.AddConfig(cfg).Use(router); err != nil {
 		panic(err)
 	}
 
@@ -183,5 +164,49 @@ func (s *Server) Start(config *internal.Config) error {
 	}()
 
 	return router.Start(config.BindAddr)
+}
 
+func getAdminPanelConfig(config *internal.Config) *adm_conf.Config {
+	dbURL := config.Repository.DataBaseUrl
+	if config.DebugMode {
+		dbURL = config.Repository.DataBaseUrlLocal
+	}
+	pgParams := parsePostgreSQLURL(dbURL)
+
+	cfg := &adm_conf.Config{
+		Env: adm_conf.EnvProd,
+		//host=localhost port=5432 user=dvvarin password=project dbname=getme_db sslmode=disable
+		Databases: adm_conf.DatabaseList{
+			"default": {
+				Host:       pgParams["host"],
+				Port:       pgParams["port"],
+				User:       pgParams["user"],
+				Pwd:        pgParams["password"],
+				Name:       pgParams["dbname"],
+				MaxIdleCon: 50,
+				MaxOpenCon: 150,
+				Driver:     adm_conf.DriverPostgresql,
+			},
+		},
+		Theme:     "sword",
+		UrlPrefix: "admin",
+		IndexUrl:  "/",
+		Debug:     true,
+		Language:  language.EN,
+	}
+
+	return cfg
+}
+
+// "host=getme-db port=5432 user=flashie password=project dbname=getme_db sslmode=disable"
+// ["host=getme-db" "port=5432", "user=flashie", "password=project", "dbname=getme_db", "sslmode=disable"]
+
+func parsePostgreSQLURL(url string) map[string]string {
+	cfg := make(map[string]string, 2)
+	splitted := strings.Split(url, " ")
+	for _, param := range splitted {
+		splitParam := strings.Split(param, "=")
+		cfg[splitParam[0]] = splitParam[1]
+	}
+	return cfg
 }

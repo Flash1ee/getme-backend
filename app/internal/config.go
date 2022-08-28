@@ -24,4 +24,5 @@ type Config struct {
 	Repository    RepositoryConnections `toml:"repository"`
 	Microservices Microservices         `toml:"microservices"`
 	TgAuth        TelegramAuth          `toml:"telegram"`
+	DebugMode     bool                  `toml:"debug"`
 }

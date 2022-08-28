@@ -15,13 +15,11 @@ import (
 var (
 	configPath string
 	sqlDB      string
-	debugMode  bool
 )
 
 func init() {
 	flag.StringVar(&configPath, "config-path", "./configs/server.toml", "path to config file")
 	flag.StringVar(&sqlDB, "sql-db", "postgres", "what sql-db the application uses")
-	flag.BoolVar(&debugMode, "debug", false, "run in debug mode (local configuration)")
 
 }
 
@@ -45,7 +43,7 @@ func main() {
 		}
 	}(closeResource, logger)
 
-	db, closeResource, err := utilits.GetSQLConnection(config.Repository, sqlDB, debugMode)
+	db, closeResource, err := utilits.GetSQLConnection(config.Repository, sqlDB, config.DebugMode)
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -60,7 +58,7 @@ func main() {
 	}(closeResource, logger)
 
 	sessionURL := config.Microservices.SessionServerUrl
-	if debugMode {
+	if config.DebugMode {
 		sessionURL = config.Microservices.SessionServerUrlLocal
 	}
 	sessionConn, err := utilits.NewGrpcConnection(sessionURL)
