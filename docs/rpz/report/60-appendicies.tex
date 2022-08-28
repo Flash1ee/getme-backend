@@ -1,0 +1,40 @@
+\begin{appendices}
+    \chapter{Скрипт инициализации ролевой модели базы данных}
+
+	В Листинге~\ref{lst:migration-1} приведен скрипт создания ролевой модели базы данных, а именно - создания и настройки соответствующих прав доступа для трех ролей:
+	\listingfile{init_roles.sql}{migration-1}{SQL}{Скрипт инициализации ролевой модели базы данных. Часть 1}{}
+
+	\newpage
+	
+    В Листинге~\ref{lst:migration-2} приведен скрипт создания триггера для обновления прогресса выполнения плана.
+	\listingfile{init_trigger.sql}{migration-2}{SQL}{Скрипт создания триггера для обновления прогресса выполнения плана.}{}
+
+	\newpage
+
+
+	\chapter{Сборка приложения}
+
+    В Листинге~\ref{lst:pgsql-docker} представлен скрипт создания docker-образа базы данных.
+
+    \listingfile{postgresql.Dockerfile}{pgsql-docker}{docker}{Dockerfile для базы данных}{}
+
+	 \newpage 
+	 
+ 	В Листингах \ref{lst:main-service} и \ref{lst:session-service} представлены скрипты создания docker-образов микросервисов приложения.
+
+    \listingfile{main-service.Dockerfile}{main-service}{docker}{Dockerfile для сервиса основного приложения}{}
+
+    \listingfile{session-service.Dockerfile}{session-service}{docker}{Dockerfile для сервиса авторизации}{}
+
+	\chapter{Развертывание приложения}
+	
+	Для развертывания приложения использовался docker-compose. С помощью него запускается приложение, состаящее из docker контейнеров.
+	
+	 В Листингах~\ref{lst:docker-compose-1}~--~\ref{lst:docker-compose-2} представлена конфигурация развертывания приложения.
+	 
+	\listingfile{docker-compose.yml}{docker-compose-1}{docker-compose}{Конфигурация развертывания приложения. Часть 1}{linerange={1-35}}
+	
+	\newpage
+	
+	\listingfile{docker-compose.yml}{docker-compose-2}{docker-compose}{Конфигурация развертывания приложения. Часть 2}{linerange={36-74},firstnumber=36}
+\end{appendices}
