@@ -22,9 +22,8 @@ services:
     depends_on:
       - getme-db
       - session-service
-      - db-mysql
     environment:
-      WAIT_HOSTS: getme-db:5432, db-mysql:3306
+      WAIT_HOSTS: getme-db:5432
 
   session-service:
     image: session-service
@@ -71,20 +70,6 @@ services:
     volumes:
       - session-redis:/data
     restart: always
-  db-mysql:
-    platform: linux/amd64
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: ${MS_BD_PASSWORD}
-      MYSQL_USER: ${MS_BD_USERNAME}
-      MYSQL_DATABASE: ${MS_BD_NAME}
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - mysql-data:/var/lib/mysql
-    ports:
-      - 3306:3306
 networks:
   default:
     driver: bridge
