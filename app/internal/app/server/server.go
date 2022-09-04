@@ -59,7 +59,7 @@ func (s *Server) Start(config *internal.Config) error {
 	routerApi := router.Group("/api/v1")
 
 	repositoryFactory := repository_factory.NewRepositoryFactory(s.Logger, s.Connections)
-	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, repositoryFactory, config.TgAuth)
+	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, s.Connections, repositoryFactory, config.TgAuth)
 	factory := handler_factory.NewFactory(s.Logger, s.Connections.SessionGrpcConnection, usecaseFactory)
 
 	hs := factory.GetHandleUrls()

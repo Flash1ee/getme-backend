@@ -16,6 +16,7 @@ type ExpectedConnections struct {
 	SqlConnection         *sqlx.DB
 	SessionGrpcConnection *grpc.ClientConn
 	UtilsRedisPool        *redis.Pool
+	CacheRedisPool        *redis.Pool
 }
 
 func NewGrpcConnection(grpcUrl string) (*grpc.ClientConn, error) {

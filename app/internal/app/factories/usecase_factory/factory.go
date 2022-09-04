@@ -1,6 +1,9 @@
 package usecase_factory
 
 import (
+	"getme-backend/internal/pkg/utilits"
+
+	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
 
 	taskUs "getme-backend/internal/app/task/usecase"
@@ -35,13 +38,17 @@ type UsecaseFactory struct {
 	taskUsecase       taskUs.Usecase
 
 	authChecker *telegram_checker.TelegramChecker
+	cache       *redis.Pool
+	logger      *logrus.Logger
 }
 
-func NewUsecaseFactory(log *logrus.Logger, repositoryFactory RepositoryFactory, authConf internal.TelegramAuth) *UsecaseFactory {
+func NewUsecaseFactory(log *logrus.Logger, connections utilits.ExpectedConnections, repositoryFactory RepositoryFactory, authConf internal.TelegramAuth) *UsecaseFactory {
 	authChecker := telegram_checker.NewTelegramChecker(log, authConf)
 	return &UsecaseFactory{
 		repositoryFactory: repositoryFactory,
 		authChecker:       authChecker,
+		cache:             connections.CacheRedisPool,
+		logger:            log,
 	}
 }
 
@@ -67,7 +74,7 @@ func (f *UsecaseFactory) GetAuthUsecase() authUs.Usecase {
 }
 func (f *UsecaseFactory) GetSkillUsecase() skillUs.Usecase {
 	if f.skillUsecase == nil {
-		f.skillUsecase = skill_usecase.NewSkillUsecase(f.repositoryFactory.GetSkillRepository(), f.repositoryFactory.GetUserRepository())
+		f.skillUsecase = skill_usecase.NewSkillUsecase(f.cache, f.logger, f.repositoryFactory.GetSkillRepository(), f.repositoryFactory.GetUserRepository())
 	}
 	return f.skillUsecase
 }

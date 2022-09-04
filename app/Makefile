@@ -143,3 +143,13 @@ build-sessions:
 
 build-docker-sessions: # сборка образа сервиса авторизаций
 	docker build  --network host -f ./docker/services/session-service.Dockerfile . --tag session-service
+
+DATABASE_HOST:=$(shell cat ./configs/migrate.config | jq '.host')
+DATABASE_PORT:=$(shell cat ./configs/migrate.config | jq '.port')
+DATABASE_NAME:=$(shell cat ./configs/migrate.config | jq '.database')
+DATABASE_USER:=$(shell cat ./configs/migrate.config | jq '.user')
+
+
+init-db: migrate-up
+	psql -h ${DATABASE_HOST} -p ${DATABASE_PORT} -d ${DATABASE_NAME} -U ${DATABASE_USER} -f ./scripts/admin_panel.sql
+

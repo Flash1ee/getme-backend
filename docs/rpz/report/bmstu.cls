@@ -105,7 +105,7 @@
 	\lstinputlisting[
 		float=h!,
 		frame=single,
-		numbers=left,
+%		numbers=left,
 		abovecaptionskip=-5pt,
 		caption={#4},
 		label={lst:#2},
