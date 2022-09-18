@@ -1,4 +1,66 @@
 \begin{appendices}
+    \chapter{Скрипты инициализации объектов БД}
+
+ 	В Листингах \ref{lst:create-db-1}-\ref{lst:create-db-8} представлены скрипты создания объектов БД.
+    \listingfile{1_init.up.sql}{create-db-1}{SQL}{Скрипт создания объектов БД. Часть 1}{linerange={1-38}}
+
+    \listingfile{1_init.up.sql}{create-db-12}{SQL}{Скрипт создания объектов БД. Часть 2}{linerange={39-86}}
+	\clearpage
+
+    \listingfile{1_init.up.sql}{create-db-13}{SQL}{Скрипт создания объектов БД. Часть 3}{linerange={87-110}}
+
+    \listingfile{2_init.up.sql}{create-db-2}{SQL}{Скрипт создания объектов БД. Часть 4}{}
+
+    \listingfile{3_init.up.sql}{create-db-3}{SQL}{Скрипт создания объектов БД. Часть 5}{}
+
+    \listingfile{4_init.up.sql}{create-db-4}{SQL}{Скрипт создания объектов БД. Часть 6}{}
+    
+	\clearpage
+	
+    \listingfile{5_init.up.sql}{create-db-5}{SQL}{Скрипт создания объектов БД. Часть 7}{}
+
+    \listingfile{6_init.up.sql}{create-db-6}{SQL}{Скрипт создания объектов БД. Часть 8}{}
+	
+    \listingfile{7_init.up.sql}{create-db-7}{SQL}{Скрипт создания объектов БД. Часть 9}{}
+
+    \listingfile{8_init.up.sql}{create-db-8}{SQL}{Скрипт создания объектов БД. Часть 10}{}
+
+    \chapter{Паттерны взаимодействия с PostgreSQL}
+
+	В Листингах~\ref{lst:example-postgresql}~--~\ref{lst:example-postgresql-5} приведен пример взаимодействия с PostgreSQL через приложение.
+
+    \listingfile{user_repository.go}{example-postgresql}{Go}{Взаимодействие с PostgreSQL с помощью паттерна репозиторий. Часть 1}{linerange={1-32}}
+	\clearpage
+
+    \listingfile{user_repository.go}{example-postgresql-2}{Go}{Взаимодействие с PostgreSQL с помощью паттерна репозиторий. Часть 2}{linerange={33-69}}
+	\clearpage
+
+    \listingfile{user_repository.go}{example-postgresql-3}{Go}{Взаимодействие с PostgreSQL с помощью паттерна репозиторий. Часть 3}{linerange={70-102}}
+	\clearpage
+    \listingfile{user_repository.go}{example-postgresql-4}{Go}{Взаимодействие с PostgreSQL с помощью паттерна репозиторий. Часть 4}{linerange={103-138}}
+	\clearpage
+    \listingfile{user_repository.go}{example-postgresql-5}{Go}{Взаимодействие с PostgreSQL с помощью паттерна репозиторий. Часть 5}{linerange={139-180}}
+
+
+    \chapter{Паттерны взаимодействия с Redis}
+
+	В Листингах~\ref{lst:example-redis}~--~\ref{lst:example-redis-2} приведен пример взаимодействия с Redis через приложение.
+
+    \listingfile{redis_repository.go}{example-redis}{Go}{Взаимодействие с Redis в сервисе авторизации. Часть 1}{linerange={1-32}}
+	\clearpage
+    \listingfile{redis_repository.go}{example-redis-2}{Go}{Взаимодействие с Redis в сервисе авторизации. Часть 2}{linerange={33-80}}
+
+
+    \chapter{Скрипт заполнения БД}
+
+	В Листингах~\ref{lst:fill-db}~--~\ref{lst:fill-db-3} приведен скрипт с примером заполнения базы данных:
+
+	\listingfile{fill_db.sql}{fill-db}{SQL}{Скрипт с примером заполнения БД. Часть 1}{linerange={1-38}}
+
+    \listingfile{fill_db.sql}{fill-db-2}{SQL}{Скрипт с примером заполнения БД. Часть 2}{linerange={39-75}}
+	\clearpage
+	\listingfile{fill_db.sql}{fill-db-3}{SQL}{Скрипт с примером заполнения БД. Часть 3}{linerange={76-107}}
+
     \chapter{Скрипт инициализации ролевой модели базы данных}
 
 	В Листинге~\ref{lst:migration-1} приведен скрипт создания ролевой модели базы данных, а именно - создания и настройки соответствующих прав доступа для трех ролей:
