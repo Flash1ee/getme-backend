@@ -4,6 +4,8 @@ type RepositoryConnections struct {
 	DataBaseUrl      string `toml:"database_url"`
 	DataBaseUrlLocal string `toml:"database_url_local"`
 	MySQLDatabaseUrl string `toml:"database_url_mysql"`
+	CacheURL         string `toml:"cache_url"`
+	CacheURLLocal    string `toml:"cache_url_local"`
 }
 type Microservices struct {
 	SessionServerUrl      string `toml:"session_url"`
@@ -24,4 +26,5 @@ type Config struct {
 	Repository    RepositoryConnections `toml:"repository"`
 	Microservices Microservices         `toml:"microservices"`
 	TgAuth        TelegramAuth          `toml:"telegram"`
+	DebugMode     bool                  `toml:"debug"`
 }

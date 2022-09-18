@@ -23,35 +23,6 @@ func NewUserRepository(store *sqlx.DB) *UserRepository {
 	}
 }
 
-//const queryCreateUpdateUser = `
-//	INSERT INTO users (tg_id, first_name, last_name, nickname, avatar)
-//VALUES (?, ?, ?, ?, ?) ON CONFLICT (tg_id) DO UPDATE
-//	SET
-//		first_name = excluded.first_name,
-//		last_name = excluded.last_name,
-//		nickname = excluded.nickname,
-//		avatar = excluded.avatar,
-//		updated_at = now()
-//	RETURNING id;
-//	`
-
-//// CreateWithUpdate Errors:
-//// 		app.GeneralError with Error
-//// 			CreateError
-//func (r *UserRepository) CreateWithUpdate(ctx context.Context, user *entities.User) (*entities.User, error) {
-//	query := r.store.Rebind(queryCreateUpdateUser)
-//
-//	err := r.store.QueryRowxContext(ctx, query, user.TelegramID, user.FirstName, user.LastName, user.Nickname, user.Avatar).Scan(&user.ID)
-//	if err != nil {
-//		return nil, app.GeneralError{
-//			Err:         CreateError,
-//			ExternalErr: err,
-//		}
-//	}
-//
-//	return user, nil
-//}
-
 const queryGetUserByNickname = `
 SELECT id, first_name, last_name, nickname, about, avatar, tg_tag,
        is_searchable, created_at, updated_at from users where nickname = ?;`
@@ -111,9 +82,6 @@ func (repo *UserRepository) CreateFilledUser(data *entities_user.User) (int64, e
 	return ID, nil
 
 }
-
-//const queryFindByID = `
-//SELECT * from users where id = ?;`
 
 const queryFindByIDWithSkill = `SELECT users.id, first_name, last_name, about, tg_tag, avatar, is_searchable, skill_name from users 
     left join users_skills us on users.id = us.user_id 

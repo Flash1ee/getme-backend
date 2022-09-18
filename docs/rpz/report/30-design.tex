@@ -1,0 +1,284 @@
+\chapter{Конструкторская часть}
+%В данном разделе рассмотрено проектирование базы данных и приложения.
+
+\section{Проектирование базы данных}
+Для основной логики приложения была спроектирована база данных, представленная в виде ER-модели, в нотации Crow's Foot.  
+
+\imgw{main-erd}{h!}{1.0\textwidth}{ER диаграмма основной логики приложения}
+
+
+База данных будет состоять из следующих сущностей:
+\begin{enumerate}
+\item Users - пользователи;
+\item Plans - планы развития;
+\item Task - задачи из плана развития;
+\item Skills - изучаемые навыки;
+\item SimpleAuth - данные аутентификации вида логин-пароль;
+\item TelegramAuth - данные о телеграмме пользователя;
+\item Status - статус выполнения задачи;
+\item Панель администратора - набор сущностей панели администратора
+\item Sessions - хранение сессий пользователей
+\end{enumerate}
+
+\newpage
+\noindent\textbf{Сущность Users}\\
+Сущность Users содержит информацию о пользователях:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{users}}
+    \label{tbl:users}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{id} & Идентификатор пользователя, уникальный. \\\hline
+            \texttt{first\_name} & Имя пользователя в системе\\\hline
+            \texttt{last\_name} & Фамилия пользователя \\\hline
+            \texttt{nickname} & Псевдоним, короткая альтернатива имени \\\hline
+            \texttt{about} & Информация о пользователе \\\hline
+            \texttt{is\_searchable} & Признак отоюражения пользователя в поиске \\\hline
+            \texttt{tg\_tag} & Псевдоним в Telegram \\\hline
+            \texttt{created\_at} & Время регистрации пользователя\\\hline
+            \texttt{updated\_at} & Время последнего редактирования информации о пользователе \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\noindent\textbf{Сущность Task}\\
+Сущность Task содержит информацию о задачах, которые прикреплены к плану:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{plans}}
+    \label{tbl:task}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{id} & Идентификатор задачи, уникальный. \\\hline
+            \texttt{name} & Название задачи. \\\hline
+            \texttt{description} & Описание задачи \\\hline
+            \texttt{deadline} & Крайний срок выполнения \\\hline
+            \texttt{status} & Статус задачи \\\hline
+            \texttt{plan\_id} & Идентификатор плана развития, к которому привязана задача \\\hline
+            \texttt{created\_at} & Время создания задачи\\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+
+\newpage
+\noindent\textbf{Сущность Plans}\\
+Сущность Plans содержит информацию о планах развития:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{plans}}
+    \label{tbl:plans}
+    \begin{center}
+        \begin{tabular}{|p{0.3\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{id} & Идентификатор плана, уникальный. \\\hline
+            \texttt{name} & Название плана развития. \\\hline
+            \texttt{about} & Описание плана развития\\\hline
+            \texttt{is\_active} & Признак выполнения плана \\\hline
+            \texttt{progress} & Процент выполнения плана \\\hline
+            \texttt{mentor\_id} & Идентификатор ментора, создавшего план \\\hline
+            \texttt{mentee\_id} & Идентификатор менти, обучающемуся по плану \\\hline
+            \texttt{created\_at} & Время создания плана \\\hline
+            \texttt{updated\_at} & Время последнего изменения информации о плане \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\noindent\textbf{Сущность Skills}\\
+Сущность Skills содержит информацию о навыках, существующих в системе:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{skills}}
+    \label{tbl:skills}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{name} & Название навыка. \\\hline
+            \texttt{color} & Цвет навыка (для бейджа) \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\newpage
+\noindent\textbf{Сущность Status}\\
+Сущность Status содержит информацию о навыках, существующих в системе:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{status}}
+    \label{tbl:status}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{name} & Текстовое название статуса. \\\hline
+            \texttt{color} & Цвет статуса (для бейджа) \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\noindent\textbf{Сущности Авторизации}\\
+В приложении есть два способа авторизации: через мессенджер Telegram\cite{telegram} и через пару логин-пароль.  
+Сущность SimpleAuth содержит данные авторизации пользователей через логин-пароль:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{users\_simple\_auth}}
+    \label{tbl:users_simple_auth}
+    \begin{center}
+        \begin{tabular}{|p{0.3\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{id} & Идентификатор записи. \\\hline
+            \texttt{login} & Логин пользователя. \\\hline
+            \texttt{encrypted\_password} & Зашифрованнный пароль \\\hline
+            \texttt{user\_id} & Идентификатор пользователя \\ & к которому привязаны данные авторизации \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+Сущность TelegramAuth содержит данные авторизации пользователей через мессенджер Telegram:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{users\_simple\_auth}}
+    \label{tbl:telegram_auth}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{tg\_id} & Имя пользователя в telegram. \\\hline
+            \texttt{last\_auth} & Время последнего входа в приложение через telegram. \\\hline
+            \texttt{user\_id} & Идентификатор пользователя, к которому привязаны данные авторизации \\\hline
+            \texttt{created\_at} & Дата первого входа в систему через telegram \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\newpage
+
+\noindent\textbf{Сущности панели администратора}\\
+Для администрирования базы данных, поддержания ролевой модели будет создан ряд сущностей.
+ER-модель сущностей, в нотации Crow’s Foot, представлена ниже:
+\imgw{admin-erd}{h!}{1.0\textwidth}{ER диаграмма сущностей панели администратора}
+
+\newpage
+\noindent\textbf{Таблицы для миграций базы данных}\\
+Миграции базы данных - это система контроля версий базы данных.
+Для обновления базы данных необходимо определить сущность, которая будет контролировать текущую версию.
+
+Сущность SchemaMigrations содержит данные о текущей версии базы данных:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{schema\_migrations}}
+    \label{tbl:schema_migrations}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{version} & Номер текущей версии БД \\\hline
+            \texttt{dirty} & Признак успешного обновления БД \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\section{Проектирование базы данных сессий}
+Для отслеживания "состояния" между клиентом и сервером необходимо хранить данные, которые идентифицирует конкретного пользователя. Как говорилось выше, для таких задач используют in-memory СУБД.  
+Такие базы данных не имеют одной структуры (как реляционные), поэтому можно лишь высокоуровнево спроектировать базу.
+
+Для хранения пользовательские сессий требуются следующие поля:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{sessions}}
+    \label{tbl:sessions}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{session\_id} & Идентификатор сессии, уникальный \\\hline
+            \texttt{user\_id} & Идентификатор пользователя, которому принадлежит сессия \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\newpage
+\section{Ограничения, связи между сущностями, целостность данных}
+Для избежания дублирования данных сущности связаны между собой через внешние ключи.
+
+\noindent\textbf{Внешние ключи}
+
+\begin{itemize}
+\item В Таблице telegram\_auth поле user\_id ссылается на поле id таблицы users;
+\item В Таблице users\_simple\_auth поле user\_id ссылается на поле id таблицы users;
+\item В Таблице plans 
+	\begin{itemize}
+		\item поле mentee\_id ссылается на поле id таблицы users;
+		\item поле mentor\_id ссылается на поле id таблицы users;
+	\end{itemize}
+\item В Таблице status поле color ссылается на поле name таблицы color;
+\item В Таблице task 
+	\begin{itemize}
+		\item поле plan\_id ссылается на поле id таблицы plans;
+		\item поле status ссылается на поле name таблицы status;
+	\end{itemize}
+\item В таблице skills поле color ссылается на поле name таблицы color;
+\item В Таблице offers 
+	\begin{itemize}
+		\item поле mentee\_id ссылается на поле id таблицы users;
+		\item поле mentor\_id ссылается на поле id таблицы users;
+		\item поле skill\_name ссылается на поле name таблицы skills;
+	\end{itemize}
+\end{itemize}
+Помимо внешних ключей, в базе данных присутствуют связи типа many-to-many, реализующиеся через промежуточные таблицы.  
+
+Для хранения пользовательские связей навык-пользователь используется таблица users-skills:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{users\_skills}}
+    \label{tbl:users-skills}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{id} & Идентификатор записи \\\hline
+            \texttt{skill\_name} & Название навыка, внешний ключ к таблице skills \\\hline
+            \texttt{user\_id} & Идентификатор пользователя, внешний ключ к таблице users \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+Для хранения связей навык-план используется таблица plans-skills:
+\begin{table}[!ht]
+    \caption{Описание полей таблицы \texttt{plans\_skills}}
+    \label{tbl:plans-skills}
+    \begin{center}
+        \begin{tabular}{|p{0.2\textwidth}p{0.6\textwidth}|}
+            \hline
+            \textbf{Поле} & \textbf{Значение} \\\hline
+            \texttt{id} & Идентификатор записи \\\hline
+            \texttt{skill\_name} & Название навыка, внешний ключ к таблице skills \\\hline
+            \texttt{plan\_id} & Идентификатор плана, внешний ключ к таблице plans \\\hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\newpage
+\noindent\textbf{Ролевая модель}\\
+В базе данных присутствуют три роли:
+\begin{enumerate}
+\item Администратор - имеет доступ к всем таблицам, доступны все операции над ними;
+\item Пользователь - доступ к всем таблицам для CRUD операций, кроме таблиц telegram\_auth, schema\_migrations и всех таблиц, сявзанных с панелью администратора;
+\item Гость - доступ к тем же таблицам, что у пользователя на операции SELECT.
+\end{enumerate}
+
+\noindent\textbf{Триггеры}\\
+Для обновления поля progress в таблице task, нужен механизм, который будет при каждом обновлении статуса задачи (добавления новой задачи к плану) обновлять поле progress.
+
+Такую задачу может выполнить триггер, который будет срабатывать при обновлении таблицы plan и добавлении новых записей. После таких действий будет срабатывать функция, которая будет актуализировать progress у всех записей таблицы.  
+
+Ниже представлена схема алгоритма работы выполняемой тригером функции update\_progress().
+
+\imgw{update_progress_func}{h!}{0.8\textwidth}{Схема алгоритма работы функции триггера}
+
+\newpage
+\section*{Вывод}
+В данном разделе:
+\begin{itemize}
+\item спроектированы сущности базы данных;
+\item описаны сущности для миграции данных;
+\item спроектирована база данных для хранения сессий;
+\item описаны требуемые внешние ключи, триггеры;
+\item приведена ролевая модель для разграничения доступа.
+\end{itemize}

@@ -1,0 +1,14 @@
+phantom:
+  address: 127.0.0.1
+  load_profile:
+    load_type: rps
+    schedule: line(150, 200, 2m)
+  ammofile: /var/loadtest/ammo.txt
+  ammo_type: uri
+  timeout: 1s
+
+overload:
+  enabled: true
+  token_file: /var/loadtest/token.txt
+  job_name: load_test
+  job_dsc: no cached test /api/v1/skills/users?skills=backend const 250 rps 1 min

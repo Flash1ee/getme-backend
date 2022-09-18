@@ -5,6 +5,7 @@ volumes:
   postgis-data:
   session-redis:
   mysql-data:
+  cache:
 services:
   main:
     image: getme-main
@@ -22,9 +23,9 @@ services:
     depends_on:
       - getme-db
       - session-service
-      - db-mysql
+      - getme-cache
     environment:
-      WAIT_HOSTS: getme-db:5432, db-mysql:3306
+      WAIT_HOSTS: getme-db:5432, getme-cache:6379
 
   session-service:
     image: session-service
@@ -44,7 +45,7 @@ services:
   getme-db:
     image: pg-14
     expose:
-      - "5432"
+      - "5430"
     command: "postgres -c shared_preload_libraries='pg_stat_statements'"
     volumes:
       - postgis-data:/var/lib/postgresql
@@ -53,7 +54,7 @@ services:
       - POSTGRES_USER=${PG_BD_USERNAME}
       - POSTGRES_DB=${PG_BD_NAME}
     ports:
-      - "5432:5432"
+      - "5430:5432"
     restart: on-failure
     healthcheck:
       test: "exit 0"
@@ -61,7 +62,7 @@ services:
       resources:
         limits:
           cpus: '2'
-          memory: 4G
+          memory: 5G
   session-redis:
     image: "redis:alpine"
     expose:
@@ -71,19 +72,15 @@ services:
     volumes:
       - session-redis:/data
     restart: always
-  db-mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: ${MS_BD_PASSWORD}
-      MYSQL_USER: ${MS_BD_USERNAME}
-      MYSQL_DATABASE: ${MS_BD_NAME}
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - mysql-data:/var/lib/mysql
+
+  getme-cache:
+    image: "redis:alpine"
     ports:
-      - 3306:3306
+      - "6380:6379"
+    volumes:
+      - cache:/data
+    restart: always
+
 networks:
   default:
     driver: bridge

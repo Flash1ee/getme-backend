@@ -1,6 +1,9 @@
 package utilits
 
 import (
+	"context"
+	"time"
+
 	"github.com/gomodule/redigo/redis"
 	"github.com/jmoiron/sqlx"
 	"google.golang.org/grpc"
@@ -13,9 +16,15 @@ type ExpectedConnections struct {
 	SqlConnection         *sqlx.DB
 	SessionGrpcConnection *grpc.ClientConn
 	UtilsRedisPool        *redis.Pool
+	CacheRedisPool        *redis.Pool
 }
 
 func NewGrpcConnection(grpcUrl string) (*grpc.ClientConn, error) {
-	return grpc.Dial(grpcUrl, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(MAX_GRPC_SIZE),
-		grpc.MaxCallSendMsgSize(MAX_GRPC_SIZE)), grpc.WithBlock())
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+
+	return grpc.DialContext(ctx, grpcUrl,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(MAX_GRPC_SIZE),
+			grpc.MaxCallSendMsgSize(MAX_GRPC_SIZE)),
+		grpc.WithBlock())
 }

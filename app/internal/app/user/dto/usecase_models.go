@@ -7,6 +7,8 @@ import (
 	"getme-backend/internal/app/user/entities"
 )
 
+//go:generate easyjson -all -disallow_unknown_fields usecase_models.go
+
 type UserUsecase struct {
 	ID           int64     `db:"id"`
 	FirstName    string    `db:"first_name"`
@@ -20,6 +22,10 @@ type UserUsecase struct {
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
 }
+
+//easyjson:json
+type UserWithSkillsUsecaseSlice []UserWithSkillsUsecase
+
 type UserWithSkillsUsecase struct {
 	UserUsecase
 	Skills []string

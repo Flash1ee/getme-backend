@@ -37,8 +37,6 @@ rectangle "План Развития" {
     usecase "Просмотр плана развития" as WatchPlan
 
 }
-usecase "Чат" as Message
-
 usecase "Записаться к ментору" as ConnectToMentor
 
 
@@ -62,13 +60,11 @@ WatchPlan .> TaskDone : include
 
 Menti -> FeedPlan
 Menti -> ConnectToMentor
-Menti --> Message
 
 
 Mentor -> FeedPlan
 Mentor -> CreatePlan
 CreatePlan ..> EditPlan : include
-Mentor -> Message
 
 
 @enduml

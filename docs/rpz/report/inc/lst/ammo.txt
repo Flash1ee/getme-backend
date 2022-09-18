@@ -1,0 +1,6 @@
+[Connection: close]
+[Host: localhost]
+[Cookie: None]
+/api/v1/skills/users?skills=backend,frontend,QA,devops,agile,recruitment,golang,js,databases,postgres,android,ios,kotlin,swift,c++,java,c#,Сообщество Онтико,DevRel,Code Review,Карьера,HR,Project Management,System Design,Другое,Аналитика,Entrepreneurship,Product Management,Marketing,UX/UI/Design,Data Science/ML,Content/Copy,Cloud,Team Lead/Management,Собеседования,DevOps/SRE,Эксперт Авито,Сети,Наставник Яндекс.Практикума
+/api/v1/skills/users?skills=backend,frontend,QA
+/api/v1/skills/users?skills=agile

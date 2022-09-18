@@ -1,0 +1,55 @@
+### register
+POST {{service-getme-backend}}/api/v1/auth/simple/register
+Content-Type: application/json
+
+{
+  "login": "swampside2",
+  "password": "iu7_2022"
+}
+
+### login
+POST {{service-getme-backend}}/api/v1/auth/simple/login
+Content-Type: application/json
+
+{
+  "login": "swampside2",
+  "password": "iu7_2022"
+}
+
+### set mentor role
+PUT {{service-getme-backend}}/api/v1/user/status
+Content-Type: application/json
+Set-Cookie: session_id=8e8f0b0de3fc16c12fc1c19ed338a6b59be687537ba96d0c96928556af847250d9104ede13db1ebeb1410c853134d14869b57efe1ddad6f1734a3a2280b63bab; Path=/; Expires=Mon, 19 Sep 2022 17:15:20 GMT; HttpOnly
+
+{
+  "is_mentor": true
+}
+
+### logout
+POST {{service-getme-backend}}/api/v1/logout
+Content-Type: application/json
+Cookie: session_id=32825c546d345fdcfe9a5b72c6469569bd6f99baf7d6b9f3f70c7876472115c876442cdd9bbf68f5ad0152f304d06e39e5477ae9a454ddc379ea4add445a08ed
+
+### get users with skills
+GET {{service-getme-backend}}/api/v1/skills/users?skills=backend,frontend,QA,devops,agile,recruitment,golang,js,databases,postgres,android,ios,kotlin,swift,c++,java,c#,Сообщество Онтико,DevRel,Code Review,Карьера,HR,Project Management,System Design,Другое,Аналитика,Entrepreneurship,Product Management,Marketing,UX/UI/Design,Data Science/ML,Content/Copy,Cloud,Team Lead/Management,Собеседования,DevOps/SRE,Эксперт Авито,Сети,Наставник Яндекс.Практикума
+
+### get user
+GET {{service-getme-backend}}/api/v1/user/2
+Cookie: session_id=8e8f0b0de3fc16c12fc1c19ed338a6b59be687537ba96d0c96928556af847250d9104ede13db1ebeb1410c853134d14869b57efe1ddad6f1734a3a2280b63bab; Path=/; Expires=Mon, 19 Sep 2022 17:15:20 GMT; HttpOnly
+
+### get plans
+GET {{service-getme-backend}}/api/v1/plans?role=mentor
+Cookie: session_id=85f26b131adcad526627509a968ee208109195aaf36aa6bce62398d73596ea8069a6ca0fe91a22a818c5bc5c67270d4402092ecd084d167baf8f665479d1bf62; Path=/; Expires=Mon, 19 Sep 2022 13:19:49 GMT; HttpOnly
+
+### set offer
+POST {{service-getme-backend}}/api/v1/offers
+Set-Cookie: session_id=811b32d3495b85b2d8339784dce15ff689b67556ab79211609ba3f4b69567077395e48d254e9d8d95c7ab59371f0d8ff9224d80ce7800054a5981d7b8fa16029; Path=/; Expires=Mon, 19 Sep 2022 13:27:58 GMT; HttpOnly
+Content-Type: application/json
+
+{
+  "mentor_id": 623,
+  "skill_name": "Backend"
+}
+
+### get users with skills
+GET {{service-getme-backend}}/api/v1/skills/users?skills=backend,frontend,QA,devops,agile,recruitment,golang,js,databases,postgres,android,ios,kotlin,swift,c++,java,c#,Сообщество Онтико,DevRel,Code Review,Карьера,HR,Project Management,System Design,Другое,Аналитика,Entrepreneurship,Product Management,Marketing,UX/UI/Design,Data Science/ML,Content/Copy,Cloud,Team Lead/Management,Собеседования,DevOps/SRE,Эксперт Авито,Сети,Наставник Яндекс.Практикума

@@ -4,6 +4,8 @@ import (
 	"flag"
 	"os"
 
+	utilits_redis "getme-backend/internal/pkg/utilits/redis"
+
 	"github.com/BurntSushi/toml"
 	"github.com/sirupsen/logrus"
 
@@ -15,13 +17,11 @@ import (
 var (
 	configPath string
 	sqlDB      string
-	debugMode  bool
 )
 
 func init() {
 	flag.StringVar(&configPath, "config-path", "./configs/server.toml", "path to config file")
 	flag.StringVar(&sqlDB, "sql-db", "postgres", "what sql-db the application uses")
-	flag.BoolVar(&debugMode, "debug", false, "run in debug mode (local configuration)")
 
 }
 
@@ -45,7 +45,7 @@ func main() {
 		}
 	}(closeResource, logger)
 
-	db, closeResource, err := utilits.GetSQLConnection(config.Repository, sqlDB, debugMode)
+	db, closeResource, err := utilits.GetSQLConnection(config.Repository, sqlDB, config.DebugMode)
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -59,8 +59,27 @@ func main() {
 		}
 	}(closeResource, logger)
 
+	cacheURL := config.Repository.CacheURL
+	if config.DebugMode {
+		cacheURL = config.Repository.CacheURLLocal
+	}
+
+	cacheRedisPool := utilits_redis.NewRedisPool(cacheURL)
+	logger.Info("cache redis pool create")
+
+	conn, err := cacheRedisPool.Dial()
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	if err = conn.Close(); err != nil {
+		logger.Fatal(err)
+	}
+
+	logger.Info("cache new redis pool success check")
+
 	sessionURL := config.Microservices.SessionServerUrl
-	if debugMode {
+	if config.DebugMode {
 		sessionURL = config.Microservices.SessionServerUrlLocal
 	}
 	sessionConn, err := utilits.NewGrpcConnection(sessionURL)
@@ -73,6 +92,7 @@ func main() {
 		utilits.ExpectedConnections{
 			SqlConnection:         db,
 			SessionGrpcConnection: sessionConn,
+			CacheRedisPool:        cacheRedisPool,
 		},
 		logger,
 	)

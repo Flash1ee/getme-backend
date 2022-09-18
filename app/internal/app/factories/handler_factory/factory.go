@@ -43,6 +43,7 @@ const (
 	TASK_APPLY
 	PLANS
 	TASK_GET
+	ADMIN
 )
 
 type HandlerFactory struct {

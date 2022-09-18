@@ -7,6 +7,7 @@ import (
 
 	"getme-backend/internal"
 
+	runtime "github.com/banzaicloud/logrus-runtime-formatter"
 	"github.com/jmoiron/sqlx"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -44,7 +45,11 @@ func NewLogger(config *internal.Config, isService bool, serviceName string) (log
 
 	logger.Writer()
 	logger.SetLevel(level)
-	logger.SetFormatter(&logrus.JSONFormatter{})
+	formatter := runtime.Formatter{ChildFormatter: &logrus.TextFormatter{
+		FullTimestamp: true,
+	}}
+	formatter.Line = true
+	logger.SetFormatter(&formatter)
 	return logger, f.Close
 }
 
@@ -62,6 +67,7 @@ func GetSQLConnection(repository internal.RepositoryConnections, database string
 		return NewPostgresConnection(dbURL)
 	}
 }
+
 func NewPostgresConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error, err error) {
 	db, err = sqlx.Open("postgres", databaseUrl)
 	if err != nil {
@@ -70,6 +76,7 @@ func NewPostgresConnection(databaseUrl string) (db *sqlx.DB, closeResource func(
 
 	return db, db.Close, nil
 }
+
 func NewMySQLConnection(databaseUrl string) (db *sqlx.DB, closeResource func() error, err error) {
 	db, err = sqlx.Open("mysql", databaseUrl)
 	if err != nil {

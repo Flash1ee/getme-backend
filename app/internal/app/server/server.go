@@ -3,7 +3,16 @@ package server
 import (
 	"net/http"
 	"os"
+	"os/signal"
+	"strings"
 
+	_ "github.com/GoAdminGroup/go-admin/adapter/echo"
+	"github.com/GoAdminGroup/go-admin/engine"
+	"github.com/GoAdminGroup/go-admin/examples/datamodel"
+	adm_conf "github.com/GoAdminGroup/go-admin/modules/config"
+	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/postgres"
+	"github.com/GoAdminGroup/go-admin/modules/language"
+	_ "github.com/GoAdminGroup/themes/sword"
 	"github.com/labstack/echo/v4"
 	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
@@ -32,6 +41,7 @@ func New(config *internal.Config, connections utilits.ExpectedConnections, logge
 }
 
 func (s *Server) Start(config *internal.Config) error {
+
 	if err := s.Check(); err != nil {
 		return err
 	}
@@ -49,7 +59,7 @@ func (s *Server) Start(config *internal.Config) error {
 	routerApi := router.Group("/api/v1")
 
 	repositoryFactory := repository_factory.NewRepositoryFactory(s.Logger, s.Connections)
-	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, repositoryFactory, config.TgAuth)
+	usecaseFactory := usecase_factory.NewUsecaseFactory(s.Logger, s.Connections, repositoryFactory, config.TgAuth)
 	factory := handler_factory.NewFactory(s.Logger, s.Connections.SessionGrpcConnection, usecaseFactory)
 
 	hs := factory.GetHandleUrls()
@@ -103,6 +113,100 @@ func (s *Server) Start(config *internal.Config) error {
 			}
 			return nil
 		})
+	eng := engine.Default()
+	cfg := getAdminPanelConfig(config)
+
+	//template.AddComp(chartjs.NewChart())
+
+	// customize a plugin
+
+	//examplePlugin := example.NewExample()
+
+	// load from golang.Plugin
+	//
+	// examplePlugin := plugins.LoadFromPlugin("../datamodel/example.so")
+
+	// customize the login page
+	// example: https://github.com/GoAdminGroup/demo.go-admin.cn/blob/master/main.go#L39
+	//
+	//template.AddComp("login", datamodel.LoginPage)
+
+	// load config from json file
+	//
+	// eng.AddConfigFromJSON("../datamodel/config.json")
+
+	if err := eng.AddConfig(cfg).Use(router); err != nil {
+		panic(err)
+	}
+
+	//add generator, first parameter is the url prefix of table when visit.
+	//example:
+	//
+	//"user" => http://localhost:9033/admin/info/user
+	//
+	//AddGenerator("user", datamodel.GetUserTable).
+	//AddPlugins(examplePlugin).
+	//	Use(router); err != nil {
+	//	panic(err)
+	//}
+
+	//router.Static("/uploads", "./uploads")
+
+	// you can custom your pages like:
+
+	eng.HTML("GET", "/admin", datamodel.GetContent)
+	go func() {
+		quit := make(chan os.Signal, 1)
+		signal.Notify(quit, os.Interrupt)
+		<-quit
+		log.Print("closing database connection")
+		eng.PostgresqlConnection().Close()
+	}()
 
 	return router.Start(config.BindAddr)
+}
+
+func getAdminPanelConfig(config *internal.Config) *adm_conf.Config {
+	dbURL := config.Repository.DataBaseUrl
+	if config.DebugMode {
+		dbURL = config.Repository.DataBaseUrlLocal
+	}
+	pgParams := parsePostgreSQLURL(dbURL)
+
+	cfg := &adm_conf.Config{
+		Env: adm_conf.EnvProd,
+		//host=localhost port=5432 user=dvvarin password=project dbname=getme_db sslmode=disable
+		Databases: adm_conf.DatabaseList{
+			"default": {
+				Host:       pgParams["host"],
+				Port:       pgParams["port"],
+				User:       pgParams["user"],
+				Pwd:        pgParams["password"],
+				Name:       pgParams["dbname"],
+				MaxIdleCon: 50,
+				MaxOpenCon: 150,
+				Driver:     adm_conf.DriverPostgresql,
+			},
+		},
+		Theme:     "sword",
+		UrlPrefix: "admin",
+		IndexUrl:  "/",
+		Debug:     true,
+		Language:  language.EN,
+	}
+
+	return cfg
+}
+
+// "host=getme-db port=5432 user=flashie password=project dbname=getme_db sslmode=disable"
+// ["host=getme-db" "port=5432", "user=flashie", "password=project", "dbname=getme_db", "sslmode=disable"]
+
+func parsePostgreSQLURL(url string) map[string]string {
+	cfg := make(map[string]string, 2)
+	splitted := strings.Split(url, " ")
+	for _, param := range splitted {
+		splitParam := strings.Split(param, "=")
+		cfg[splitParam[0]] = splitParam[1]
+	}
+	return cfg
 }

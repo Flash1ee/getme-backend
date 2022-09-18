@@ -1,109 +1,439 @@
 {
-  "basePath": "/api/v1/",
-  "definitions": {
-    "ErrResponse": {
-      "properties": {
-        "error": {
-          "type": "string"
+  "components": {
+    "schemas": {
+      "ErrResponse": {
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "IdResponse": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "MenteePlanWithSkillResponse": {
+        "properties": {
+          "plan": {
+            "$ref": "#/components/schemas/PlanMentee"
+          },
+          "skills": {
+            "example": [
+              "frontend",
+              "backend"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "MenteePlansWithSkillResponse": {
+        "properties": {
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/MenteePlanWithSkillResponse"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "MentorPlanWithSkillResponse": {
+        "properties": {
+          "plan": {
+            "$ref": "#/components/schemas/PlanMentor"
+          },
+          "skills": {
+            "example": [
+              "frontend",
+              "backend"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "MentorsPlansWithSkillResponse": {
+        "properties": {
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/MentorPlanWithSkillResponse"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "OfferIDResponse": {
+        "properties": {
+          "offer_id": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "OkResponse": {
+        "properties": {
+          "OK": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PlanMentee": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "mentor_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "progress": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "PlanMentor": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "mentee_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "progress": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "PlanWithSkillsResponseMentor": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "id": {
+            "required": true,
+            "type": "integer"
+          },
+          "mentee_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "progress": {
+            "type": "number"
+          },
+          "skills": {
+            "example": [
+              "frontend",
+              "backend"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "RequestAcceptOffer": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "skills": {
+            "example": [
+              "backend",
+              "frontend"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RequestLogin": {
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RequestOffer": {
+        "properties": {
+          "mentor_id": {
+            "type": "integer"
+          },
+          "skill_name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RequestRegistration": {
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RequestTaskCreate": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "deadline": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "RequestUserUpdate": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "skills": {
+            "example": [
+              "frontend",
+              "backend"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "tg_tag": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SkillResponse": {
+        "properties": {
+          "color": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SkillsResponse": {
+        "properties": {
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/SkillResponse"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Token": {
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "User": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "is_mentor": {
+            "type": "boolean"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "tg_tag": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserAuthRequest": {
+        "properties": {
+          "auth_date": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "photo_url": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserStatusResponse": {
+        "properties": {
+          "is_mentor": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "UserWithOfferIDResponse": {
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "is_mentor": {
+            "type": "boolean"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "offer_id": {
+            "required": true,
+            "type": "integer"
+          },
+          "skill_name": {
+            "required": false,
+            "type": "string"
+          },
+          "tg_tag": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UserWithSkillResponse": {
+        "properties": {
+          "skills": {
+            "example": [
+              "frontend",
+              "backend"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "type": "object"
+      },
+      "UsersResponse": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "UsersWithOfferIDResponse": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserWithOfferIDResponse"
+            },
+            "type": "array"
+          }
         }
       },
-      "type": "object"
-    },
-    "IdResponse": {
-      "properties": {
-        "id": {
-          "type": "integer"
-        }
-      },
-      "type": "object"
-    },
-    "OkResponse": {
-      "properties": {
-        "OK": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "RequestLogin": {
-      "properties": {
-        "login": {
-          "type": "string"
+      "UsersWithSkillResponse": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserWithSkillResponse"
+            },
+            "type": "array"
+          }
         },
-        "password": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "RequestRegistration": {
-      "properties": {
-        "login": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "Token": {
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "User": {
-      "properties": {
-        "about": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "fullname": {
-          "type": "string"
-        },
-        "nickname": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "UserAuthRequest": {
-      "properties": {
-        "auth_date": {
-          "type": "string"
-        },
-        "first_name": {
-          "type": "string"
-        },
-        "hash": {
-          "type": "string"
-        },
-        "id": {
-          "format": "int64",
-          "type": "integer"
-        },
-        "last_name": {
-          "type": "string"
-        },
-        "photo_url": {
-          "type": "string"
-        },
-        "token": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        }
-      },
-      "type": "object"
+        "type": "object"
+      }
     }
   },
-  "host": "127.0.0.1",
   "info": {
     "contact": {
       "email": "varindv@gmail.com"
@@ -112,121 +442,147 @@
     "title": "GetMe App",
     "version": "1.0.0"
   },
+  "openapi": "3.0.0",
   "paths": {
     "/auth/simple/login": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
         "description": "Аутентификация пользователя через логин + пароль",
-        "parameters": [
-          {
-            "description": "Тело аутентификации",
-            "in": "body",
-            "name": "user",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RequestLogin"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestLogin"
+              }
             }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
+          },
+          "description": "Тело аутентификации",
+          "required": true
+        },
         "responses": {
           "200": {
+            "content": {},
             "description": "Успешная авторизация"
           },
           "401": {
-            "description": "Некорректный логин или пароль",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Некорректный логин или пароль"
           },
           "404": {
-            "description": "Пользователь не найден",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Пользователь не найден"
           },
           "418": {
+            "content": {},
             "description": "Пользователь уже авторизован"
           },
           "422": {
-            "description": "Некорректное тело запроса",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Некорректное тело запроса"
           },
           "500": {
-            "description": "Ошибка сервера",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
           }
         },
         "summary": "login user",
         "tags": [
           "auth"
-        ]
+        ],
+        "x-codegen-request-body-name": "user"
       }
     },
     "/auth/simple/register": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
         "description": "create new account",
-        "parameters": [
-          {
-            "description": "Request body for user registration",
-            "in": "body",
-            "name": "register_info",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RequestRegistration"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestRegistration"
+              }
             }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
+          },
+          "description": "Request body for user registration",
+          "required": true
+        },
         "responses": {
           "201": {
-            "description": "Create user successfully",
-            "schema": {
-              "$ref": "#/definitions/IdResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdResponse"
+                }
+              }
+            },
+            "description": "Create user successfully"
           },
           "409": {
-            "description": "user already exist",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "user already exist"
           },
           "418": {
+            "content": {},
             "description": "User are authorized"
           },
           "422": {
-            "description": "invalid body in request\", \"nickname already exist\", \"incorrect email or password\", \"incorrect nickname",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "invalid body in request\", \"nickname already exist\", \"incorrect email or password\", \"incorrect nickname"
           },
           "500": {
-            "description": "can not do bd operation",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "can not do bd operation"
           }
         },
         "summary": "create new user",
         "tags": [
           "auth"
-        ]
+        ],
+        "x-codegen-request-body-name": "register_info"
       }
     },
-    "/auth/telegram": {
+    "/auth/telegram/login": {
       "get": {
         "description": "Получение сессии после аутентефикации через Телеграм",
         "parameters": [
@@ -235,33 +591,45 @@
             "in": "query",
             "name": "Token",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
-        ],
-        "produces": [
-          "application/json"
         ],
         "responses": {
           "200": {
+            "content": {},
             "description": "Успешная авторизация, выставление сессионной куки"
           },
           "400": {
-            "description": "Ошибка в запросе - не указан токен / указан невалидный токен",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в запросе - не указан токен / указан невалидный токен"
           },
           "500": {
-            "description": "Ошибка сервера",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
           },
           "503": {
-            "description": "Ошибка - метод недоступен",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка - метод недоступен"
           }
         },
         "summary": "Получение сессии после отправки формы в Телеграмм",
@@ -270,81 +638,101 @@
         ]
       }
     },
-    "/auth/telegram/callback": {
+    "/auth/telegram/register": {
       "get": {
-        "consumes": [
-          "application/json"
-        ],
         "description": "Проверка авторизации через телеграм",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "UserAuthRequest",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserAuthRequest"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAuthRequest"
+              }
             }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "201": {
-            "description": "Пользователь создан, проверка аутентификации успешна",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "description": "Пользователь создан, проверка аутентификации успешна"
           },
           "400": {
-            "description": "Проверка переданных данных неуспешна",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Проверка переданных данных неуспешна"
           },
           "500": {
-            "description": "Ошибка сервера",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
           },
           "503": {
-            "description": "Ошибка сервера - метод недоступен",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера - метод недоступен"
           }
         },
         "summary": "Проверка авторизации",
         "tags": [
           "auth"
-        ]
+        ],
+        "x-codegen-request-body-name": "UserAuthRequest"
       }
     },
     "/auth/token": {
       "get": {
         "description": "Получение токена для подтверждения аутентификации через телеграм",
-        "produces": [
-          "application/json"
-        ],
         "responses": {
           "200": {
-            "description": "Успешная авторизация, выставление сессионной куки",
-            "schema": {
-              "$ref": "#/definitions/Token"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            },
+            "description": "Успешная авторизация, выставление сессионной куки"
           },
           "500": {
-            "description": "Ошибка сервера",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
           },
           "503": {
-            "description": "Ошибка - метод недоступен",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка - метод недоступен"
           }
         },
         "summary": "Получение токена",
@@ -355,25 +743,25 @@
     },
     "/logout": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
         "description": "logout user",
-        "produces": [
-          "application/json"
-        ],
         "responses": {
           "201": {
+            "content": {},
             "description": "Successfully logout"
           },
           "401": {
+            "content": {},
             "description": "User not are authorized"
           },
           "500": {
-            "description": "server error",
-            "schema": {
-              "$ref": "#/definitions/ErrResponse"
-            }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "server error"
           }
         },
         "summary": "logout user",
@@ -381,17 +769,812 @@
           "auth"
         ]
       }
+    },
+    "/offer/{offer_id}/accept": {
+      "delete": {
+        "description": "Метод для ментора на отклонение завяки на менторство с id = offer_id",
+        "parameters": [
+          {
+            "description": "ID заявки на менторство",
+            "in": "path",
+            "name": "offer_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {},
+            "description": "Заявка отклонена(удалена)"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка offer_id - у текущего пользователя нет заявки с таким id"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Заявка с id = offer_id не найдена"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Отклонить-удалить заявку на менторство",
+        "tags": [
+          "offer"
+        ]
+      },
+      "post": {
+        "description": "Метод для ментора на принятия завяки на менторство с id = id",
+        "parameters": [
+          {
+            "description": "ID заявки на менторство",
+            "in": "path",
+            "name": "offer_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAcceptOffer"
+              }
+            }
+          },
+          "description": "Данные для создания плана",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanWithSkillsResponseMentor"
+                }
+              }
+            },
+            "description": "Созданный план"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка offer_id - у текущего пользователя нет заявки с таким id"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Заявка с id = offer_id не найдена"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в переданном теле"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Принять заявку на менторство",
+        "tags": [
+          "offer"
+        ],
+        "x-codegen-request-body-name": "plan_info"
+      }
+    },
+    "/offers": {
+      "get": {
+        "description": "Список подавших заявку к ментору менти",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersWithOfferIDResponse"
+                }
+              }
+            },
+            "description": "Список менти"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Пользователь с данным id не ментор"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Список подавших заявку к ментору менти",
+        "tags": [
+          "offer"
+        ]
+      },
+      "post": {
+        "description": "Запись к ментору",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestOffer"
+              }
+            }
+          },
+          "description": "Тело запроса с данными для заявки на менторство",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferIDResponse"
+                }
+              }
+            },
+            "description": "Запись успешна"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Логическая ошибка = ментор и менти должны быть разными"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ментор с данным ID не найден или скилл с таким именем не существует"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Заявка от к ментору уже существует"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Подать заявку к ментору",
+        "tags": [
+          "offer"
+        ],
+        "x-codegen-request-body-name": "offer"
+      }
+    },
+    "/plans": {
+      "get": {
+        "description": "Список планов в зависимости от выбранной роли (как ментор, как менти)",
+        "parameters": [
+          {
+            "description": "Роль пользователя",
+            "in": "query",
+            "name": "role",
+            "required": true,
+            "schema": {
+              "enum": [
+                "mentor",
+                "mentee"
+              ],
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MentorsPlansWithSkillResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MenteePlansWithSkillResponse"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Список планов"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в параметре запроса role"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Список планов развития",
+        "tags": [
+          "plan"
+        ]
+      }
+    },
+    "/plans/{plan_id}/task": {
+      "post": {
+        "description": "Создание задачи у конктретного плана",
+        "parameters": [
+          {
+            "description": "ID палана",
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdResponse"
+              }
+            }
+          },
+          "description": "Тело запроса с данными о задаче",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MentorsPlansWithSkillResponse"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Айди созданной задачи"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в теле запроса"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "План не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "У данного пользователя нет прав на изменение плана"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Создание задачи плана",
+        "tags": [
+          "plan"
+        ]
+      }
+    },
+    "/skills": {
+      "get": {
+        "description": "Получение списка всех скиллов",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillsResponse"
+                }
+              }
+            },
+            "description": "Список всех скиллов"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Получение списка всех скиллов",
+        "tags": [
+          "skills"
+        ]
+      }
+    },
+    "/skills/users": {
+      "get": {
+        "description": "Получить список пользователей у которых есть хотя бы один скилл из переданного списка",
+        "parameters": [
+          {
+            "description": "список скиллов в формате skills=x,y,z",
+            "explode": false,
+            "in": "query",
+            "name": "skills",
+            "required": true,
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersWithSkillResponse"
+                }
+              }
+            },
+            "description": "Список пользователей, у которых совпал хотя бы один из указанных скиллов"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в переданном query параметре skills"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Получение всех пользователей с указанными скиллами (если нет совпадений, выводятся все менторы)",
+        "tags": [
+          "skills"
+        ]
+      }
+    },
+    "/tasks/{task_id}/status": {
+      "post": {
+        "description": "Изменение статуса задачи на выполенную",
+        "parameters": [
+          {
+            "description": "ID задачи",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MentorsPlansWithSkillResponse"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Айди созданной задачи"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в теле запроса"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Задача не найдена"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "У данного пользователя нет прав на изменение этой задачи"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Изменение статуса задачи",
+        "tags": [
+          "plan"
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "description": "Получение данных текущего пользователя",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithSkillResponse"
+                }
+              }
+            },
+            "description": "Данные пользователя"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Получение данных текущего пользователя",
+        "tags": [
+          "user"
+        ]
+      },
+      "put": {
+        "description": "Обновление/изменение даных пользователя",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestUserUpdate"
+              }
+            }
+          },
+          "description": "Тело запроса с новыми данными",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "description": "Данные пользователя с изменениями"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в переданном теле запроса"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Обновление даных пользователя",
+        "tags": [
+          "user"
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/user/status": {
+      "get": {
+        "description": "Если true - показывается в поиске, иначе - нет",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatusResponse"
+                }
+              }
+            },
+            "description": "Статус ментора"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Текущий пользователь не найден"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Получение статуса пользователя-ментора",
+        "tags": [
+          "user"
+        ]
+      },
+      "put": {
+        "description": "Если true - показывается в поиске, иначе - нет",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatusResponse"
+                }
+              }
+            },
+            "description": "Статус ментора"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Текущий пользователь не найден"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Обновить статус пользователя-ментора",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/{user_id}": {
+      "get": {
+        "description": "Получение данных текущего пользователя",
+        "parameters": [
+          {
+            "description": "user_id",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "description": "Данные пользователя с указанным id"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка в переданном параметре пути"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Пользователь с данным id не найден"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrResponse"
+                }
+              }
+            },
+            "description": "Ошибка сервера"
+          }
+        },
+        "summary": "Получение данных пользователя по id",
+        "tags": [
+          "user"
+        ]
+      }
     }
   },
-  "schemes": [
-    "https",
-    "http"
+  "servers": [
+    {
+      "url": "http://127.0.0.1/api/v1/"
+    },
+    {
+      "url": "http://android.glidemess.pw/api/v1/"
+    }
   ],
-  "swagger": "2.0",
   "tags": [
     {
       "description": "Взаимодействия с менторами",
       "name": "mentor"
+    },
+    {
+      "description": "Работа с заявками на менторство",
+      "name": "offer"
     },
     {
       "description": "Взаимодействия с планом развития",
@@ -404,6 +1587,10 @@
     {
       "description": "Аутентификация",
       "name": "auth"
+    },
+    {
+      "description": "Взаимодействия с скиллами",
+      "name": "skills"
     }
   ]
 }

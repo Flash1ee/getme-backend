@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="871px" preserveAspectRatio="none" style="width:898px;height:871px;background:#FFFFFF;" version="1.1" viewBox="0 0 898 871" width="898px" zoomAndPan="magnify"><defs/><g><rect height="26.4883" style="stroke:#00000000;stroke-width:1.0;fill:none;" width="352" x="266" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="342" x="271" y="23.5352">Варианты использования приложения "GetMe"</text><!--MD5=[9c0f4031f3a6972e4b8a53dbbf4fc700]
+cluster Общее--><g id="cluster_Общее"><rect height="256" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;fill:none;" width="611.5" x="280.5" y="609.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="50" x="561.25" y="625.0234">Общее</text></g><!--MD5=[4369610d69d1ff3d6714c9e6f990d0b0]
+cluster План Развития--><g id="cluster_План Развития"><rect height="375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;fill:none;" width="625" x="263" y="44.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="107" x="522" y="60.0234">План Развития</text></g><g id="elem_Profile"><ellipse cx="407.2005" cy="669.5284" fill="#F1F1F1" rx="110.7005" ry="24.5401" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187" x="313.7005" y="672.8194">Просмотр своего профиля</text></g><g id="elem_EditProfile"><ellipse cx="759.3952" cy="668.5673" fill="#F1F1F1" rx="108.3952" ry="24.079" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="182" x="668.3952" y="671.8583">Редактирование профиля</text></g><g id="elem_MentorsFeed"><ellipse cx="406.7871" cy="753.5457" fill="#F1F1F1" rx="78.2871" ry="18.0574" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="114" x="349.7871" y="756.8367">Лента менторов</text></g><g id="elem_Search"><ellipse cx="759.3837" cy="831.465" fill="#F1F1F1" rx="75.3837" ry="17.4767" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="107" x="705.8837" y="834.756">Поиск ментора</text></g><g id="elem_MentorProfile"><ellipse cx="759.7328" cy="753.7348" fill="#F1F1F1" rx="116.7328" ry="25.7466" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="200" x="659.7328" y="757.0259">Просмотр профиля ментора</text></g><g id="elem_FeedPlan"><ellipse cx="406.9677" cy="303.5818" fill="#F1F1F1" rx="70.9677" ry="16.5935" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="357.686" y="307.2086">Лента планов</text></g><g id="elem_CreatePlan"><ellipse cx="406.8952" cy="379.5673" fill="#F1F1F1" rx="108.3952" ry="24.079" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="182" x="315.8952" y="382.8583">Создание плана развития</text></g><g id="elem_EditPlan"><ellipse cx="759.5509" cy="368.3985" fill="#F1F1F1" rx="112.5509" ry="24.9102" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="191" x="664.0509" y="371.6895">Изменение плана развития</text></g><g id="elem_TaskDone"><ellipse cx="406.9926" cy="107.4868" fill="#F1F1F1" rx="127.9926" ry="27.9985" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="224" x="294.9926" y="110.7778">Отметка о выполнении задания</text></g><g id="elem_WatchPlan"><ellipse cx="406.8555" cy="211.6594" fill="#F1F1F1" rx="108.8555" ry="24.1711" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="183" x="315.3555" y="214.9504">Просмотр плана развития</text></g><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><g id="elem_User"><ellipse cx="168.5" cy="580.9883" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M168.5,588.9883 L168.5,615.9883 M155.5,596.9883 L181.5,596.9883 M168.5,615.9883 L155.5,630.9883 M168.5,615.9883 L181.5,630.9883 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95" x="121" y="646.0234">Пользователь</text></g><!--MD5=[d64a7ed54fc0c83564da457b3b8a9e6a]
+entity Mentor--><g id="elem_Mentor"><ellipse cx="33" cy="349.9883" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M33,357.9883 L33,384.9883 M20,365.9883 L46,365.9883 M33,384.9883 L20,399.9883 M33,384.9883 L46,399.9883 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="6" y="415.0234">Ментор</text></g><!--MD5=[9de4b17da1b48e52b7934cc3b6e74ae1]
+entity Menti--><g id="elem_Menti"><ellipse cx="407" cy="446.9883" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M407,454.9883 L407,481.9883 M394,462.9883 L420,462.9883 M407,481.9883 L394,496.9883 M407,481.9883 L420,496.9883 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45" x="384.5" y="512.0234">Менти</text></g><g id="elem_ConnectToMentor"><ellipse cx="406.7777" cy="571.3438" fill="#F1F1F1" rx="94.7777" ry="21.3555" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152" x="330.7777" y="574.6348">Записаться к ментору</text></g><!--MD5=[35f0c6a34a5f13433571f7c433bb052a]
+link Mentor to User--><g id="link_Mentor_User"><path d="M56.04,417.6283 C77.64,454.9983 110.79,512.3583 135.33,554.8183 " fill="none" id="Mentor-to-User" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="141.48,551.4683,145.42,572.2883,129.35,558.4683,141.48,551.4683" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d400b14177b8c09ca22ad4f15ec3889c]
+reverse link User to Menti--><g id="link_User_Menti"><path d="M220.36,558.3383 C231.2,548.9283 243.01,539.7983 255,532.4883 C297.5,506.5883 353.9,489.6283 384.32,481.6983 " fill="none" id="User-backto-Menti" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="224.74,563.8083,205.26,572.1483,215.29,553.4883,224.74,563.8083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[3b3a110f6aeec0a0bf442c01daca6c1c]
+link User to Profile--><g id="link_User_Profile"><path d="M216.22,622.1483 C248.05,630.0883 290.94,640.7783 327.89,649.9983 " fill="none" id="User-to-Profile" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="332.83,651.2383,325.0562,645.1911,327.9768,650.0357,323.1321,652.9562,332.83,651.2383" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[ba7571ce210c24f8557e85da1ea8968d]
+link User to MentorsFeed--><g id="link_User_MentorsFeed"><path d="M193.32,648.5883 C208.53,669.9783 230.05,695.4983 255,711.4883 C278.94,726.8283 308.5,736.6383 335.09,742.8883 " fill="none" id="User-to-MentorsFeed" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="340.02,744.0083,332.1348,738.1072,335.1452,742.8965,330.3559,745.9069,340.02,744.0083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a8faaf5b62166ef60bb93dfafe814cfa]
+link Profile to EditProfile--><g id="link_Profile_EditProfile"><path d="M517.94,669.1783 C558.48,669.0583 604.46,668.9283 645.29,668.8083 " fill="none" id="Profile-to-EditProfile" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="650.75,668.7983,641.7386,664.824,645.75,668.8126,641.7615,672.824,650.75,668.7983" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="666.0566">include</text></g><!--MD5=[cb222c7700f666deae2b825eb3fececc]
+link MentorsFeed to Search--><g id="link_MentorsFeed_Search"><path d="M463.93,765.9383 C528.35,780.2683 633.73,803.7183 699.45,818.3483 " fill="none" id="MentorsFeed-to-Search" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="704.5,819.4683,696.582,813.6112,699.6191,818.3836,694.8466,821.4207,704.5,819.4683" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="787.0566">include</text></g><!--MD5=[8e3c6d12c303113c2762121c6ea3909f]
+link MentorsFeed to MentorProfile--><g id="link_MentorsFeed_MentorProfile"><path d="M485.79,753.4883 C530.44,753.4883 587.47,753.4883 637.82,753.4883 " fill="none" id="MentorsFeed-to-MentorProfile" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="642.98,753.4883,633.98,749.4883,637.98,753.4883,633.98,757.4883,642.98,753.4883" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="750.0566">include</text></g><!--MD5=[c9ff20ea78a580f2629b820acadbcfad]
+link FeedPlan to WatchPlan--><g id="link_FeedPlan_WatchPlan"><path d="M407,286.6183 C407,273.7483 407,255.7283 407,240.5583 " fill="none" id="FeedPlan-to-WatchPlan" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="407,235.5283,403,244.5283,407,240.5283,411,244.5283,407,235.5283" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="372.5" y="266.3066">include</text></g><!--MD5=[c81ddfc1e971ae45332abe999a418a1c]
+link WatchPlan to TaskDone--><g id="link_WatchPlan_TaskDone"><path d="M407,187.3683 C407,173.4583 407,155.7683 407,140.5783 " fill="none" id="WatchPlan-to-TaskDone" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="407,135.5283,403,144.5283,407,140.5283,411,144.5283,407,135.5283" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="372.5" y="166.5566">include</text></g><!--MD5=[fe5755af4f0e3ccaa6427a45436ddc7e]
+link Menti to FeedPlan--><g id="link_Menti_FeedPlan"><path d="M384.43,470.8783 C353.67,462.5983 297.53,445.2783 255,419.4883 C245.04,413.4483 240.25,412.6183 235.5,401.9883 C226.99,382.9083 226.99,374.0683 235.5,354.9883 C251.38,319.3983 292.84,306.3083 331.01,302.2283 " fill="none" id="Menti-to-FeedPlan" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="336.13,301.7283,326.7837,298.6224,331.1537,302.2145,327.5616,306.5845,336.13,301.7283" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d1dfeb5d6fd8b9b8ac7347d25e11938c]
+link Menti to ConnectToMentor--><g id="link_Menti_ConnectToMentor"><path d="M407,514.6583 C407,524.6783 407,534.7083 407,544.7283 " fill="none" id="Menti-to-ConnectToMentor" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="407,549.9683,411,540.9683,407,544.9683,403,540.9683,407,549.9683" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[15bc64711af4547f2a1f195159ccef77]
+link Mentor to FeedPlan--><g id="link_Mentor_FeedPlan"><path d="M60.18,365.4983 C69.39,361.0783 79.95,356.5483 90,353.4883 C171.82,328.5583 269.54,315.5283 334.43,309.0983 " fill="none" id="Mentor-to-FeedPlan" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="339.44,308.6183,330.0937,305.5124,334.4637,309.1045,330.8716,313.4745,339.44,308.6183" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[ee155309c7b7ef818349a65d5d5449ee]
+link Mentor to CreatePlan--><g id="link_Mentor_CreatePlan"><path d="M60.16,379.4883 C107.82,379.4883 211.39,379.4883 292.83,379.4883 " fill="none" id="Mentor-to-CreatePlan" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="298.16,379.4883,289.16,375.4883,293.16,379.4883,289.16,383.4883,298.16,379.4883" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5beec46bae815921029fb0b7158180a5]
+link CreatePlan to EditPlan--><g id="link_CreatePlan_EditPlan"><path d="M514.59,376.1383 C555.14,374.8683 601.51,373.4183 642.85,372.1183 " fill="none" id="CreatePlan-to-EditPlan" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="647.87,371.9583,638.7488,368.243,642.8725,372.1153,639.0001,376.239,647.87,371.9583" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="566" y="370.0566">include</text></g><!--MD5=[0a881f46cf5f79409e72708459776101]
+@startuml
+
+title Варианты использования приложения "GetMe"
+
+left to right direction
+
+actor :Пользователь: as User
+
+actor :Ментор: as Mentor
+
+actor :Менти: as Menti
+
+User <|-up- Mentor
+
+User <|-down- Menti
+
+rectangle Общее {
+    usecase "Просмотр своего профиля" as Profile
+
+    usecase "Редактирование профиля" as EditProfile
+
+    usecase "Лента менторов" as MentorsFeed
+
+    usecase "Поиск ментора" as Search
+
+    usecase "Просмотр профиля ментора" as MentorProfile
+}
+rectangle "План Развития" {
+    usecase "Лента планов" as FeedPlan
+
+    usecase "Создание плана развития" as CreatePlan
+
+    usecase "Изменение плана развития" as EditPlan
+
+    usecase "Отметка о выполнении задания" as TaskDone
+
+    usecase "Просмотр плана развития" as WatchPlan
+
+}
+usecase "Записаться к ментору" as ConnectToMentor
+
+
+
+User - -> Profile
+User - -> MentorsFeed
+
+
+Profile ..> EditProfile : include
+
+
+
+
+MentorsFeed ..> Search : include
+MentorsFeed ..> MentorProfile : include
+
+FeedPlan .> WatchPlan : include
+WatchPlan .> TaskDone : include
+
+
+
+Menti -> FeedPlan
+Menti -> ConnectToMentor
+
+
+Mentor -> FeedPlan
+Mentor -> CreatePlan
+CreatePlan ..> EditPlan : include
+
+
+@enduml
+
+PlantUML version 1.2022.6(Tue Jun 21 20:34:49 MSK 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: ru
+Country: RU
+--></g></svg>
