@@ -1,0 +1,25 @@
+@startuml
+namespace postgresql {
+    class UserRepository << (S,Aquamarine) >> {
+        - store *sqlx.DB
+
+        + Create(us *entities.User) ([]entities.User, error)
+        + Get(nickname string) (*entities.User, error)
+        + Update(us *entities.User) (*entities.User, error)
+
+    }
+}
+
+"repository.Repository" <|-- "postgresql.UserRepository"
+
+namespace repository {
+    interface Repository  {
+        + Create(us *entities.User) ([]entities.User, error)
+        + Get(nickname string) (*entities.User, error)
+        + Update(us *entities.User) (*entities.User, error)
+
+    }
+}
+
+
+@enduml
