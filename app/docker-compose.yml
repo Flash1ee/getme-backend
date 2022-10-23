@@ -7,18 +7,99 @@ volumes:
   mysql-data:
   cache:
 services:
+  ngnix-proxy:
+    image: nginx:1.23.1
+    depends_on:
+      - main
+    expose:
+      - "80"
+      - "443"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/certs/localhost/:/etc/nginx/ssl/
+      - ./cache-nginx:/var/cache/nginx
+      - ./logs-nginx:/var/log/nginx/
+      - ./static:/static
+      - ${NGNIX_CONFIG}:/etc/nginx/conf.d/default.conf
+      - ./swagger/swagger-editor:/var/www/swagger-editor
+      - ./swagger/swagger-ui:/var/www/swagger-ui
   main:
     image: getme-main
     expose:
-      - "80"
+      - "81"
     ports:
-      - "80:80"
+      - "81:80"
     networks:
       - default
     volumes:
       - ./api:/app/api
       - ./logs:/app/logs
       - ./media:/app/media
+      - ./static:/app/static
+      - ${CONFIG_DIR}:/app/configs
+    depends_on:
+      - getme-db
+      - session-service
+      - getme-cache
+    environment:
+      WAIT_HOSTS: getme-db:5432, getme-cache:6379
+  main-2:
+    image: getme-main
+    expose:
+      - "82"
+#    ports:
+#      - "82:80"
+    networks:
+      - default
+    volumes:
+      - ./api:/app/api
+      - ./logs:/app/logs
+      - ./media:/app/media
+      - ./static:/app/static
+      - ${CONFIG_DIR}:/app/configs
+    depends_on:
+      - getme-db
+      - session-service
+      - getme-cache
+    environment:
+      WAIT_HOSTS: getme-db:5432, getme-cache:6379
+
+  main-3:
+    image: getme-main
+    expose:
+      - "83"
+#    ports:
+#      - "83:80"
+    networks:
+      - default
+    volumes:
+      - ./api:/app/api
+      - ./logs:/app/logs
+      - ./media:/app/media
+      - ./static:/app/static
+      - ${CONFIG_DIR}:/app/configs
+    depends_on:
+      - getme-db
+      - session-service
+      - getme-cache
+    environment:
+      WAIT_HOSTS: getme-db:5432, getme-cache:6379
+
+  test-main:
+    image: getme-main
+    expose:
+      - "84"
+    ports:
+      - "84:80"
+    networks:
+      - default
+    volumes:
+      - ./api:/app/api
+      - ./logs:/app/logs
+      - ./media:/app/media
+      - ./static:/app/static
       - ${CONFIG_DIR}:/app/configs
     depends_on:
       - getme-db
@@ -63,6 +144,7 @@ services:
         limits:
           cpus: '2'
           memory: 5G
+
   session-redis:
     image: "redis:alpine"
     expose:
@@ -71,14 +153,6 @@ services:
       - "6379:6379"
     volumes:
       - session-redis:/data
-    restart: always
-
-  getme-cache:
-    image: "redis:alpine"
-    ports:
-      - "6380:6379"
-    volumes:
-      - cache:/data
     restart: always
 
 networks:

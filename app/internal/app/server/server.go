@@ -13,12 +13,13 @@ import (
 	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/postgres"
 	"github.com/GoAdminGroup/go-admin/modules/language"
 	_ "github.com/GoAdminGroup/themes/sword"
+	"github.com/gorilla/mux"
 	"github.com/labstack/echo/v4"
-	"github.com/rakyll/statik/fs"
+	//"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
 
 	"getme-backend/internal/app/auth/dto"
-	_ "getme-backend/statik"
+	//_ "getme-backend/statik"
 
 	"getme-backend/internal"
 	"getme-backend/internal/app/factories/handler_factory"
@@ -72,22 +73,22 @@ func (s *Server) Start(config *internal.Config) error {
 		h.Connect(routerApi, apiUrl)
 	}
 
-	swaggerFS, err := fs.New()
-	if err != nil {
-		panic(err)
-	}
+	//swaggerFS, err := fs.New()
+	//if err != nil {
+	//	panic(err)
+	//}
 
-	staticServer := http.FileServer(swaggerFS)
-	routerApi.GET("/swagger/editor", func(c echo.Context) error {
-		return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-editor/")
-	})
-
-	routerApi.GET("/swagger/ui", func(c echo.Context) error {
-		return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-ui/")
-	})
-
-	routerApi.GET("/editor/swagger-editor/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
-	routerApi.GET("/editor/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
+	//staticServer := http.FileServer(swaggerFS)
+	//routerApi.GET("/swagger/editor", func(c echo.Context) error {
+	//	return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-editor/")
+	//})
+	//
+	//routerApi.GET("/swagger/ui", func(c echo.Context) error {
+	//	return c.Redirect(http.StatusPermanentRedirect, "/api/v1/editor/swagger-ui/")
+	//})
+	//
+	//routerApi.GET("/editor/swagger-editor/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
+	//routerApi.GET("/editor/swagger-ui/*", echo.WrapHandler(http.StripPrefix("/api/v1/editor/", staticServer)))
 
 	s.Logger.Info("start http server")
 
@@ -134,7 +135,8 @@ func (s *Server) Start(config *internal.Config) error {
 	// load config from json file
 	//
 	// eng.AddConfigFromJSON("../datamodel/config.json")
-
+	x := mux.Router{}
+	x.
 	if err := eng.AddConfig(cfg).Use(router); err != nil {
 		panic(err)
 	}
