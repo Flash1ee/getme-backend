@@ -28,11 +28,11 @@ run-init:
 	mkdir -p $(LOG_DIR)
 
 run: run-init # запустить http сервер
-	docker-compose -f docker-compose.yml -f docker-compose-2.yml --env-file ./configs/run-http.env up --build --no-deps
+	docker-compose -f docker-compose.yml -f docker-compose-cache.yml --env-file ./configs/run-http.env up --build --no-deps
 
 
 run-s: run-init # запустить http сервер
-	docker-compose -f docker-compose.yml -f docker-compose-2.yml --env-file ./configs/run-https.env up --build --no-deps
+	docker-compose -f docker-compose.yml -f docker-compose-cache.yml --env-file ./configs/run-https.env up --build --no-deps
 
 run-with-build: build-docker run
 

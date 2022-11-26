@@ -8,15 +8,18 @@ volumes:
   cache:
 services:
   ngnix-proxy:
-    image: nginx:1.23.1
+#    image: nginx:1.23.1
+    image: macbre/nginx-http3:1.23.1
     depends_on:
       - main
     expose:
       - "80"
       - "443"
     ports:
-      - "80:80"
-      - "443:443"
+      - "443:443/tcp"
+      - "443:443/udp"
+      - "80:80/tcp"
+      - "80:80/udp"
     volumes:
       - ./configs/certs/localhost/:/etc/nginx/ssl/
       - ./cache-nginx:/var/cache/nginx
@@ -49,8 +52,8 @@ services:
     image: getme-main
     expose:
       - "82"
-#    ports:
-#      - "82:80"
+    ports:
+      - "82:80"
     networks:
       - default
     volumes:

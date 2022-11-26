@@ -13,7 +13,6 @@ import (
 	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/postgres"
 	"github.com/GoAdminGroup/go-admin/modules/language"
 	_ "github.com/GoAdminGroup/themes/sword"
-	"github.com/gorilla/mux"
 	"github.com/labstack/echo/v4"
 	//"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
@@ -135,8 +134,6 @@ func (s *Server) Start(config *internal.Config) error {
 	// load config from json file
 	//
 	// eng.AddConfigFromJSON("../datamodel/config.json")
-	x := mux.Router{}
-	x.
 	if err := eng.AddConfig(cfg).Use(router); err != nil {
 		panic(err)
 	}

@@ -16,7 +16,7 @@ import (
 
 	authPostgresRepo "getme-backend/internal/app/auth/repository/postgresql"
 	tokenRepo "getme-backend/internal/app/token/repository"
-	token_jwt_repository "getme-backend/internal/app/token/repository/jwt"
+	jwtRepo "getme-backend/internal/app/token/repository/jwt"
 	token_redis_repository "getme-backend/internal/app/token/repository/redis"
 	userRepo "getme-backend/internal/app/user/repository"
 	repository_postgresql "getme-backend/internal/app/user/repository/postgresql"
@@ -34,6 +34,7 @@ type RepositoryFactory struct {
 	offerRepository     offerRepo.Repository
 	planRepository      planRepo.Repository
 	taskRepository      taskRepo.Repository
+	jwtRepository       jwtRepo.JwtRepository
 }
 
 func NewRepositoryFactory(logger *logrus.Logger, expectedConnections utilits.ExpectedConnections) *RepositoryFactory {
@@ -57,7 +58,7 @@ func (f *RepositoryFactory) GetTokenRepository() tokenRepo.Repository {
 }
 func (f *RepositoryFactory) GetTokenJWTRepository() tokenRepo.RepositoryJWT {
 	if f.tokenJWTRepository == nil {
-		f.tokenJWTRepository = token_jwt_repository.NewJwtRepository()
+		f.tokenJWTRepository = jwtRepo.NewJwtRepository()
 	}
 	return f.tokenJWTRepository
 }

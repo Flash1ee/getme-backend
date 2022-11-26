@@ -1,6 +1,9 @@
 package handler_factory
 
 import (
+	"getme-backend/internal/app/auth/delivery/http/handlers/login/jwt_auth_handler"
+	"getme-backend/internal/app/auth/delivery/http/handlers/register/jwt_register_handler"
+
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
@@ -28,9 +31,11 @@ import (
 const (
 	AUTH_TG = iota
 	AUTH_SIMPLE
+	AUTH_JWT
 	AUTH_TOKEN
 	REGISTER_TG
 	REGISTER_SIMPLE
+	REGISTER_JWT
 	LOGOUT
 	SKILL_INFO
 	PROFILE
@@ -76,7 +81,9 @@ func (f *HandlerFactory) initAllHandlers() map[int]app.Handler {
 		AUTH_TG:         telegram_auth_handler.NewAuthHandler(f.logger, sClient, tokenUsecase),
 		REGISTER_TG:     telegram_register_handler.NewRegisterHandler(f.logger, sClient, authUsecase, ucUsecase),
 		AUTH_SIMPLE:     simple_auth_handler.NewAuthHandler(f.logger, sClient, authUsecase),
+		AUTH_JWT:        jwt_auth_handler.NewAuthHandler(f.logger, tokenUsecase, authUsecase, sClient),
 		REGISTER_SIMPLE: simple_register_handler.NewRegisterHandler(f.logger, sClient, ucUsecase, authUsecase),
+		REGISTER_JWT:    jwt_register_handler.NewRegisterHandler(f.logger, ucUsecase, tokenUsecase, authUsecase),
 		AUTH_TOKEN:      token_handler.NewTokenHandler(f.logger, tokenUsecase, sClient),
 		SKILL_INFO:      skills_info_handler.NewInfoHandler(f.logger, sClient, skillUsecase),
 		PROFILE:         user_profile_handler.NewProfileHandler(f.logger, sClient, ucUsecase),
@@ -103,9 +110,12 @@ func (f *HandlerFactory) GetHandleUrls() *map[string]app.Handler {
 		"/logout":                 hs[LOGOUT],
 		"/auth/telegram/login":    hs[AUTH_TG],
 		"/auth/simple/login":      hs[AUTH_SIMPLE],
+		"/auth/jwt/login":         hs[AUTH_JWT],
 		"/auth/telegram/register": hs[REGISTER_TG],
 		"/auth/simple/register":   hs[REGISTER_SIMPLE],
-		"/auth/token":             hs[AUTH_TOKEN],
+		"/auth/jwt/register":      hs[REGISTER_JWT],
+
+		"/auth/token": hs[AUTH_TOKEN],
 		//=============skills=============//
 		"/skills":       hs[SKILL_INFO],
 		"/skills/users": hs[USER_SKILLS],

@@ -93,11 +93,11 @@ func (f *UsecaseFactory) GetPlansUsecase() plansUs.Usecase {
 	}
 	return f.plansUsecase
 }
+
 func (f *UsecaseFactory) GetTaskUsecase() taskUs.Usecase {
 	if f.taskUsecase == nil {
 		f.taskUsecase = task_usecase.NewTaskUsecase(f.repositoryFactory.GetTaskRepository(), f.repositoryFactory.GetPlanRepository())
 
 	}
 	return f.taskUsecase
-
 }
